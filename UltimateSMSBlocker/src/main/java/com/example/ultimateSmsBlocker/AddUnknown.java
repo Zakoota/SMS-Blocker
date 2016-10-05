@@ -77,6 +77,13 @@ public class AddUnknown extends Activity {
 
             }
         } );
+
+        //Close activity addUnknown on dialog dismiss
+        builder_1.setOnDismissListener(new DialogInterface.OnDismissListener(){
+            @Override
+            public void onDismiss(DialogInterface dialog){
+                finish();
+            }});
         builder_1.setCancelable ( true );
         builder_1.setCancelable ( true );
         builder_1.show ();
