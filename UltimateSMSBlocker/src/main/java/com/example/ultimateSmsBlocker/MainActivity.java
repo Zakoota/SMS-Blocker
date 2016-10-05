@@ -57,6 +57,8 @@ public class MainActivity extends ListActivity
     ListView listView;
 
 
+
+
     @Override
     protected void onRestart ()
     {
@@ -125,20 +127,7 @@ public class MainActivity extends ListActivity
 
 
         // checking if any message to delete from block messages
-        // series layout
-        // get a reference to the LayoutInflater service
 
-        LayoutInflater inflater = (LayoutInflater) getSystemService (
-                Context.LAYOUT_INFLATER_SERVICE );
-
-        // inflate slideshow_name_edittext.xml to create an EditText
-
-        view = inflater.inflate ( R.layout.series, null );
-        et_series_1 =
-                (EditText) view.findViewById ( R.id.et_series_1 );
-
-        et_series_2 =
-                (EditText) view.findViewById ( R.id.et_series_2 );
 
         // series layout
         dataSource.open ();
@@ -318,50 +307,61 @@ public class MainActivity extends ListActivity
         if (item.getItemId () == R.id.series)
         {
             // create an input dialog to get slideshow name from user
+            // series layout
+            // get a reference to the LayoutInflater service
+            LayoutInflater inflater = (LayoutInflater) getSystemService (Context.LAYOUT_INFLATER_SERVICE );
+            // inflate slideshow_name_edittext.xml to create an EditText
+            view = inflater.inflate ( R.layout.series, null );
+            et_series_1 = (EditText) view.findViewById ( R.id.et_series_1 );
+            et_series_2 = (EditText) view.findViewById ( R.id.et_series_2 );
+
+
             AlertDialog.Builder inputDialog = new AlertDialog.Builder ( this );
             inputDialog.setView ( view ); // set the dialog's custom View
             inputDialog.setTitle ( "Enter series range" );
 
-            inputDialog.setPositiveButton ( "Add Series", new DialogInterface.OnClickListener ()
-            {
-                @Override
-                public void onClick (DialogInterface dialog, int which) {
-                    try {
+            try {
+                inputDialog.setPositiveButton("Add Series", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
 
-                        String input = et_series_1.getText().toString().trim();
+                            String input = et_series_1.getText().toString().trim();
 
-                        String input_2 = et_series_2.getText().toString().trim();
+                            String input_2 = et_series_2.getText().toString().trim();
 
-                        long start = Long.parseLong(input);
-                        long end = Long.parseLong(input_2);
+                            long start = Long.parseLong(input);
+                            long end = Long.parseLong(input_2);
 
-                        Calendar c = Calendar.getInstance();
-                        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-                        String added_date = df.format(c.getTime());
+                            Calendar c = Calendar.getInstance();
+                            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+                            String added_date = df.format(c.getTime());
 
-                        for (long i = start; i <= end; i++) {
-                            String address = i + "";
-                            String name = "unknown No.";
+                            for (long i = start; i <= end; i++) {
+                                String address = i + "";
+                                String name = "unknown No.";
 
-                            dataSource.addToBlockList(address, name, added_date);
+                                dataSource.addToBlockList(address, name, added_date);
+                            }
+                            refresh();
+                        } catch (Exception e) {
+                            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
                         }
-                        refresh();
-                    } catch (Exception e)
-                    {
-                        Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
                     }
-                }
 
-                } );
-                inputDialog.show ();
+                });
+                inputDialog.show();
+            }catch (Exception e){
+                Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+            }
         }
 
         if (item.getItemId () == R.id._import)
         {
-            Intent intent = new Intent ( Intent.ACTION_GET_CONTENT );
-            intent.setType ( "*/*" );
-            intent.setAction ( Intent.ACTION_GET_CONTENT );
-            startActivityForResult ( Intent.createChooser ( intent, "Choose file" ), FILE_ID );
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("*/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Choose file"), FILE_ID);
         }
 
         if (item.getItemId () == R.id.add_number)
@@ -462,9 +462,6 @@ public class MainActivity extends ListActivity
             } );
             inputDialog.setCancelable ( true );
             inputDialog.show ();
-
-
-//        Toast.makeText ( getApplicationContext (), "selected " + selected, Toast.LENGTH_LONG ).show ();
             refresh ();
         } catch (Exception e)
         {
