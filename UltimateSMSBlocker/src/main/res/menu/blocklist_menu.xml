@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/showInbox"
+        android:alphabeticShortcut="e"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="Show Inbox"
+        android:titleCondensed="Show Inbox"></item>
+
+
+    <item
+        android:id="@+id/Test"
+        android:alphabeticShortcut="e"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="Add New"
+        android:titleCondensed="Add New"></item>
+
+    <item
+        android:id="@+id/showBmsg"
+        android:alphabeticShortcut="e"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="Show Blocked Msgs"
+        android:titleCondensed="Show Blocked Msgs"></item>
+
+</menu>

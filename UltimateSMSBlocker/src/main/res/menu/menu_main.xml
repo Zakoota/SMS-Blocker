@@ -1,0 +1,53 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="com.test.user.friendslist.MainActivity">
+    <item
+        android:id="@+id/add"
+        android:title="Add"
+        android:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/add_number"
+        android:title="Add Number"
+        android:showAsAction="never"
+        />
+
+
+
+    <item
+        android:id="@+id/sort_by_date"
+
+
+        android:title="Sort by Date"/>
+
+    <item
+        android:id="@+id/sort_by_name"
+
+
+        android:title="Sort by Name"/>
+
+    <item
+        android:id="@+id/sort_by_number"
+
+
+        android:title="Sort by Number"/>
+
+    <item
+        android:id="@+id/export"
+
+
+        android:title="Export"/>
+    <item
+        android:id="@+id/_import"
+
+
+        android:title="import"/>
+
+    <item
+        android:id="@+id/series"
+        android:showAsAction="never"
+
+        android:title="Add Series"/>
+
+</menu>

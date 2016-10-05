@@ -1,0 +1,23 @@
+apply plugin: 'com.android.application'
+android {
+    compileSdkVersion 23
+    buildToolsVersion '24.0.1'
+
+    defaultConfig {
+        applicationId "com.Raza.app"
+        minSdkVersion 16
+        targetSdkVersion 18
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
+
+dependencies {
+    compile 'org.jdom:jdom2:2.0.6'
+    compile 'com.opencsv:opencsv:3.8'
+}

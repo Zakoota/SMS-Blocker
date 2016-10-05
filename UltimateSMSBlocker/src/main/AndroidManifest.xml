@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.example.ultimateSmsBlocker"
+          android:installLocation="auto"
+          android:versionCode="1"
+          android:versionName="1.0">
+
+
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.WRITE_SMS"/>
+    <uses-permission android:name="android.permission.READ_SMS"/>
+    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+
+    <application
+        android:icon="@drawable/logo"
+        android:label="Ultimate SMS Blocker">
+
+
+        <activity
+            android:name=".AddMessage"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:label="Ultimate SMS Blocker"></activity>
+
+        <activity
+            android:name=".Tabs"
+            android:configChanges="keyboard|orientation|screenSize"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".BlockMessagesList"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:label="Block Messages List">
+
+        </activity>
+
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:label="Block List">
+
+        </activity>
+
+        <activity
+            android:name=".Contacts3"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:label="Block List">
+
+        </activity>
+
+        <activity
+            android:name=".ShowInboxActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:label="Inbox">
+
+        </activity>
+        <activity
+            android:name=".AddUnknown"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:label="Add">
+
+        </activity>
+
+        <activity
+            android:name=".Settings"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:label="Settings">
+
+        </activity>
+
+        <receiver
+            android:name=".SmsMessageReceiver"
+            android:configChanges="keyboard|orientation|screenSize">
+            <intent-filter android:priority="1000">
+                <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
+            </intent-filter>
+        </receiver>
+
+    </application>
+    <uses-sdk android:minSdkVersion="14"/>
+</manifest> 
