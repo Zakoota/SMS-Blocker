@@ -121,9 +121,6 @@ public class ShowInboxActivity extends ListActivity
                 }
             }
 
-
-//            Toast.makeText ( getApplicationContext (), "selection = " + line, Toast.LENGTH_LONG ).show ();
-
             for (Integer i :
                     checkedItems)
             {

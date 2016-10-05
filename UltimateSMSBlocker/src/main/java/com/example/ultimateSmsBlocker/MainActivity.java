@@ -417,12 +417,8 @@ public class MainActivity extends ListActivity
 
                         String input_2 = et_series_2.getText().toString().trim();
 
-                        Toast.makeText(getApplicationContext(),input +" "+ input_2,Toast.LENGTH_LONG).show();
-
                         long start = Long.parseLong(input);
                         long end = Long.parseLong(input_2);
-
-                        Toast.makeText(getApplicationContext(),start +" "+ end,Toast.LENGTH_LONG).show();
 
                         Calendar c = Calendar.getInstance();
                         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");

@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 /**
- * Created by user on 7/4/2016.
+ * Created by Raza on 7/4/2016.
  */
 public class Settings extends Activity
 {
@@ -48,8 +48,6 @@ public class Settings extends Activity
 
                 editor.putBoolean ( "delete_unknown", v );
                 editor.commit ();
-
-//                Toast.makeText ( getApplicationContext (), v + "", Toast.LENGTH_SHORT ).show ();
             }
         } );
 

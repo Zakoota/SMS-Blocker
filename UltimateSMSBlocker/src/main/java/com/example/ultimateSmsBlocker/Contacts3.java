@@ -32,25 +32,13 @@ public class Contacts3 extends Activity {
         startActivityForResult ( new Intent ( Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI ), REQUEST_CODE_PICK_CONTACTS );
 
         dataSource = new Data ( this );
-
-//        Toast.makeText ( getApplicationContext (), "in 3", Toast.LENGTH_LONG ).show ();
-    }
-
-    public void onClickSelectContact (View btnSelectContact) {
-
-        // using native contacts selection
-        // Intent.ACTION_PICK = Pick an item from the data, returning what was selected.
-
     }
 
     @Override
     protected void onActivityResult (int requestCode, int resultCode, Intent data) {
         super.onActivityResult ( requestCode, resultCode, data );
 
-//        Toast.makeText ( getApplicationContext (), "yes", Toast.LENGTH_LONG ).show ();
-
         try {
-
 
             if (requestCode == REQUEST_CODE_PICK_CONTACTS && resultCode == RESULT_OK) {
                 Log.d ( TAG, "Response: " + data.toString () );
@@ -123,8 +111,6 @@ public class Contacts3 extends Activity {
 
         if (cursorPhone.moveToFirst ()) {
             contactNumber = cursorPhone.getString ( cursorPhone.getColumnIndex ( ContactsContract.CommonDataKinds.Phone.NUMBER ) );
-
-//            Toast.makeText ( getApplicationContext (), contactNumber, Toast.LENGTH_LONG ).show ();
         }
 
         cursorPhone.close ();
@@ -147,10 +133,6 @@ public class Contacts3 extends Activity {
             // HAS_PHONE_NUMBER =   An indicator of whether this contact has at least one phone number.
 
             contactName = cursor.getString ( cursor.getColumnIndex ( ContactsContract.Contacts.DISPLAY_NAME ) );
-
-//            Toast.makeText ( getApplicationContext (), contactName, Toast.LENGTH_LONG ).show ();
-
-
         }
 
         cursor.close ();

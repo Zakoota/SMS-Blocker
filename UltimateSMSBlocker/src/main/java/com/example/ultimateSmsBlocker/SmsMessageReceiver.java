@@ -120,6 +120,7 @@ public class SmsMessageReceiver extends BroadcastReceiver
                 }
 
                 // checking from contacts
+                // if condition checks if it is Blocklist or (block if it is not contact and block unknown is checked)
 
                 if (( list.contains ( fromAddress ) ) || (block_unknown && !isContact ))
                 {

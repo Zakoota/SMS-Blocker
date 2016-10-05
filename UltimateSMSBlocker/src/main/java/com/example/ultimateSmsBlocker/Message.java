@@ -1,7 +1,7 @@
 package com.example.ultimateSmsBlocker;
 
 /**
- * Created by user on 6/12/2016.
+ * Created by Raza on 6/12/2016.
  */
 public class Message {
 

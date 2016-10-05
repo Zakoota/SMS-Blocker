@@ -10,7 +10,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 /**
- * Created by user on 6/16/2016.
+ * Created by Raza on 6/16/2016.
  */
 public class AddMessage extends ListActivity {
 
