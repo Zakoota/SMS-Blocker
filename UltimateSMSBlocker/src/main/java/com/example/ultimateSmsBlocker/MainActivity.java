@@ -76,17 +76,13 @@ public class MainActivity extends ListActivity
 
         listView = getListView ();
         // checking if any message to delete from block messages
-
         dataSource = new Data ( getApplicationContext () );
-
         dataSource.open ();
-
         messages_list = dataSource.findAll ();
 
         int i = 0;
         int total = 0;
-        for (Message msg :
-                messages_list)
+        for (Message msg : messages_list)
         {
             try
             {
@@ -129,15 +125,14 @@ public class MainActivity extends ListActivity
 
 
         // checking if any message to delete from block messages
-
-
         // series layout
-
         // get a reference to the LayoutInflater service
+
         LayoutInflater inflater = (LayoutInflater) getSystemService (
                 Context.LAYOUT_INFLATER_SERVICE );
 
         // inflate slideshow_name_edittext.xml to create an EditText
+
         view = inflater.inflate ( R.layout.series, null );
         et_series_1 =
                 (EditText) view.findViewById ( R.id.et_series_1 );
@@ -146,44 +141,17 @@ public class MainActivity extends ListActivity
                 (EditText) view.findViewById ( R.id.et_series_2 );
 
         // series layout
-
-
-//        Toast.makeText ( getApplicationContext (), "Block List Display", Toast.LENGTH_LONG ).show ();
-
-
         dataSource.open ();
-
-
-//        dataSource.addToBlockList ( "+923054226722", "a" );
-//
-//        dataSource.addToBlockList ( "03137888492", "a" );
-//
-//        dataSource.addToBlockList ( "03137888493", "a" );
-
         List<BlockMessage> blockList = dataSource.getBlockList ();
-
-//        Toast.makeText ( getApplicationContext (), "blocked list size = " + blockList.size (), Toast.LENGTH_LONG ).show ();
-
-//        List<Message> messages_list = dataSource.findAll ();
-
-
         list = dataSource.getBlockList ();
-
-        if (list.size () == 0)
-        {
-//            Toast.makeText ( getApplicationContext (), "List is empty , Go to Options Menu", Toast.LENGTH_LONG ).show ();
-        }
-
         adapter = new ArrayAdapter<BlockMessage> ( getApplicationContext (), R.layout.tv, list );
         setListAdapter ( adapter );
-
 
     }
 
     @Override
     protected void onResume ()
     {
-//        Toast.makeText ( getApplicationContext (), "resumed", Toast.LENGTH_LONG ).show ();
         dataSource.open ();
         list = dataSource.getBlockList ();
 //        adapter = new ArrayAdapter<BlockMessage> ( getApplicationContext (), R.layout.tv, list );
@@ -219,60 +187,7 @@ public class MainActivity extends ListActivity
     public boolean onOptionsItemSelected (MenuItem item)
     {
         // create a new Intent to launch the AddEditContact Activity
-        /*
-        if (item.getItemId () == R.id.del)
-        {
 
-
-
-
-            try
-            {
-                int len = listView.getCount ();
-                SparseBooleanArray checked = listView.getCheckedItemPositions ();
-                int limit = checked.size ();
-
-                Toast.makeText ( getApplicationContext (), "len = " + len, Toast.LENGTH_LONG ).show ();
-
-                List<Integer> checkedItems = new ArrayList<> ();
-
-                String line = "";
-
-                for (int i = 0; i < len; i++)
-
-                {
-                    if (checked.get ( i ))
-                    {
-                        checkedItems.add ( i );
-                        line += i;
-                    }
-                }
-                int total = 0;
-                for (Integer i :
-                        checkedItems)
-                {
-                    final BlockMessage selected = list.get ( i );
-                    String __selected = selected.toString ();
-                    String temp[] = __selected.split ( "\n" );
-
-                    final String _selected = temp[ 1 ].trim ();
-                    dataSource.open ();
-                    dataSource.removeFromBlockList ( _selected );
-                    refresh ();
-                    total++;
-                }
-                Toast.makeText ( getApplicationContext (), total + " removed" , Toast.LENGTH_LONG ).show ();
-
-            } catch (Exception e)
-            {
-                Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
-            }
-
-
-
-
-        }
-        */
         if (item.getItemId () == R.id.add)
         {
             Intent intent = new Intent ( getApplicationContext (), ShowInboxActivity.class );
