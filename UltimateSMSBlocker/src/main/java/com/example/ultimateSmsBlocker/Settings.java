@@ -78,14 +78,14 @@ public class Settings extends Activity
                     if (days > 1000)
                     {
                         days = 1000;
-                        Toast.makeText ( getApplicationContext (), "1000 days set , its max limit", Toast.LENGTH_LONG ).show ();
+                        Toast.makeText ( getApplicationContext (), "Invalid number of days, setting max value of 1000 days", Toast.LENGTH_LONG ).show ();
                     } else if (days < 0)
                     {
                         Toast.makeText ( getApplicationContext (), "Invalid Input", Toast.LENGTH_LONG ).show ();
                     }
                     if (days > 0)
                     {
-                        Toast.makeText ( getApplicationContext (), "Auto delete set to " + days + "days", Toast.LENGTH_LONG ).show ();
+                        Toast.makeText ( getApplicationContext (), "Auto delete set to " + days + " days", Toast.LENGTH_LONG ).show ();
                         editor = settings.edit ();
                         editor.putInt ( "retain_days", days );
                         editor.commit ();

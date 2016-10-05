@@ -60,11 +60,11 @@ public class AddUnknown extends Activity {
                         added_date = df.format ( c.getTime () );
 
                         boolean isAdded = dataSource.addToBlockList ( address, name, added_date );
-                        if (isAdded)
-                            Toast.makeText ( getApplicationContext (), address+" added to block list", Toast.LENGTH_LONG ).show ();
-                        else
-                            Toast.makeText ( getApplicationContext (), address+ " is already blocked", Toast.LENGTH_LONG ).show ();
-
+                        if (isAdded) {
+                            Toast.makeText(getApplicationContext(), address + " added to block list", Toast.LENGTH_LONG).show();
+                        }else {
+                            Toast.makeText(getApplicationContext(), address + " is already blocked", Toast.LENGTH_LONG).show();
+                        }
 
                     } else {
                         Toast.makeText ( getApplicationContext (), "Invalid Number", Toast.LENGTH_LONG ).show ();
@@ -80,7 +80,5 @@ public class AddUnknown extends Activity {
         builder_1.setCancelable ( true );
         builder_1.setCancelable ( true );
         builder_1.show ();
-
-
     }
 }
