@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -45,7 +44,6 @@ public class BlockMessagesList extends ListActivity
             setListAdapter ( adapter );
         } catch (Exception e)
         {
-            //Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
             Log.d(TAG, e.toString());
         }
     }

@@ -358,27 +358,12 @@ public class MainActivity extends ListActivity
 
         if (item.getItemId () == R.id._import)
         {
-//            Intent chooseFile;
-//            Intent intent;
-//            chooseFile = new Intent ( Intent.ACTION_GET_CONTENT );
-////            chooseFile.setType ( "file/*" );
-//
-//
-//            intent = Intent.createChooser ( chooseFile, "Choose a file" );
-//            chooseFile.setType ( "text/plain" );
-//            startActivityForResult ( intent, FILE_ID );
-
             Intent intent = new Intent ( Intent.ACTION_GET_CONTENT );
-
-
             intent.setType ( "*/*" );
-
             intent.setAction ( Intent.ACTION_GET_CONTENT );
-
             startActivityForResult ( Intent.createChooser ( intent, "Choose file" ), FILE_ID );
-
-
         }
+
         if (item.getItemId () == R.id.add_number)
         {
             final AlertDialog.Builder builder = new AlertDialog.Builder ( this )
@@ -409,7 +394,6 @@ public class MainActivity extends ListActivity
 
         if (item.getItemId () == R.id.sort_by_date)
         {
-//            refresh ();
             Collections.sort ( list, BlockMessage.dateComparator );
 
             adapter = new ArrayAdapter<BlockMessage> ( getApplicationContext (), R.layout.tv, list );
@@ -559,8 +543,6 @@ public class MainActivity extends ListActivity
                     String name = "unknown No.";
                     dataSource.addToBlockList ( address, name, added_date );
                 }
-
-//                Toast.makeText ( getApplicationContext (), "size of list = " + list_txt.size (), Toast.LENGTH_LONG ).show ();
                 Toast.makeText ( getApplicationContext (), "read from file \n" + stringBuffer.toString (), Toast.LENGTH_LONG ).show ();
             } catch (Exception e)
             {

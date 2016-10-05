@@ -34,7 +34,6 @@ public class Tabs extends TabActivity
 
         tabHost.addTab ( tabHost.newTabSpec ( "tab1" )
                 .setIndicator ( "Block List" )
-
                 .setContent ( new Intent ( this, MainActivity.class ) ) );
 
         tabHost.addTab ( tabHost.newTabSpec ( "tab2" )

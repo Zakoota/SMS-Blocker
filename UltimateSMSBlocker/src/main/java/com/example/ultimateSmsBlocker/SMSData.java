@@ -5,7 +5,7 @@ import android.util.Log;
 /**
  * This class represents SMS.
  *
- * @author itcuties
+ * @author Raza
  */
 public class SMSData
 {
@@ -79,12 +79,6 @@ public class SMSData
 
         try
         {
-//        if (name == null) {
-//            return number + "\n" + Utils_simple.dateFromLong ( date );
-//        } else {
-//            return name + "\n" + Utils_simple.dateFromLong ( date );
-//        }
-
             if (name == null)
             {
                 if (getBody ().length () > 40)

@@ -91,10 +91,6 @@ public class Data
 
 
                 String msg_date = ( cursor.getString ( cursor.getColumnIndex ( MessagesDbHelper.COLUMN_RECEIVE_DATE ) ) );
-
-//                Date date = new Date ( msg_date );
-//                String formattedDate = new SimpleDateFormat ( "dd-MM-yyyy" ).format ( date );
-
                 message.setReceiveDate ( msg_date );
                 message.setRetainDate ( cursor.getString ( cursor.getColumnIndex ( MessagesDbHelper.COLUMN_RETAIN_DATE ) ) );
                 messages.add ( message );
@@ -123,7 +119,6 @@ public class Data
     }
 
     public List<BlockMessage> getBlockList () {
-//        List<String> list = new ArrayList<String> ();
 
         List<BlockMessage> list = new ArrayList<BlockMessage> ();
 
@@ -142,7 +137,6 @@ public class Data
                 msg.setDate ( added_date );
                 msg.setNumber ( address );
                 list.add ( msg );
-                //list.add ( name + "\n" + address + "\n" + added_date );
             }
         }
         return list;

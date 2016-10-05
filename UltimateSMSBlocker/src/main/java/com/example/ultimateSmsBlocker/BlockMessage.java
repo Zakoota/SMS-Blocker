@@ -9,7 +9,7 @@ import java.util.Comparator;
 import java.util.Date;
 
 /**
- * Created by user on 6/21/2016.
+ * Created by Raza on 6/21/2016.
  */
 public class BlockMessage implements Comparable<BlockMessage>
 {
