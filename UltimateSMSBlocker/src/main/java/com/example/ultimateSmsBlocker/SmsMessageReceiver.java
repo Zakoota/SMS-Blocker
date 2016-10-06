@@ -127,9 +127,9 @@ public class SmsMessageReceiver extends BroadcastReceiver
                     abortBroadcast();
 
                     if(isContact){
-                        Toast.makeText(context, "Message blocked from " + fromDisplayName, Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "Message blocked from " + fromDisplayName, Toast.LENGTH_SHORT).show();
                     }else {
-                        Toast.makeText(context, "Message Blocked from " + fromAddress, Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "Message Blocked from " + fromAddress, Toast.LENGTH_SHORT).show();
                     }
 
                     try

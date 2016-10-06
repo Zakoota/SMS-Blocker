@@ -119,19 +119,9 @@ public class MainActivity extends ListActivity
         settings = getApplicationContext ().getSharedPreferences ( "settings",
                 this.MODE_PRIVATE );
 
-        int days = settings.getInt ( "retain_days", 0 );
-
-        if (days > 0)
-        {
-        }
-
-
-        // checking if any message to delete from block messages
-
 
         // series layout
         dataSource.open ();
-        List<BlockMessage> blockList = dataSource.getBlockList ();
         list = dataSource.getBlockList ();
         adapter = new ArrayAdapter<BlockMessage> ( getApplicationContext (), R.layout.tv, list );
         setListAdapter ( adapter );
@@ -320,7 +310,7 @@ public class MainActivity extends ListActivity
                                             fos.write ( lines.getBytes () );
 
 
-                                            Toast.makeText ( getApplicationContext (), "Text file exported to path " + file_path, Toast.LENGTH_LONG ).show ();
+                                            Toast.makeText ( getApplicationContext (), "Text file exported to path " + file_path, Toast.LENGTH_SHORT ).show ();
                                         } catch (Exception e)
                                         {
                                             Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
@@ -362,7 +352,7 @@ public class MainActivity extends ListActivity
 
                                             fos.write ( lines.getBytes () );
 
-                                            Toast.makeText ( getApplicationContext (), "CSV file exported to path " + file_path, Toast.LENGTH_LONG ).show ();
+                                            Toast.makeText ( getApplicationContext (), "CSV file exported to path " + file_path, Toast.LENGTH_SHORT ).show ();
                                         } catch (Exception e)
                                         {
                                             Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
@@ -415,7 +405,7 @@ public class MainActivity extends ListActivity
                                             xmlOutput.setFormat ( Format.getCompactFormat () );
                                             xmlOutput.output ( doc, fos );
 
-                                            Toast.makeText ( getApplicationContext (), "XML file exported to path " + file_path, Toast.LENGTH_LONG ).show ();
+                                            Toast.makeText ( getApplicationContext (), "XML file exported to path " + file_path, Toast.LENGTH_SHORT ).show ();
                                         } catch (Exception e)
                                         {
                                             Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
@@ -689,4 +679,5 @@ public class MainActivity extends ListActivity
             Toast.makeText(getApplicationContext(), "ERROR: File not selected", Toast.LENGTH_LONG).show();
         }
     }//onActivity intent end
+
 }//Class MainActivity end
