@@ -550,6 +550,7 @@ public class MainActivity extends ListActivity
                     Toast.makeText ( getApplicationContext (), "read from file \n" + stringBuffer.toString (), Toast.LENGTH_LONG ).show ();
                 }catch (Exception e)
                 {
+                    Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_LONG).show();
                     break;
                 }
                 break;
@@ -557,6 +558,7 @@ public class MainActivity extends ListActivity
 
             //csv filetype method and case
             case ".csv":{
+
                 Toast.makeText ( getApplicationContext (), "Reading .csv file", Toast.LENGTH_LONG ).show ();
                 try
                 {
@@ -657,17 +659,5 @@ public class MainActivity extends ListActivity
                 break;
             }//xml case end
         }//switch end
-
-        /*if (file_type.equals ( ".txt" ))
-        {
-
-        } else if (file_type.equals ( ".csv" ))
-        {
-
-
-        } else if (file_type.equals ( ".xml" ))
-        {
-
-        }*/
     }//onActivity intent end
-}
+}//Class MainActivity end
