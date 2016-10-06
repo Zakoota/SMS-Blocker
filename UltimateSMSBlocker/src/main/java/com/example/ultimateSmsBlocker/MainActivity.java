@@ -490,15 +490,10 @@ public class MainActivity extends ListActivity
         String selected = uri.getPath ();
 
         String baseDir = Environment.getExternalStorageDirectory ().getAbsolutePath ();
-        String file = baseDir + "/" + "file.txt";
 
-        String part = selected.substring ( selected.indexOf ( ":" ) + 1 );
+        String fileName = selected.substring ( ( selected.lastIndexOf ( "/" ) + 1 ) );
 
-        String fileName = selected.substring ( ( selected.indexOf ( ":" ) + 1 ) );
-
-        String final_path = baseDir + "/" + fileName;
-
-        file = final_path;
+        String file = baseDir +"/"+ fileName;
 
         File f = new File ( file );
 
@@ -551,7 +546,7 @@ public class MainActivity extends ListActivity
             }
         } else if (file_type.equals ( ".csv" ))
         {
-            Toast.makeText ( getApplicationContext (), "csv file read", Toast.LENGTH_LONG ).show ();
+            Toast.makeText ( getApplicationContext (), "Reading .csv file", Toast.LENGTH_LONG ).show ();
             try
             {
                 FileInputStream fileInputStream = new FileInputStream ( f );
