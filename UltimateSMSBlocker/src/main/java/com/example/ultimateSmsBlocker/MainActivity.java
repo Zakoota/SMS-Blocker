@@ -498,17 +498,22 @@ public class MainActivity extends ListActivity
         File f = new File ( file );
 
         String file_type = "";
+        String fileExt = fileName.substring ( ( fileName.lastIndexOf ( "." ) + 1 ) );
 
-        if (fileName.endsWith ( ".txt" ))
-        {
-            file_type = ".txt";
-        } else if (fileName.endsWith ( ".csv" ))
-        {
-            file_type = ".csv";
-        } else if (fileName.endsWith ( ".xml" ))
-        {
-            file_type = ".xml";
-        }
+        switch (fileExt){
+            case "txt": {
+                file_type = ".txt";
+                break;
+            }
+            case "csv":{
+                file_type = ".csv";
+                break;
+            }
+            case "xml":{
+                file_type = ".xml";
+                break;
+            }
+        } //switch end
 
         if (file_type.equals ( ".txt" ))
         {
