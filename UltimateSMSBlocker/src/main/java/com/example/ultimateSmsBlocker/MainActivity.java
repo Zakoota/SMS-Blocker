@@ -298,6 +298,16 @@ public class MainActivity extends ListActivity
                                             String file_path = baseDir + "/" +"BLOCKLIST_BACKUP_"+formatter.format(now)+".txt";
 
                                             File f = new File ( file_path );
+
+                                            if(f.exists()){
+                                                int i = 0;
+                                                do{
+                                                    i++;
+                                                    file_path = baseDir + "/" +"BLOCKLIST_BACKUP_"+formatter.format(now)+"_("+i+")"+".txt";
+                                                    f = new File(file_path);
+                                                }while(f.exists());
+                                            }
+
                                             FileOutputStream fos = new FileOutputStream ( f );
 
                                             String lines = "";
@@ -310,7 +320,7 @@ public class MainActivity extends ListActivity
                                             fos.write ( lines.getBytes () );
 
 
-                                            Toast.makeText ( getApplicationContext (), "Text file Exported to path " + file_path, Toast.LENGTH_LONG ).show ();
+                                            Toast.makeText ( getApplicationContext (), "Text file exported to path " + file_path, Toast.LENGTH_LONG ).show ();
                                         } catch (Exception e)
                                         {
                                             Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
@@ -327,6 +337,15 @@ public class MainActivity extends ListActivity
                                             String file_path = baseDir + "/" +"BLOCKLIST_BACKUP_"+formatter.format(now)+".csv";
 
                                             File f = new File ( file_path );
+
+                                            if(f.exists()){
+                                                int i = 0;
+                                                do{
+                                                    i++;
+                                                    file_path = baseDir + "/" +"BLOCKLIST_BACKUP_"+formatter.format(now)+"_("+i+")"+".csv";
+                                                    f = new File(file_path);
+                                                }while(f.exists());
+                                            }
 
                                             FileOutputStream fos = new FileOutputStream ( f );
 
@@ -360,6 +379,15 @@ public class MainActivity extends ListActivity
                                             String file_path = baseDir + "/" +"BLOCKLIST_BACKUP_"+formatter.format(now)+".xml";
 
                                             File f = new File ( file_path );
+
+                                            if(f.exists()){
+                                                int i = 0;
+                                                do{
+                                                    i++;
+                                                    file_path = baseDir + "/" +"BLOCKLIST_BACKUP_"+formatter.format(now)+"_("+i+")"+".xml";
+                                                    f = new File(file_path);
+                                                }while(f.exists());
+                                            }
 
                                             FileOutputStream fos = new FileOutputStream ( f );
 
