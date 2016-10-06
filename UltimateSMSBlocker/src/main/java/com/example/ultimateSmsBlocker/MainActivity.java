@@ -482,184 +482,169 @@ public class MainActivity extends ListActivity
         setListAdapter ( adapter );
     }
 
-    protected void onActivityResult (int requestCode, int resultCode, Intent data)
-    {
-        super.onActivityResult ( requestCode, resultCode, data );
+    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            super.onActivityResult(requestCode, resultCode, data);
+            Uri uri = data.getData();
+            String selected = uri.getPath();
 
-        Uri uri = data.getData ();
-        String selected = uri.getPath ();
+            String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath();
 
-        String baseDir = Environment.getExternalStorageDirectory ().getAbsolutePath ();
+            String fileName = selected.substring((selected.lastIndexOf("/") + 1));
 
-        String fileName = selected.substring ( ( selected.lastIndexOf ( "/" ) + 1 ) );
+            String file = baseDir + "/" + fileName;
 
-        String file = baseDir +"/"+ fileName;
+            File f = new File(file);
 
-        File f = new File ( file );
+            String file_type = "";
+            String fileExt = fileName.substring((fileName.lastIndexOf(".") + 1));
 
-        String file_type = "";
-        String fileExt = fileName.substring ( ( fileName.lastIndexOf ( "." ) + 1 ) );
-
-        //switch statement for assigning file extension to fileType var
-        switch (fileExt){
-            case "txt": {
-                file_type = ".txt";
-                break;
-            }
-            case "csv":{
-                file_type = ".csv";
-                break;
-            }
-            case "xml":{
-                file_type = ".xml";
-                break;
-            }
-        } //switch end
-
-        //switch statement for methods of retrieving different file types
-        switch (file_type){
-
-            //txt filetype case and method
-            case ".txt":{
-                try
-                {
-                    FileInputStream fileInputStream = new FileInputStream ( f );
-                    BufferedInputStream bufferedInputStream = new BufferedInputStream ( fileInputStream );
-
-                    StringBuffer stringBuffer = new StringBuffer ();
-
-                    while (bufferedInputStream.available () != 0)
-                    {
-                        char c = (char) bufferedInputStream.read ();
-                        stringBuffer.append ( c );
-                    }
-                    List<String> list_txt = new ArrayList<String> ();
-                    list_txt = Arrays.asList ( stringBuffer.toString ().split ( "\n" ) );
-
-                    Calendar c = Calendar.getInstance ();
-                    SimpleDateFormat df = new SimpleDateFormat ( "dd-MMM-yyyy" );
-                    String added_date = df.format ( c.getTime () );
-
-                    dataSource.open ();
-
-                    for (String item :
-                            list_txt)
-                    {
-                        String address = item;
-                        String name = "unknown No.";
-                        dataSource.addToBlockList ( address, name, added_date );
-                    }
-                    Toast.makeText ( getApplicationContext (), "read from file \n" + stringBuffer.toString (), Toast.LENGTH_LONG ).show ();
-                }catch (Exception e)
-                {
-                    Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_LONG).show();
+            //switch statement for assigning file extension to fileType var
+            switch (fileExt) {
+                case "txt": {
+                    file_type = ".txt";
                     break;
                 }
-                break;
-            }//txt case end
-
-            //csv filetype method and case
-            case ".csv":{
-
-                Toast.makeText ( getApplicationContext (), "Reading .csv file", Toast.LENGTH_LONG ).show ();
-                try
-                {
-                    FileInputStream fileInputStream = new FileInputStream ( f );
-                    BufferedInputStream bufferedInputStream = new BufferedInputStream ( fileInputStream );
-                    StringBuffer stringBuffer = new StringBuffer ();
-                    while (bufferedInputStream.available () != 0)
-                    {
-                        char c = (char) bufferedInputStream.read ();
-                        stringBuffer.append ( c );
-                    }
-                    List<String> csv_list = new ArrayList<String> ();
-                    csv_list = Arrays.asList ( stringBuffer.toString ().split ( "," ) );
-
-                    Calendar c = Calendar.getInstance ();
-                    SimpleDateFormat df = new SimpleDateFormat ( "dd-MMM-yyyy" );
-                    String added_date = df.format ( c.getTime () );
-
-                    dataSource.open ();
-
-                    for (String item :
-                            csv_list)
-                    {
-                        String address = item;
-                        String name = "unknown No.";
-                        dataSource.addToBlockList ( address, name, added_date );
-                    }
-
-                    String lines = "";
-                    for (String item :
-                            csv_list)
-                    {
-                        lines += item + " , ";
-                    }
-                    Toast.makeText ( getApplicationContext (), "read from file \n" + lines, Toast.LENGTH_LONG ).show ();
-                } catch (Exception e)
-                {
-                    Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
+                case "csv": {
+                    file_type = ".csv";
                     break;
                 }
-                break;
-            }//csv case end
+                case "xml": {
+                    file_type = ".xml";
+                    break;
+                }
+            } //switch end
 
-            //xml filetype method and case
-            case ".xml":{
-                SAXBuilder builder = new SAXBuilder ();
-                File xmlFile = new File ( file );
+            //switch statement for methods of retrieving different file types
+            switch (file_type) {
 
-                try
-                {
-                    Document document = (Document) builder.build ( xmlFile );
-                    Element rootNode = document.getRootElement ();
-                    List list = rootNode.getChildren ( "BlockList" );
+                //txt filetype case and method
+                case ".txt": {
+                    try {
+                        FileInputStream fileInputStream = new FileInputStream(f);
+                        BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
 
-                    String lines = "";
+                        StringBuffer stringBuffer = new StringBuffer();
 
-                    for (int i = 0; i < list.size (); i++)
-                    {
-
-                        Element node = (Element) list.get ( i );
-
-                        List _list = node.getChildren ( "Number" );
-
-                        List<String> xml_list = new ArrayList<String> ();
-
-                        for (Object object : _list)
-                        {
-                            Element _node = (Element) object;
-                            lines += ( _node.getText () );
-                            xml_list.add ( _node.getText ().trim () );
+                        while (bufferedInputStream.available() != 0) {
+                            char c = (char) bufferedInputStream.read();
+                            stringBuffer.append(c);
                         }
+                        List<String> list_txt = new ArrayList<String>();
+                        list_txt = Arrays.asList(stringBuffer.toString().split("\n"));
 
-                        Calendar c = Calendar.getInstance ();
-                        SimpleDateFormat df = new SimpleDateFormat ( "dd-MMM-yyyy" );
-                        String added_date = df.format ( c.getTime () );
+                        Calendar c = Calendar.getInstance();
+                        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+                        String added_date = df.format(c.getTime());
 
-                        dataSource.open ();
+                        dataSource.open();
 
                         for (String item :
-                                xml_list)
-                        {
+                                list_txt) {
                             String address = item;
                             String name = "unknown No.";
-                            dataSource.addToBlockList ( address, name, added_date );
+                            dataSource.addToBlockList(address, name, added_date);
+                        }
+                        Toast.makeText(getApplicationContext(), "read from file \n" + stringBuffer.toString(), Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+                        break;
+                    }
+                    break;
+                }//txt case end
+
+                //csv filetype method and case
+                case ".csv": {
+                    try {
+                        FileInputStream fileInputStream = new FileInputStream(f);
+                        BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
+                        StringBuffer stringBuffer = new StringBuffer();
+                        while (bufferedInputStream.available() != 0) {
+                            char c = (char) bufferedInputStream.read();
+                            stringBuffer.append(c);
+                        }
+                        List<String> csv_list = new ArrayList<String>();
+                        csv_list = Arrays.asList(stringBuffer.toString().split(","));
+
+                        Calendar c = Calendar.getInstance();
+                        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+                        String added_date = df.format(c.getTime());
+
+                        dataSource.open();
+
+                        for (String item :
+                                csv_list) {
+                            String address = item;
+                            String name = "unknown No.";
+                            dataSource.addToBlockList(address, name, added_date);
                         }
 
-                        Toast.makeText ( getApplicationContext (), lines, Toast.LENGTH_LONG ).show ();
+                        String lines = "";
+                        for (String item :
+                                csv_list) {
+                            lines += item + " , ";
+                        }
+                        Toast.makeText(getApplicationContext(), "read from file \n" + lines, Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+                        break;
                     }
-                } catch (IOException io)
-                {
-                    Toast.makeText ( getApplicationContext (), io.toString (), Toast.LENGTH_LONG ).show ();
                     break;
-                } catch (JDOMException jdomex)
-                {
-                    Toast.makeText ( getApplicationContext (), jdomex.toString (), Toast.LENGTH_LONG ).show ();
+                }//csv case end
+
+                //xml filetype method and case
+                case ".xml": {
+                    SAXBuilder builder = new SAXBuilder();
+                    File xmlFile = new File(file);
+
+                    try {
+                        Document document = (Document) builder.build(xmlFile);
+                        Element rootNode = document.getRootElement();
+                        List list = rootNode.getChildren("BlockList");
+
+                        String lines = "";
+
+                        for (int i = 0; i < list.size(); i++) {
+
+                            Element node = (Element) list.get(i);
+
+                            List _list = node.getChildren("Number");
+
+                            List<String> xml_list = new ArrayList<String>();
+
+                            for (Object object : _list) {
+                                Element _node = (Element) object;
+                                lines += (_node.getText());
+                                xml_list.add(_node.getText().trim());
+                            }
+
+                            Calendar c = Calendar.getInstance();
+                            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+                            String added_date = df.format(c.getTime());
+
+                            dataSource.open();
+
+                            for (String item :
+                                    xml_list) {
+                                String address = item;
+                                String name = "unknown No.";
+                                dataSource.addToBlockList(address, name, added_date);
+                            }
+
+                            Toast.makeText(getApplicationContext(), lines, Toast.LENGTH_LONG).show();
+                        }
+                    } catch (IOException io) {
+                        Toast.makeText(getApplicationContext(), io.toString(), Toast.LENGTH_LONG).show();
+                        break;
+                    } catch (JDOMException jdomex) {
+                        Toast.makeText(getApplicationContext(), jdomex.toString(), Toast.LENGTH_LONG).show();
+                        break;
+                    }
                     break;
-                }
-                break;
-            }//xml case end
-        }//switch end
+                }//xml case end
+            }//switch end
+        }else{
+            Toast.makeText(getApplicationContext(), "File not selected", Toast.LENGTH_LONG).show();
+        }
     }//onActivity intent end
 }//Class MainActivity end
