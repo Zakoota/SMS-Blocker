@@ -176,254 +176,259 @@ public class MainActivity extends ListActivity
     public boolean onOptionsItemSelected (MenuItem item)
     {
         // create a new Intent to launch the AddEditContact Activity
+        switch(item.getItemId()) {
 
-        if (item.getItemId () == R.id.add)
-        {
-            Intent intent = new Intent ( getApplicationContext (), ShowInboxActivity.class );
-            startActivity ( intent );
-        }
+            //case for menu add
+            case R.id.add:{
+                Intent intent = new Intent ( getApplicationContext (), ShowInboxActivity.class );
+                startActivity ( intent );
+                break;
+            }
 
-        if (item.getItemId () == R.id.export)
-        {
-
-            final List<BlockMessage> block_list = dataSource.getBlockList ();
-
-            final String list[] = { ".Txt", ".Csv", ".Xml" };
-
-            AlertDialog.Builder inputDialog = new AlertDialog.Builder ( MainActivity.this );
-
-            inputDialog.setTitle ( "Choose Type of File for Export" )
-                    .setItems ( list, new DialogInterface.OnClickListener ()
-                    {
-                        public void onClick (DialogInterface dialog, int which)
-                        {
-
-                            if (which == 0)
-                            {
-                                try
-                                {
-                                    String baseDir = Environment.getExternalStorageDirectory ().getAbsolutePath ();
-
-                                    String file_path = baseDir + "/" + "exported.txt";
-
-                                    File f = new File ( file_path );
-
-                                    FileOutputStream fos = new FileOutputStream ( f );
-
-                                    String lines = "";
-                                    for (BlockMessage element :
-                                            block_list)
-                                    {
-                                        lines += element.getNumber () + "\n";
-                                    }
-
-                                    fos.write ( lines.getBytes () );
-
-
-                                    Toast.makeText ( getApplicationContext (), "File Exported with with path " + file_path, Toast.LENGTH_LONG ).show ();
-                                } catch (Exception e)
-                                {
-                                    Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
-                                }
-                            } else if (which == 1)
-                            {
-                                try
-                                {
-                                    String baseDir = Environment.getExternalStorageDirectory ().getAbsolutePath ();
-
-                                    String file_path = baseDir + "/" + "exported.csv";
-
-                                    File f = new File ( file_path );
-
-                                    FileOutputStream fos = new FileOutputStream ( f );
-
-                                    List<BlockMessage> blockMessages = dataSource.getBlockList ();
-
-                                    String lines = "";
-
-                                    for (BlockMessage item : blockMessages)
-                                    {
-                                        lines += item.getNumber () + ",";
-                                    }
-
-                                    lines = lines.substring ( 0, lines.length () - 1 );
-
-                                    fos.write ( lines.getBytes () );
-
-                                    Toast.makeText ( getApplicationContext (), "File Exported with with path " + file_path, Toast.LENGTH_LONG ).show ();
-                                } catch (Exception e)
-                                {
-                                    Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
-                                }
-                            } else if (which == 2)
-                            {
-                                try
-                                {
-                                    String baseDir = Environment.getExternalStorageDirectory ().getAbsolutePath ();
-
-                                    String file_path = baseDir + "/" + "exported.xml";
-
-                                    File f = new File ( file_path );
-
-                                    FileOutputStream fos = new FileOutputStream ( f );
-
-                                    // root element
-                                    Element DateElement = new Element ( "Data" );
-                                    Document doc = new Document ( DateElement );
-
-                                    // supercars element
-                                    Element blockList = new Element ( "BlockList" );
-
-                                    for (BlockMessage element :
-                                            block_list)
-                                    {
-                                        // supercars element
-                                        Element carElement = new Element ( "Number" );
-                                        carElement.setText ( element.getNumber () );
-                                        blockList.addContent ( carElement );
-                                    }
-
-                                    doc.getRootElement ().addContent ( blockList );
-
-                                    XMLOutputter xmlOutput = new XMLOutputter ();
-
-                                    // display xml
-                                    xmlOutput.setFormat ( Format.getCompactFormat () );
-                                    xmlOutput.output ( doc, fos );
-
-                                    Toast.makeText ( getApplicationContext (), "File Exported with with path " + file_path, Toast.LENGTH_LONG ).show ();
-                                } catch (Exception e)
-                                {
-                                    Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
-                                }
-                            }
-
-                            Toast.makeText ( getApplicationContext (), which + " is selected", Toast.LENGTH_LONG ).show ();
-                        }
-                    } );
-
-            inputDialog.show ();
-        }
-        if (item.getItemId () == R.id.series)
-        {
-            // create an input dialog to get slideshow name from user
-            // series layout
-            // get a reference to the LayoutInflater service
-            LayoutInflater inflater = (LayoutInflater) getSystemService (Context.LAYOUT_INFLATER_SERVICE );
-            // inflate slideshow_name_edittext.xml to create an EditText
-            view = inflater.inflate ( R.layout.series, null );
-            et_series_1 = (EditText) view.findViewById ( R.id.et_series_1 );
-            et_series_2 = (EditText) view.findViewById ( R.id.et_series_2 );
-
-
-            AlertDialog.Builder inputDialog = new AlertDialog.Builder ( this );
-            inputDialog.setView ( view ); // set the dialog's custom View
-            inputDialog.setTitle ( "Enter series range" );
-
-            try {
-                inputDialog.setPositiveButton("Add Series", new DialogInterface.OnClickListener() {
+            //case for menu add number
+            case R.id.add_number:{
+                final AlertDialog.Builder builder = new AlertDialog.Builder ( this )
+                        .setTitle ( "Choose Option to Add Number" );
+                builder.setNegativeButton ( "Contact", new DialogInterface.OnClickListener ()
+                {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        try {
-
-                            String input = et_series_1.getText().toString().trim();
-
-                            String input_2 = et_series_2.getText().toString().trim();
-
-                            long start = Long.parseLong(input);
-                            long end = Long.parseLong(input_2);
-
-                            Calendar c = Calendar.getInstance();
-                            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-                            String added_date = df.format(c.getTime());
-
-                            for (long i = start; i <= end; i++) {
-                                String address = i + "";
-                                String name = "unknown No.";
-
-                                dataSource.addToBlockList(address, name, added_date);
-                            }
-                            refresh();
-                        } catch (Exception e) {
-                            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
-                        }
+                    public void onClick (DialogInterface dialog, int which)
+                    {
+                        Intent intent = new Intent ( getApplicationContext (), Contacts3.class );
+                        startActivity ( intent );
+                    }
+                } );
+                builder.setPositiveButton ( "Unknown", new DialogInterface.OnClickListener ()
+                {
+                    @Override
+                    public void onClick (final DialogInterface dialog, int which)
+                    {
+                        Intent intent = new Intent ( getApplicationContext (), AddUnknown.class );
+                        startActivity ( intent );
                     }
 
-                });
-                inputDialog.show();
-            }catch (Exception e){
-                Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
-            }
-        }
+                } );
 
-        if (item.getItemId () == R.id._import)
-        {
+
+                builder.show ();
+                break;
+            }
+
+            //case for series menu
+            case R.id.series:{
+                // create an input dialog to get slideshow name from user
+                // series layout
+                // get a reference to the LayoutInflater service
+                LayoutInflater inflater = (LayoutInflater) getSystemService (Context.LAYOUT_INFLATER_SERVICE );
+                // inflate slideshow_name_edittext.xml to create an EditText
+                view = inflater.inflate ( R.layout.series, null );
+                et_series_1 = (EditText) view.findViewById ( R.id.et_series_1 );
+                et_series_2 = (EditText) view.findViewById ( R.id.et_series_2 );
+
+
+                AlertDialog.Builder inputDialog = new AlertDialog.Builder ( this );
+                inputDialog.setView ( view ); // set the dialog's custom View
+                inputDialog.setTitle ( "Enter series range" );
+
+                try {
+                    inputDialog.setPositiveButton("Add Series", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            try {
+
+                                String input = et_series_1.getText().toString().trim();
+
+                                String input_2 = et_series_2.getText().toString().trim();
+
+                                long start = Long.parseLong(input);
+                                long end = Long.parseLong(input_2);
+
+                                Calendar c = Calendar.getInstance();
+                                SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+                                String added_date = df.format(c.getTime());
+
+                                for (long i = start; i <= end; i++) {
+                                    String address = i + "";
+                                    String name = "unknown No.";
+
+                                    dataSource.addToBlockList(address, name, added_date);
+                                }
+                                refresh();
+                            } catch (Exception e) {
+                                Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+                            }
+                        }
+
+                    });
+                    inputDialog.show();
+                }catch (Exception e){
+                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+                }
+                break;
+            }
+
+            //case for menu import
+            case R.id._import:{
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("*/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(intent, "Choose file"), FILE_ID);
+                break;
+            }
+
+
+            //case for menu export
+            case R.id.export:{
+                final List<BlockMessage> block_list = dataSource.getBlockList ();
+
+                final String list[] = { ".Txt", ".Csv", ".Xml" };
+
+                AlertDialog.Builder inputDialog = new AlertDialog.Builder ( MainActivity.this );
+
+                inputDialog.setTitle ( "Choose Type of File for Export" )
+                        .setItems ( list, new DialogInterface.OnClickListener ()
+                        {
+                            public void onClick (DialogInterface dialog, int which)
+                            {
+
+                                if (which == 0)
+                                {
+                                    try
+                                    {
+                                        String baseDir = Environment.getExternalStorageDirectory ().getAbsolutePath ();
+
+                                        String file_path = baseDir + "/" + "exported.txt";
+
+                                        File f = new File ( file_path );
+
+                                        FileOutputStream fos = new FileOutputStream ( f );
+
+                                        String lines = "";
+                                        for (BlockMessage element :
+                                                block_list)
+                                        {
+                                            lines += element.getNumber () + "\n";
+                                        }
+
+                                        fos.write ( lines.getBytes () );
+
+
+                                        Toast.makeText ( getApplicationContext (), "File Exported with with path " + file_path, Toast.LENGTH_LONG ).show ();
+                                    } catch (Exception e)
+                                    {
+                                        Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
+                                    }
+                                } else if (which == 1)
+                                {
+                                    try
+                                    {
+                                        String baseDir = Environment.getExternalStorageDirectory ().getAbsolutePath ();
+
+                                        String file_path = baseDir + "/" + "exported.csv";
+
+                                        File f = new File ( file_path );
+
+                                        FileOutputStream fos = new FileOutputStream ( f );
+
+                                        List<BlockMessage> blockMessages = dataSource.getBlockList ();
+
+                                        String lines = "";
+
+                                        for (BlockMessage item : blockMessages)
+                                        {
+                                            lines += item.getNumber () + ",";
+                                        }
+
+                                        lines = lines.substring ( 0, lines.length () - 1 );
+
+                                        fos.write ( lines.getBytes () );
+
+                                        Toast.makeText ( getApplicationContext (), "File Exported with with path " + file_path, Toast.LENGTH_LONG ).show ();
+                                    } catch (Exception e)
+                                    {
+                                        Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
+                                    }
+                                } else if (which == 2)
+                                {
+                                    try
+                                    {
+                                        String baseDir = Environment.getExternalStorageDirectory ().getAbsolutePath ();
+
+                                        String file_path = baseDir + "/" + "exported.xml";
+
+                                        File f = new File ( file_path );
+
+                                        FileOutputStream fos = new FileOutputStream ( f );
+
+                                        // root element
+                                        Element DateElement = new Element ( "Data" );
+                                        Document doc = new Document ( DateElement );
+
+                                        // supercars element
+                                        Element blockList = new Element ( "BlockList" );
+
+                                        for (BlockMessage element :
+                                                block_list)
+                                        {
+                                            // supercars element
+                                            Element carElement = new Element ( "Number" );
+                                            carElement.setText ( element.getNumber () );
+                                            blockList.addContent ( carElement );
+                                        }
+
+                                        doc.getRootElement ().addContent ( blockList );
+
+                                        XMLOutputter xmlOutput = new XMLOutputter ();
+
+                                        // display xml
+                                        xmlOutput.setFormat ( Format.getCompactFormat () );
+                                        xmlOutput.output ( doc, fos );
+
+                                        Toast.makeText ( getApplicationContext (), "File Exported with with path " + file_path, Toast.LENGTH_LONG ).show ();
+                                    } catch (Exception e)
+                                    {
+                                        Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
+                                    }
+                                }
+
+                                Toast.makeText ( getApplicationContext (), which + " is selected", Toast.LENGTH_LONG ).show ();
+                            }
+                        } );
+
+                inputDialog.show ();
+                break;
+            }
+
+            //case for menu sort by date
+            case R.id.sort_by_date:{
+                Collections.sort ( list, BlockMessage.dateComparator );
+
+                adapter = new ArrayAdapter<BlockMessage> ( getApplicationContext (), R.layout.tv, list );
+                setListAdapter ( adapter );
+                break;
+            }
+
+            //case for menu sort by name
+            case R.id.sort_by_name:{
+                refresh ();
+                Collections.sort ( list, BlockMessage.NameComparator );
+
+                adapter = new ArrayAdapter<BlockMessage> ( getApplicationContext (), R.layout.tv, list );
+                setListAdapter ( adapter );
+                break;
+            }
+
+            //case for menu sort by number
+            case R.id.sort_by_number:{
+                refresh ();
+
+                Collections.sort ( list, BlockMessage.NumberComparator );
+                adapter = new ArrayAdapter<BlockMessage> ( getApplicationContext (), R.layout.tv, list );
+                setListAdapter ( adapter );
+                break;
+            }
+
         }
-
-        if (item.getItemId () == R.id.add_number)
-        {
-            final AlertDialog.Builder builder = new AlertDialog.Builder ( this )
-                    .setTitle ( "Choose Option to Add Number" );
-            builder.setNegativeButton ( "Contact", new DialogInterface.OnClickListener ()
-            {
-                @Override
-                public void onClick (DialogInterface dialog, int which)
-                {
-                    Intent intent = new Intent ( getApplicationContext (), Contacts3.class );
-                    startActivity ( intent );
-                }
-            } );
-            builder.setPositiveButton ( "Unknown", new DialogInterface.OnClickListener ()
-            {
-                @Override
-                public void onClick (final DialogInterface dialog, int which)
-                {
-                    Intent intent = new Intent ( getApplicationContext (), AddUnknown.class );
-                    startActivity ( intent );
-                }
-
-            } );
-
-
-            builder.show ();
-        }
-
-        if (item.getItemId () == R.id.sort_by_date)
-        {
-            Collections.sort ( list, BlockMessage.dateComparator );
-
-            adapter = new ArrayAdapter<BlockMessage> ( getApplicationContext (), R.layout.tv, list );
-            setListAdapter ( adapter );
-
-
-        }
-
-        if (item.getItemId () == R.id.sort_by_name)
-        {
-
-            refresh ();
-            Collections.sort ( list, BlockMessage.NameComparator );
-
-            adapter = new ArrayAdapter<BlockMessage> ( getApplicationContext (), R.layout.tv, list );
-            setListAdapter ( adapter );
-
-        }
-
-        if (item.getItemId () == R.id.sort_by_number)
-        {
-            refresh ();
-
-            Collections.sort ( list, BlockMessage.NumberComparator );
-            adapter = new ArrayAdapter<BlockMessage> ( getApplicationContext (), R.layout.tv, list );
-            setListAdapter ( adapter );
-
-        }
-
-
         return super.onOptionsItemSelected ( item ); // call super's method
     } // end method onOptionsItemSelected
 
