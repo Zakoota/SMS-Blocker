@@ -280,11 +280,8 @@ public class MainActivity extends ListActivity
             //case for menu export
             case R.id.export:{
                 final List<BlockMessage> block_list = dataSource.getBlockList ();
-
                 final String list[] = { "Text file", "CSV file", "XML file" };
-
                 AlertDialog.Builder inputDialog = new AlertDialog.Builder ( MainActivity.this );
-
                 inputDialog.setTitle ( "Choose Type of File for Export" )
                         .setItems ( list, new DialogInterface.OnClickListener ()
                         {
@@ -296,10 +293,11 @@ public class MainActivity extends ListActivity
                                         {
                                             String baseDir = Environment.getExternalStorageDirectory ().getAbsolutePath ();
 
-                                            String file_path = baseDir + "/" + "exported.txt";
+                                            SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd");
+                                            Date now = new Date();
+                                            String file_path = baseDir + "/" +"BLOCKLIST_BACKUP_"+formatter.format(now)+".txt";
 
                                             File f = new File ( file_path );
-
                                             FileOutputStream fos = new FileOutputStream ( f );
 
                                             String lines = "";
@@ -324,7 +322,9 @@ public class MainActivity extends ListActivity
                                         {
                                             String baseDir = Environment.getExternalStorageDirectory ().getAbsolutePath ();
 
-                                            String file_path = baseDir + "/" + "exported.csv";
+                                            SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd");
+                                            Date now = new Date();
+                                            String file_path = baseDir + "/" +"BLOCKLIST_BACKUP_"+formatter.format(now)+".csv";
 
                                             File f = new File ( file_path );
 
@@ -355,7 +355,9 @@ public class MainActivity extends ListActivity
                                         {
                                             String baseDir = Environment.getExternalStorageDirectory ().getAbsolutePath ();
 
-                                            String file_path = baseDir + "/" + "exported.xml";
+                                            SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd");
+                                            Date now = new Date();
+                                            String file_path = baseDir + "/" +"BLOCKLIST_BACKUP_"+formatter.format(now)+".xml";
 
                                             File f = new File ( file_path );
 
