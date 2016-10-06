@@ -500,6 +500,7 @@ public class MainActivity extends ListActivity
         String file_type = "";
         String fileExt = fileName.substring ( ( fileName.lastIndexOf ( "." ) + 1 ) );
 
+        //switch statement for assigning file extension to fileType var
         switch (fileExt){
             case "txt": {
                 file_type = ".txt";
@@ -515,6 +516,7 @@ public class MainActivity extends ListActivity
             }
         } //switch end
 
+        //switch statement for methods of retrieving different file types
         switch (file_type){
 
             //txt filetype case and method
