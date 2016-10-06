@@ -552,7 +552,7 @@ public class MainActivity extends ListActivity
                             String name = "unknown No.";
                             dataSource.addToBlockList(address, name, added_date);
                         }
-                        Toast.makeText(getApplicationContext(), "read from file \n" + stringBuffer.toString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Blocklist imported from file: "+fileName, Toast.LENGTH_LONG).show();
                     } catch (Exception e) {
                         Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
                         break;
@@ -591,7 +591,7 @@ public class MainActivity extends ListActivity
                                 csv_list) {
                             lines += item + " , ";
                         }
-                        Toast.makeText(getApplicationContext(), "read from file \n" + lines, Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Blocklist imported from file: "+fileName, Toast.LENGTH_LONG).show();
                     } catch (Exception e) {
                         Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
                         break;
@@ -638,7 +638,7 @@ public class MainActivity extends ListActivity
                                 dataSource.addToBlockList(address, name, added_date);
                             }
 
-                            Toast.makeText(getApplicationContext(), lines, Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Blocklist imported from file: "+fileName, Toast.LENGTH_LONG).show();
                         }
                     } catch (IOException io) {
                         Toast.makeText(getApplicationContext(), io.toString(), Toast.LENGTH_LONG).show();
