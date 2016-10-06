@@ -515,110 +515,24 @@ public class MainActivity extends ListActivity
             }
         } //switch end
 
-        if (file_type.equals ( ".txt" ))
-        {
-            try
-            {
-                FileInputStream fileInputStream = new FileInputStream ( f );
-                BufferedInputStream bufferedInputStream = new BufferedInputStream ( fileInputStream );
+        switch (file_type){
 
-                StringBuffer stringBuffer = new StringBuffer ();
-
-                while (bufferedInputStream.available () != 0)
+            //txt filetype case and method
+            case ".txt":{
+                try
                 {
-                    char c = (char) bufferedInputStream.read ();
-                    stringBuffer.append ( c );
-                }
-                List<String> list_txt = new ArrayList<String> ();
-                list_txt = Arrays.asList ( stringBuffer.toString ().split ( "\n" ) );
+                    FileInputStream fileInputStream = new FileInputStream ( f );
+                    BufferedInputStream bufferedInputStream = new BufferedInputStream ( fileInputStream );
 
-                Calendar c = Calendar.getInstance ();
-                SimpleDateFormat df = new SimpleDateFormat ( "dd-MMM-yyyy" );
-                String added_date = df.format ( c.getTime () );
+                    StringBuffer stringBuffer = new StringBuffer ();
 
-                dataSource.open ();
-
-                for (String item :
-                        list_txt)
-                {
-                    String address = item;
-                    String name = "unknown No.";
-                    dataSource.addToBlockList ( address, name, added_date );
-                }
-                Toast.makeText ( getApplicationContext (), "read from file \n" + stringBuffer.toString (), Toast.LENGTH_LONG ).show ();
-            } catch (Exception e)
-            {
-            }
-        } else if (file_type.equals ( ".csv" ))
-        {
-            Toast.makeText ( getApplicationContext (), "Reading .csv file", Toast.LENGTH_LONG ).show ();
-            try
-            {
-                FileInputStream fileInputStream = new FileInputStream ( f );
-                BufferedInputStream bufferedInputStream = new BufferedInputStream ( fileInputStream );
-                StringBuffer stringBuffer = new StringBuffer ();
-                while (bufferedInputStream.available () != 0)
-                {
-                    char c = (char) bufferedInputStream.read ();
-                    stringBuffer.append ( c );
-                }
-                List<String> csv_list = new ArrayList<String> ();
-                csv_list = Arrays.asList ( stringBuffer.toString ().split ( "," ) );
-
-                Calendar c = Calendar.getInstance ();
-                SimpleDateFormat df = new SimpleDateFormat ( "dd-MMM-yyyy" );
-                String added_date = df.format ( c.getTime () );
-
-                dataSource.open ();
-
-                for (String item :
-                        csv_list)
-                {
-                    String address = item;
-                    String name = "unknown No.";
-                    dataSource.addToBlockList ( address, name, added_date );
-                }
-
-                String lines = "";
-                for (String item :
-                        csv_list)
-                {
-                    lines += item + " , ";
-                }
-                Toast.makeText ( getApplicationContext (), "read from file \n" + lines, Toast.LENGTH_LONG ).show ();
-            } catch (Exception e)
-            {
-                Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
-            }
-
-        } else if (file_type.equals ( ".xml" ))
-        {
-            SAXBuilder builder = new SAXBuilder ();
-            File xmlFile = new File ( file );
-
-            try
-            {
-                Document document = (Document) builder.build ( xmlFile );
-                Element rootNode = document.getRootElement ();
-                List list = rootNode.getChildren ( "BlockList" );
-
-                String lines = "";
-
-                for (int i = 0; i < list.size (); i++)
-                {
-
-                    Element node = (Element) list.get ( i );
-
-                    List _list = node.getChildren ( "Number" );
-
-                    List<String> xml_list = new ArrayList<String> ();
-
-                    for (Object object : _list)
+                    while (bufferedInputStream.available () != 0)
                     {
-                        Element _node = (Element) object;
-                        lines += ( _node.getText () );
-                        xml_list.add ( _node.getText ().trim () );
+                        char c = (char) bufferedInputStream.read ();
+                        stringBuffer.append ( c );
                     }
+                    List<String> list_txt = new ArrayList<String> ();
+                    list_txt = Arrays.asList ( stringBuffer.toString ().split ( "\n" ) );
 
                     Calendar c = Calendar.getInstance ();
                     SimpleDateFormat df = new SimpleDateFormat ( "dd-MMM-yyyy" );
@@ -627,22 +541,133 @@ public class MainActivity extends ListActivity
                     dataSource.open ();
 
                     for (String item :
-                            xml_list)
+                            list_txt)
+                    {
+                        String address = item;
+                        String name = "unknown No.";
+                        dataSource.addToBlockList ( address, name, added_date );
+                    }
+                    Toast.makeText ( getApplicationContext (), "read from file \n" + stringBuffer.toString (), Toast.LENGTH_LONG ).show ();
+                }catch (Exception e)
+                {
+                    break;
+                }
+                break;
+            }//txt case end
+
+            //csv filetype method and case
+            case ".csv":{
+                Toast.makeText ( getApplicationContext (), "Reading .csv file", Toast.LENGTH_LONG ).show ();
+                try
+                {
+                    FileInputStream fileInputStream = new FileInputStream ( f );
+                    BufferedInputStream bufferedInputStream = new BufferedInputStream ( fileInputStream );
+                    StringBuffer stringBuffer = new StringBuffer ();
+                    while (bufferedInputStream.available () != 0)
+                    {
+                        char c = (char) bufferedInputStream.read ();
+                        stringBuffer.append ( c );
+                    }
+                    List<String> csv_list = new ArrayList<String> ();
+                    csv_list = Arrays.asList ( stringBuffer.toString ().split ( "," ) );
+
+                    Calendar c = Calendar.getInstance ();
+                    SimpleDateFormat df = new SimpleDateFormat ( "dd-MMM-yyyy" );
+                    String added_date = df.format ( c.getTime () );
+
+                    dataSource.open ();
+
+                    for (String item :
+                            csv_list)
                     {
                         String address = item;
                         String name = "unknown No.";
                         dataSource.addToBlockList ( address, name, added_date );
                     }
 
-                    Toast.makeText ( getApplicationContext (), lines, Toast.LENGTH_LONG ).show ();
+                    String lines = "";
+                    for (String item :
+                            csv_list)
+                    {
+                        lines += item + " , ";
+                    }
+                    Toast.makeText ( getApplicationContext (), "read from file \n" + lines, Toast.LENGTH_LONG ).show ();
+                } catch (Exception e)
+                {
+                    Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
+                    break;
                 }
-            } catch (IOException io)
-            {
-                Toast.makeText ( getApplicationContext (), io.toString (), Toast.LENGTH_LONG ).show ();
-            } catch (JDOMException jdomex)
-            {
-                Toast.makeText ( getApplicationContext (), jdomex.toString (), Toast.LENGTH_LONG ).show ();
-            }
-        }
-    }
+                break;
+            }//csv case end
+
+            //xml filetype method and case
+            case ".xml":{
+                SAXBuilder builder = new SAXBuilder ();
+                File xmlFile = new File ( file );
+
+                try
+                {
+                    Document document = (Document) builder.build ( xmlFile );
+                    Element rootNode = document.getRootElement ();
+                    List list = rootNode.getChildren ( "BlockList" );
+
+                    String lines = "";
+
+                    for (int i = 0; i < list.size (); i++)
+                    {
+
+                        Element node = (Element) list.get ( i );
+
+                        List _list = node.getChildren ( "Number" );
+
+                        List<String> xml_list = new ArrayList<String> ();
+
+                        for (Object object : _list)
+                        {
+                            Element _node = (Element) object;
+                            lines += ( _node.getText () );
+                            xml_list.add ( _node.getText ().trim () );
+                        }
+
+                        Calendar c = Calendar.getInstance ();
+                        SimpleDateFormat df = new SimpleDateFormat ( "dd-MMM-yyyy" );
+                        String added_date = df.format ( c.getTime () );
+
+                        dataSource.open ();
+
+                        for (String item :
+                                xml_list)
+                        {
+                            String address = item;
+                            String name = "unknown No.";
+                            dataSource.addToBlockList ( address, name, added_date );
+                        }
+
+                        Toast.makeText ( getApplicationContext (), lines, Toast.LENGTH_LONG ).show ();
+                    }
+                } catch (IOException io)
+                {
+                    Toast.makeText ( getApplicationContext (), io.toString (), Toast.LENGTH_LONG ).show ();
+                    break;
+                } catch (JDOMException jdomex)
+                {
+                    Toast.makeText ( getApplicationContext (), jdomex.toString (), Toast.LENGTH_LONG ).show ();
+                    break;
+                }
+                break;
+            }//xml case end
+        }//switch end
+
+        /*if (file_type.equals ( ".txt" ))
+        {
+
+        } else if (file_type.equals ( ".csv" ))
+        {
+
+
+        } else if (file_type.equals ( ".xml" ))
+        {
+
+        }*/
+    }//onActivity intent end
 }
