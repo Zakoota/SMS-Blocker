@@ -281,7 +281,7 @@ public class MainActivity extends ListActivity
             case R.id.export:{
                 final List<BlockMessage> block_list = dataSource.getBlockList ();
 
-                final String list[] = { ".Txt", ".Csv", ".Xml" };
+                final String list[] = { "Text file", "CSV file", "XML file" };
 
                 AlertDialog.Builder inputDialog = new AlertDialog.Builder ( MainActivity.this );
 
@@ -290,108 +290,113 @@ public class MainActivity extends ListActivity
                         {
                             public void onClick (DialogInterface dialog, int which)
                             {
-
-                                if (which == 0)
-                                {
-                                    try
-                                    {
-                                        String baseDir = Environment.getExternalStorageDirectory ().getAbsolutePath ();
-
-                                        String file_path = baseDir + "/" + "exported.txt";
-
-                                        File f = new File ( file_path );
-
-                                        FileOutputStream fos = new FileOutputStream ( f );
-
-                                        String lines = "";
-                                        for (BlockMessage element :
-                                                block_list)
+                                switch (which){
+                                    case 0:{
+                                        try
                                         {
-                                            lines += element.getNumber () + "\n";
+                                            String baseDir = Environment.getExternalStorageDirectory ().getAbsolutePath ();
+
+                                            String file_path = baseDir + "/" + "exported.txt";
+
+                                            File f = new File ( file_path );
+
+                                            FileOutputStream fos = new FileOutputStream ( f );
+
+                                            String lines = "";
+                                            for (BlockMessage element :
+                                                    block_list)
+                                            {
+                                                lines += element.getNumber () + "\n";
+                                            }
+
+                                            fos.write ( lines.getBytes () );
+
+
+                                            Toast.makeText ( getApplicationContext (), "Text file Exported to path " + file_path, Toast.LENGTH_LONG ).show ();
+                                        } catch (Exception e)
+                                        {
+                                            Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
                                         }
-
-                                        fos.write ( lines.getBytes () );
-
-
-                                        Toast.makeText ( getApplicationContext (), "File Exported with with path " + file_path, Toast.LENGTH_LONG ).show ();
-                                    } catch (Exception e)
-                                    {
-                                        Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
+                                        break;
                                     }
-                                } else if (which == 1)
-                                {
-                                    try
-                                    {
-                                        String baseDir = Environment.getExternalStorageDirectory ().getAbsolutePath ();
-
-                                        String file_path = baseDir + "/" + "exported.csv";
-
-                                        File f = new File ( file_path );
-
-                                        FileOutputStream fos = new FileOutputStream ( f );
-
-                                        List<BlockMessage> blockMessages = dataSource.getBlockList ();
-
-                                        String lines = "";
-
-                                        for (BlockMessage item : blockMessages)
+                                    case 1:{
+                                        try
                                         {
-                                            lines += item.getNumber () + ",";
+                                            String baseDir = Environment.getExternalStorageDirectory ().getAbsolutePath ();
+
+                                            String file_path = baseDir + "/" + "exported.csv";
+
+                                            File f = new File ( file_path );
+
+                                            FileOutputStream fos = new FileOutputStream ( f );
+
+                                            List<BlockMessage> blockMessages = dataSource.getBlockList ();
+
+                                            String lines = "";
+
+                                            for (BlockMessage item : blockMessages)
+                                            {
+                                                lines += item.getNumber () + ",";
+                                            }
+
+                                            lines = lines.substring ( 0, lines.length () - 1 );
+
+                                            fos.write ( lines.getBytes () );
+
+                                            Toast.makeText ( getApplicationContext (), "CSV file exported to path " + file_path, Toast.LENGTH_LONG ).show ();
+                                        } catch (Exception e)
+                                        {
+                                            Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
                                         }
-
-                                        lines = lines.substring ( 0, lines.length () - 1 );
-
-                                        fos.write ( lines.getBytes () );
-
-                                        Toast.makeText ( getApplicationContext (), "File Exported with with path " + file_path, Toast.LENGTH_LONG ).show ();
-                                    } catch (Exception e)
-                                    {
-                                        Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
+                                        break;
                                     }
-                                } else if (which == 2)
-                                {
-                                    try
-                                    {
-                                        String baseDir = Environment.getExternalStorageDirectory ().getAbsolutePath ();
-
-                                        String file_path = baseDir + "/" + "exported.xml";
-
-                                        File f = new File ( file_path );
-
-                                        FileOutputStream fos = new FileOutputStream ( f );
-
-                                        // root element
-                                        Element DateElement = new Element ( "Data" );
-                                        Document doc = new Document ( DateElement );
-
-                                        // supercars element
-                                        Element blockList = new Element ( "BlockList" );
-
-                                        for (BlockMessage element :
-                                                block_list)
+                                    case 2:{
+                                        try
                                         {
+                                            String baseDir = Environment.getExternalStorageDirectory ().getAbsolutePath ();
+
+                                            String file_path = baseDir + "/" + "exported.xml";
+
+                                            File f = new File ( file_path );
+
+                                            FileOutputStream fos = new FileOutputStream ( f );
+
+                                            // root element
+                                            Element DateElement = new Element ( "Data" );
+                                            Document doc = new Document ( DateElement );
+
                                             // supercars element
-                                            Element carElement = new Element ( "Number" );
-                                            carElement.setText ( element.getNumber () );
-                                            blockList.addContent ( carElement );
+                                            Element blockList = new Element ( "BlockList" );
+
+                                            for (BlockMessage element :
+                                                    block_list)
+                                            {
+                                                // supercars element
+                                                Element carElement = new Element ( "Number" );
+                                                carElement.setText ( element.getNumber () );
+                                                blockList.addContent ( carElement );
+                                            }
+
+                                            doc.getRootElement ().addContent ( blockList );
+
+                                            XMLOutputter xmlOutput = new XMLOutputter ();
+
+                                            // display xml
+                                            xmlOutput.setFormat ( Format.getCompactFormat () );
+                                            xmlOutput.output ( doc, fos );
+
+                                            Toast.makeText ( getApplicationContext (), "XML file exported to path " + file_path, Toast.LENGTH_LONG ).show ();
+                                        } catch (Exception e)
+                                        {
+                                            Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
                                         }
-
-                                        doc.getRootElement ().addContent ( blockList );
-
-                                        XMLOutputter xmlOutput = new XMLOutputter ();
-
-                                        // display xml
-                                        xmlOutput.setFormat ( Format.getCompactFormat () );
-                                        xmlOutput.output ( doc, fos );
-
-                                        Toast.makeText ( getApplicationContext (), "File Exported with with path " + file_path, Toast.LENGTH_LONG ).show ();
-                                    } catch (Exception e)
-                                    {
-                                        Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
+                                        break;
+                                    }
+                                    default:{
+                                        Toast.makeText(getApplicationContext(), "Invalid Selection", Toast.LENGTH_LONG).show();
+                                        break;
                                     }
                                 }
-
-                                Toast.makeText ( getApplicationContext (), which + " is selected", Toast.LENGTH_LONG ).show ();
                             }
                         } );
 
@@ -483,7 +488,7 @@ public class MainActivity extends ListActivity
     }
 
     protected void onActivityResult (int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK){
             super.onActivityResult(requestCode, resultCode, data);
             Uri uri = data.getData();
             String selected = uri.getPath();
@@ -642,9 +647,16 @@ public class MainActivity extends ListActivity
                     }
                     break;
                 }//xml case end
+
+                default:{
+                    Toast.makeText(getApplicationContext(), "ERROR: Invalid File selected",Toast.LENGTH_LONG).show();
+                    break;
+                }
             }//switch end
+        }else if(resultCode == RESULT_CANCELED) {
+            //nothing
         }else{
-            Toast.makeText(getApplicationContext(), "File not selected", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "ERROR: File not selected", Toast.LENGTH_LONG).show();
         }
     }//onActivity intent end
 }//Class MainActivity end

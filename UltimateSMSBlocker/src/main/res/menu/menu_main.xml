@@ -42,7 +42,7 @@
         android:id="@+id/_import"
 
 
-        android:title="import"/>
+        android:title="Import"/>
 
     <item
         android:id="@+id/series"
