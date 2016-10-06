@@ -77,48 +77,16 @@ public class MainActivity extends ListActivity
         super.onCreate ( savedInstanceState );
 
         listView = getListView ();
-        // checking if any message to delete from block messages
         dataSource = new Data ( getApplicationContext () );
         dataSource.open ();
         messages_list = dataSource.findAll ();
+        settings = getApplicationContext ().getSharedPreferences ( "settings",this.MODE_PRIVATE );
 
-        int i = 0;
-        int total = 0;
-        for (Message msg : messages_list)
-        {
-            try
-            {
-                SimpleDateFormat df = new SimpleDateFormat ( "dd-MMM-yyyy" );
+        //check and set default retain_days if not found
+        checkFirstTime();
 
-                Calendar today_cal = Calendar.getInstance ();
-                Calendar retain_cal = Calendar.getInstance ();
-
-                Date check_date = today_cal.getTime ();
-
-                String temp = Utils.dateFromLong ( Long.parseLong ( msg.getRetainDate () ) );
-
-                retain_cal.setTimeInMillis ( Long.parseLong ( msg.getRetainDate () ) );
-
-                if (( today_cal.after ( retain_cal ) ) && ( !today_cal.equals ( retain_cal ) ))
-                {
-                    total++;
-                    dataSource.open ();
-                    dataSource.MoveMessageToInbox ( msg );
-                }
-
-            } catch (Exception e)
-            {
-                Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
-            }
-            i++;
-        }
-        if (total > 0)
-        {
-            Toast.makeText ( getApplicationContext (), total + " messages delete from app", Toast.LENGTH_LONG ).show ();
-        }
-        settings = getApplicationContext ().getSharedPreferences ( "settings",
-                this.MODE_PRIVATE );
-
+        //check for expiring messages in database
+        checkForOldMessages();
 
         // series layout
         dataSource.open ();
@@ -505,6 +473,50 @@ public class MainActivity extends ListActivity
         list = dataSource.getBlockList ();
         adapter = new ArrayAdapter<BlockMessage> ( getApplicationContext (), R.layout.tv, list );
         setListAdapter ( adapter );
+    }
+
+    private void checkForOldMessages(){
+        int total = 0;
+        for (Message msg : messages_list)
+        {
+            try
+            {
+                SimpleDateFormat df = new SimpleDateFormat ( "dd-MMM-yyyy" );
+
+                Calendar today_cal = Calendar.getInstance ();
+                Calendar retain_cal = Calendar.getInstance ();
+
+                retain_cal.setTimeInMillis ( Long.parseLong ( msg.getRetainDate () ) );
+
+                if (( today_cal.after ( retain_cal ) ) && ( !today_cal.equals ( retain_cal ) )){
+                    total++;
+                    dataSource.open ();
+                    dataSource.MoveMessageToInbox ( msg );
+                }
+
+            }catch (Exception e)
+            {
+                Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
+            }
+        }
+        if (total > 0)
+        {
+            Toast.makeText ( getApplicationContext (), total + " messages delete from app", Toast.LENGTH_LONG ).show ();
+        }
+    }
+
+    private void checkFirstTime(){
+        SharedPreferences.Editor editor;
+        try{
+            if(settings.getInt("retain_days", -1)< 0){
+                editor = settings.edit();
+                editor.putInt ( "retain_days", 30);
+                editor.commit ();
+                Toast.makeText(getApplicationContext(),"Expiry days for blocked messages set to default 1 month\nChange it in Settings", Toast.LENGTH_LONG).show();
+            }
+        }catch (Exception e){
+            Toast.makeText(getApplicationContext(),e.toString(), Toast.LENGTH_LONG).show();
+        }
     }
 
     protected void onActivityResult (int requestCode, int resultCode, Intent data) {
