@@ -37,9 +37,7 @@ public class BlockMessagesList extends ListActivity
         try
         {
             dataSource = new Data ( getApplicationContext () );
-
             messages_list = dataSource.findAll ();
-
             adapter = new ArrayAdapter<Message> ( getApplicationContext (), R.layout.tv, messages_list );
             setListAdapter ( adapter );
         } catch (Exception e)

@@ -2,7 +2,6 @@
                  android:id="@+id/checked_tv"
                  android:layout_width="match_parent"
                  android:layout_height="match_parent"
-                 android:background="@android:color/background_dark"
                  android:checkMark="?android:attr/listChoiceIndicatorMultiple"
                  android:checked="false"
                  android:clickable="false"
@@ -15,4 +14,5 @@
                  android:padding="15sp"
                  android:textColor="@android:color/white"
                  android:textSize="25sp"
+                 android:background="@layout/selector"
     />
