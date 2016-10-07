@@ -6,38 +6,5 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:orientation="vertical" android:padding="5dp">
-      <EditText android:id="@+id/address"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content" 
-         android:imeOptions="actionNext" android:hint="address"
-         android:inputType="textPersonName|textCapWords"></EditText>
-      <EditText android:id="@+id/body"
-         android:layout_width="match_parent" 
-         android:layout_height="wrap_content" 
-         android:imeOptions="actionNext" android:hint="body"
-         android:inputType="phone"></EditText>
-      <EditText android:id="@+id/date"
-         android:layout_width="match_parent" 
-         android:layout_height="wrap_content" 
-         android:imeOptions="actionNext" android:hint="date"
-         android:inputType="textEmailAddress"></EditText>
-      <TextView android:id="@+id/addressTextView" 
-         android:color="@android:color/black" android:textSize="18sp"
-         android:paddingTop="10dp" android:layout_width="wrap_content"
-         android:layout_height="wrap_content" 
-         android:imeOptions="actionNext" 
-         android:text="@string/address"></TextView>
-      <EditText android:id="@+id/keep_date"
-         android:layout_width="match_parent" 
-         android:layout_height="wrap_content" 
-         android:imeOptions="actionNext" android:hint="keep_date"
-         android:inputType="textPostalAddress|textCapWords"></EditText>
-
-      <Button android:id="@+id/saveContactButton"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginTop="15dp"
-              android:layout_gravity="center_horizontal"
-              android:text="@string/button_save_contact"></Button>
    </LinearLayout>
 </ScrollView>
