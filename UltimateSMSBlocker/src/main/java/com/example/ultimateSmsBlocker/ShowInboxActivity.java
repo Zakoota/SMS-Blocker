@@ -60,11 +60,6 @@ public class ShowInboxActivity extends ListActivity
 
     }
 
-    @Override
-    protected void onListItemClick (ListView l, View v, int position, long id)
-    {
-    }
-
     boolean tryParseLong (String value)
     {
         try
@@ -155,10 +150,10 @@ public class ShowInboxActivity extends ListActivity
                     boolean isAdded = dataSource.addToBlockList ( address, name, added_date );
                     if (isAdded)
                     {
-//                        Toast.makeText ( getApplicationContext (), "blocked", Toast.LENGTH_LONG ).show ();
+                        Toast.makeText ( getApplicationContext (), "Blocked", Toast.LENGTH_LONG ).show ();
                     } else
                     {
-//                        Toast.makeText ( getApplicationContext (), "Already blocked", Toast.LENGTH_LONG ).show ();
+                        Toast.makeText ( getApplicationContext (), "Already blocked", Toast.LENGTH_LONG ).show ();
                     }
                     dataSource.close ();
 
@@ -167,7 +162,6 @@ public class ShowInboxActivity extends ListActivity
                     Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
                 }
             }
-//            finish ();
         }
         return super.onOptionsItemSelected ( item );
     }
