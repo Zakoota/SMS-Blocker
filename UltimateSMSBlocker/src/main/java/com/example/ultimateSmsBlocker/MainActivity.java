@@ -234,160 +234,153 @@ public class MainActivity extends ListActivity
 
 
             //case for menu export
-            case R.id.export:{
-                final List<BlockMessage> block_list = dataSource.getBlockList ();
-                final String list[] = { "Text file", "CSV file", "XML file" };
-                AlertDialog.Builder inputDialog = new AlertDialog.Builder ( MainActivity.this );
-                inputDialog.setTitle ( "Choose Type of File for Export" )
-                        .setItems ( list, new DialogInterface.OnClickListener ()
-                        {
-                            public void onClick (DialogInterface dialog, int which)
-                            {
-                                switch (which){
-                                    case 0:{
-                                        try
-                                        {
-                                            String baseDir = Environment.getExternalStorageDirectory ().getAbsolutePath ();
+            case R.id.export: {
+                final List<BlockMessage> block_list = dataSource.getBlockList();
 
-                                            SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd");
-                                            Date now = new Date();
-                                            String file_path = baseDir + "/" +"BLOCKLIST_BACKUP_"+formatter.format(now)+".txt";
+                if (block_list.size() > 0) {
+                    final String list[] = {"Text file", "CSV file", "XML file"};
+                    AlertDialog.Builder inputDialog = new AlertDialog.Builder(MainActivity.this);
+                    inputDialog.setTitle("Choose Type of File for Export")
+                            .setItems(list, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    switch (which) {
+                                        case 0: {
+                                            try {
+                                                String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath();
 
-                                            File f = new File ( file_path );
+                                                SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd");
+                                                Date now = new Date();
+                                                String file_path = baseDir + "/" + "BLOCKLIST_BACKUP_" + formatter.format(now) + ".txt";
 
-                                            if(f.exists()){
-                                                int i = 0;
-                                                do{
-                                                    i++;
-                                                    file_path = baseDir + "/" +"BLOCKLIST_BACKUP_"+formatter.format(now)+"_("+i+")"+".txt";
-                                                    f = new File(file_path);
-                                                }while(f.exists());
+                                                File f = new File(file_path);
+
+                                                if (f.exists()) {
+                                                    int i = 0;
+                                                    do {
+                                                        i++;
+                                                        file_path = baseDir + "/" + "BLOCKLIST_BACKUP_" + formatter.format(now) + "_(" + i + ")" + ".txt";
+                                                        f = new File(file_path);
+                                                    } while (f.exists());
+                                                }
+
+                                                FileOutputStream fos = new FileOutputStream(f);
+
+                                                Toast.makeText(getApplicationContext(), "Block list is size= " + block_list.size(), Toast.LENGTH_LONG).show();
+                                                String lines = "";
+                                                for (BlockMessage element :
+                                                        block_list) {
+                                                    lines += element.getNumber() + "\n";
+                                                }
+
+                                                fos.write(lines.getBytes());
+
+
+                                                Toast.makeText(getApplicationContext(), "Text file exported to path " + file_path, Toast.LENGTH_SHORT).show();
+                                            } catch (Exception e) {
+                                                Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
                                             }
-
-                                            FileOutputStream fos = new FileOutputStream ( f );
-
-                                            String lines = "";
-                                            for (BlockMessage element :
-                                                    block_list)
-                                            {
-                                                lines += element.getNumber () + "\n";
-                                            }
-
-                                            fos.write ( lines.getBytes () );
-
-
-                                            Toast.makeText ( getApplicationContext (), "Text file exported to path " + file_path, Toast.LENGTH_SHORT ).show ();
-                                        } catch (Exception e)
-                                        {
-                                            Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
+                                            break;
                                         }
-                                        break;
-                                    }
-                                    case 1:{
-                                        try
-                                        {
-                                            String baseDir = Environment.getExternalStorageDirectory ().getAbsolutePath ();
+                                        case 1: {
+                                            try {
+                                                String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath();
 
-                                            SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd");
-                                            Date now = new Date();
-                                            String file_path = baseDir + "/" +"BLOCKLIST_BACKUP_"+formatter.format(now)+".csv";
+                                                SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd");
+                                                Date now = new Date();
+                                                String file_path = baseDir + "/" + "BLOCKLIST_BACKUP_" + formatter.format(now) + ".csv";
 
-                                            File f = new File ( file_path );
+                                                File f = new File(file_path);
 
-                                            if(f.exists()){
-                                                int i = 0;
-                                                do{
-                                                    i++;
-                                                    file_path = baseDir + "/" +"BLOCKLIST_BACKUP_"+formatter.format(now)+"_("+i+")"+".csv";
-                                                    f = new File(file_path);
-                                                }while(f.exists());
+                                                if (f.exists()) {
+                                                    int i = 0;
+                                                    do {
+                                                        i++;
+                                                        file_path = baseDir + "/" + "BLOCKLIST_BACKUP_" + formatter.format(now) + "_(" + i + ")" + ".csv";
+                                                        f = new File(file_path);
+                                                    } while (f.exists());
+                                                }
+
+                                                FileOutputStream fos = new FileOutputStream(f);
+
+                                                String lines = "";
+
+                                                for (BlockMessage item : block_list) {
+                                                    lines += item.getNumber() + ",";
+                                                }
+
+                                                lines = lines.substring(0, lines.length() - 1);
+
+                                                fos.write(lines.getBytes());
+
+                                                Toast.makeText(getApplicationContext(), "CSV file exported to path " + file_path, Toast.LENGTH_SHORT).show();
+                                            } catch (Exception e) {
+                                                Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
                                             }
-
-                                            FileOutputStream fos = new FileOutputStream ( f );
-
-                                            List<BlockMessage> blockMessages = dataSource.getBlockList ();
-
-                                            String lines = "";
-
-                                            for (BlockMessage item : blockMessages)
-                                            {
-                                                lines += item.getNumber () + ",";
-                                            }
-
-                                            lines = lines.substring ( 0, lines.length () - 1 );
-
-                                            fos.write ( lines.getBytes () );
-
-                                            Toast.makeText ( getApplicationContext (), "CSV file exported to path " + file_path, Toast.LENGTH_SHORT ).show ();
-                                        } catch (Exception e)
-                                        {
-                                            Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
+                                            break;
                                         }
-                                        break;
-                                    }
-                                    case 2:{
-                                        try
-                                        {
-                                            String baseDir = Environment.getExternalStorageDirectory ().getAbsolutePath ();
+                                        case 2: {
+                                            try {
+                                                String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath();
 
-                                            SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd");
-                                            Date now = new Date();
-                                            String file_path = baseDir + "/" +"BLOCKLIST_BACKUP_"+formatter.format(now)+".xml";
+                                                SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd");
+                                                Date now = new Date();
+                                                String file_path = baseDir + "/" + "BLOCKLIST_BACKUP_" + formatter.format(now) + ".xml";
 
-                                            File f = new File ( file_path );
+                                                File f = new File(file_path);
 
-                                            if(f.exists()){
-                                                int i = 0;
-                                                do{
-                                                    i++;
-                                                    file_path = baseDir + "/" +"BLOCKLIST_BACKUP_"+formatter.format(now)+"_("+i+")"+".xml";
-                                                    f = new File(file_path);
-                                                }while(f.exists());
-                                            }
+                                                if (f.exists()) {
+                                                    int i = 0;
+                                                    do {
+                                                        i++;
+                                                        file_path = baseDir + "/" + "BLOCKLIST_BACKUP_" + formatter.format(now) + "_(" + i + ")" + ".xml";
+                                                        f = new File(file_path);
+                                                    } while (f.exists());
+                                                }
 
-                                            FileOutputStream fos = new FileOutputStream ( f );
+                                                FileOutputStream fos = new FileOutputStream(f);
 
-                                            // root element
-                                            Element DateElement = new Element ( "Data" );
-                                            Document doc = new Document ( DateElement );
+                                                // root element
+                                                Element DateElement = new Element("Data");
+                                                Document doc = new Document(DateElement);
 
-                                            // supercars element
-                                            Element blockList = new Element ( "BlockList" );
-
-                                            for (BlockMessage element :
-                                                    block_list)
-                                            {
                                                 // supercars element
-                                                Element carElement = new Element ( "Number" );
-                                                carElement.setText ( element.getNumber () );
-                                                blockList.addContent ( carElement );
+                                                Element blockList = new Element("BlockList");
+
+                                                for (BlockMessage element :
+                                                        block_list) {
+                                                    // supercars element
+                                                    Element carElement = new Element("Number");
+                                                    carElement.setText(element.getNumber());
+                                                    blockList.addContent(carElement);
+                                                }
+
+                                                doc.getRootElement().addContent(blockList);
+
+                                                XMLOutputter xmlOutput = new XMLOutputter();
+
+                                                // display xml
+                                                xmlOutput.setFormat(Format.getCompactFormat());
+                                                xmlOutput.output(doc, fos);
+
+                                                Toast.makeText(getApplicationContext(), "XML file exported to path " + file_path, Toast.LENGTH_SHORT).show();
+                                            } catch (Exception e) {
+                                                Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
                                             }
-
-                                            doc.getRootElement ().addContent ( blockList );
-
-                                            XMLOutputter xmlOutput = new XMLOutputter ();
-
-                                            // display xml
-                                            xmlOutput.setFormat ( Format.getCompactFormat () );
-                                            xmlOutput.output ( doc, fos );
-
-                                            Toast.makeText ( getApplicationContext (), "XML file exported to path " + file_path, Toast.LENGTH_SHORT ).show ();
-                                        } catch (Exception e)
-                                        {
-                                            Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
+                                            break;
                                         }
-                                        break;
-                                    }
-                                    default:{
-                                        Toast.makeText(getApplicationContext(), "Invalid Selection", Toast.LENGTH_LONG).show();
-                                        break;
+                                        default: {
+                                            Toast.makeText(getApplicationContext(), "Invalid Selection", Toast.LENGTH_LONG).show();
+                                            break;
+                                        }
                                     }
                                 }
-                            }
-                        } );
+                            });
 
-                inputDialog.show ();
-                break;
+                    inputDialog.show();
+                    break;
+                }else {
+                    Toast.makeText(getApplicationContext(),"Error: cannot export empty Block list",Toast.LENGTH_LONG).show();
+                }
             }
 
             //case for menu sort by date
