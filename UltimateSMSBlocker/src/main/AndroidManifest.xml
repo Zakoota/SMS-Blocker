@@ -25,11 +25,6 @@
 
 
         <activity
-            android:name=".AddMessage"
-            android:configChanges="keyboard|orientation|screenSize"
-            android:label="Ultimate SMS Blocker"></activity>
-
-        <activity
             android:name=".Tabs"
             android:configChanges="keyboard|orientation|screenSize"
             >
@@ -88,5 +83,5 @@
         </receiver>
 
     </application>
-    <uses-sdk android:minSdkVersion="14"/>
+    <uses-sdk android:minSdkVersion="18"/>
 </manifest> 

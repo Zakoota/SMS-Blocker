@@ -5,7 +5,7 @@ android {
 
     defaultConfig {
         applicationId "com.Raza.app"
-        minSdkVersion 16
+        minSdkVersion 18
         targetSdkVersion 18
     }
 

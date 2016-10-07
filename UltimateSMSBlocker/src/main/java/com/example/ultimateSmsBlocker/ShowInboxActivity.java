@@ -9,12 +9,10 @@ import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckedTextView;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -100,7 +98,6 @@ public class ShowInboxActivity extends ListActivity
 
             int len = listView.getCount ();
             SparseBooleanArray checked = listView.getCheckedItemPositions ();
-            int limit = checked.size ();
 
             List<Integer> checkedItems = new ArrayList<> ();
 
@@ -123,11 +120,8 @@ public class ShowInboxActivity extends ListActivity
 
                 try
                 {
-                    String msg_body = sms.getBody ();
                     address = sms.getNumber ();
                     name = sms.getName ();
-
-                    String _address = "";
 
                     if (address.contains ( "+" ))
                     {

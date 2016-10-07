@@ -2,11 +2,7 @@ package com.example.ultimateSmsBlocker;
 
 
 import android.util.Log;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Comparator;
-import java.util.Date;
 
 /**
  * Created by Raza on 6/21/2016.
@@ -75,20 +71,6 @@ public class BlockMessage implements Comparable<BlockMessage>
 
         public int compare (BlockMessage o1, BlockMessage o2)
         {
-
-            Date date_1 = null;
-            Date date_2 = null;
-            try
-            {
-
-                DateFormat df = new SimpleDateFormat ( "MM/dd/yyyy" );
-                date_1 = df.parse ( o1.getDate () );
-
-                date_2 = df.parse ( o2.getDate () );
-            } catch (Exception e)
-            {
-            }
-
             return o1.getDate ().compareTo ( o2.getDate () );
         }
 

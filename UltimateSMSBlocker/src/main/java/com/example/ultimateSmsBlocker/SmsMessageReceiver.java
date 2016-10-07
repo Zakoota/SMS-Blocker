@@ -144,21 +144,15 @@ public class SmsMessageReceiver extends BroadcastReceiver
                             days = 1000;
                         }
 
-                        Date date = new Date ();
                         DateFormat dateFormat = android.text.format.DateFormat.getDateFormat ( context );
 //                                    String s = dateFormat.format ( ( 1466596894376L ) );
                         String s = dateFormat.format ( ( message.getTimestampMillis () ) );
-                        String ss = "";
 
                         Date d = new Date ( s );
 
                         Calendar c = Calendar.getInstance ();
-//                                            c.setTimeZone ( TimeZone.getTimeZone ( "Asia/Karachi" ) );
                         c.setTime ( d );
-//                                            dateFormat.setTimeZone ( TimeZone.getTimeZone ( "Asia/Karachi" ) );
                         c.add ( Calendar.DATE, days );
-
-                        ss = dateFormat.format ( c.getTime () );
 
                         String input_date = c.getTimeInMillis () + "";
 

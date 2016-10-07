@@ -481,8 +481,6 @@ public class MainActivity extends ListActivity
         {
             try
             {
-                SimpleDateFormat df = new SimpleDateFormat ( "dd-MMM-yyyy" );
-
                 Calendar today_cal = Calendar.getInstance ();
                 Calendar retain_cal = Calendar.getInstance ();
 
@@ -567,7 +565,7 @@ public class MainActivity extends ListActivity
                             char c = (char) bufferedInputStream.read();
                             stringBuffer.append(c);
                         }
-                        List<String> list_txt = new ArrayList<String>();
+                        List<String> list_txt;
                         list_txt = Arrays.asList(stringBuffer.toString().split("\n"));
 
                         Calendar c = Calendar.getInstance();
@@ -600,7 +598,7 @@ public class MainActivity extends ListActivity
                             char c = (char) bufferedInputStream.read();
                             stringBuffer.append(c);
                         }
-                        List<String> csv_list = new ArrayList<String>();
+                        List<String> csv_list;
                         csv_list = Arrays.asList(stringBuffer.toString().split(","));
 
                         Calendar c = Calendar.getInstance();

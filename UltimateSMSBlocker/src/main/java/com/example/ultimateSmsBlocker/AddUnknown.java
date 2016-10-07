@@ -45,14 +45,14 @@ public class AddUnknown extends Activity {
 
 
                 try {
-                    String _input = "";
+                    String _input;
                     _input = et.getText ().toString ().trim ();
 
                     if (_input.length () >= 10) {
                         dataSource.open ();
-                        String added_date = "";
+                        String added_date;
                         String name = "unknown No.";
-                        String address = "";
+                        String address;
                         address = _input;
 
                         Calendar c = Calendar.getInstance ();

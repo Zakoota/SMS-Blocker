@@ -44,9 +44,9 @@ public class Contacts3 extends Activity {
                 uriContact = data.getData ();
 
 
-                String added_date = "";
-                String name = "";
-                String address = "";
+                String added_date;
+                String name;
+                String address;
 
                 name = retrieveContactName ();
                 address = retrieveContactNumber ();

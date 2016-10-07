@@ -61,7 +61,7 @@ public class BlockMessagesList extends ListActivity
 
                 Data dataSource = new Data ( getApplicationContext () );
 
-                List<Message> messages_list = dataSource.findAll ();
+                List<Message> messages_list;
 
                 dataSource.open ();
 
@@ -75,8 +75,6 @@ public class BlockMessagesList extends ListActivity
 
                 dataSource.open ();
                 dataSource.MoveMessageToInbox ( messages_list.get ( position ) );
-
-                messages_list = dataSource.findAll ();
                 refresh ();
 
             }
