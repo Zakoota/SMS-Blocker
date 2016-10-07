@@ -42,8 +42,6 @@ import java.util.List;
 
 public class MainActivity extends ListActivity
 {
-
-    private static final String LOGTAG = "USMS";
     private static final int FILE_ID = 1;
     Data dataSource;
     List<BlockMessage> list;

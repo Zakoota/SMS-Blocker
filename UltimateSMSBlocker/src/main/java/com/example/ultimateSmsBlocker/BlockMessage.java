@@ -98,19 +98,6 @@ public class BlockMessage implements Comparable<BlockMessage>
 
     }
 
-    private static Long getLong (String v)
-    {
-        Long out;
-        try
-        {
-            out = Long.parseLong ( v );
-        } catch (Exception e)
-        {
-            out = 0L;
-        }
-        return out;
-    }
-
     public String getNumber ()
     {
         return number;
