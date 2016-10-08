@@ -492,16 +492,20 @@ public class MainActivity extends ListActivity
 
     private void checkFirstTime(){
         SharedPreferences.Editor editor;
-        try{
-            if(settings.getInt("retain_days", -1)< 0){
-                editor = settings.edit();
-                editor.putInt ( "retain_days", 30);
-                editor.commit ();
-                Toast.makeText(getApplicationContext(),"Expiry days for blocked messages set to default 1 month\nChange it in Settings", Toast.LENGTH_LONG).show();
+            if(settings.getInt("retain_days", -1)< 0) {
+                try {
+                    editor = settings.edit();
+                    editor.putInt("retain_days", 30);
+                    editor.commit();
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this)
+                                    .setTitle("Set to default!")
+                                    .setMessage("Expiry date for blocked messages is set to default 30 days.\nChange it to desired amount from Settings tab")
+                                    .setPositiveButton("OK",null);
+                    alertDialogBuilder.show();
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+                }
             }
-        }catch (Exception e){
-            Toast.makeText(getApplicationContext(),e.toString(), Toast.LENGTH_LONG).show();
-        }
     }
 
     protected void onActivityResult (int requestCode, int resultCode, Intent data) {
