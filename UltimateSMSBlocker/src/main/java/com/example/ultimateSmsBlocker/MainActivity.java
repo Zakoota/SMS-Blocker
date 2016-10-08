@@ -19,6 +19,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
+
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -30,6 +33,8 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -53,7 +58,6 @@ public class MainActivity extends ListActivity
     EditText et_series_2;
     List<Message> messages_list;
     ListView listView;
-
 
 
 
@@ -193,7 +197,6 @@ public class MainActivity extends ListActivity
                             try {
 
                                 String input = et_series_1.getText().toString().trim();
-
                                 String input_2 = et_series_2.getText().toString().trim();
 
                                 long start = Long.parseLong(input);
@@ -264,8 +267,6 @@ public class MainActivity extends ListActivity
                                                 }
 
                                                 FileOutputStream fos = new FileOutputStream(f);
-
-                                                Toast.makeText(getApplicationContext(), "Block list is size= " + block_list.size(), Toast.LENGTH_LONG).show();
                                                 String lines = "";
                                                 for (BlockMessage element :
                                                         block_list) {
@@ -282,15 +283,13 @@ public class MainActivity extends ListActivity
                                             break;
                                         }
                                         case 1: {
-                                            try {
+                                            try{
                                                 String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath();
-
                                                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd");
                                                 Date now = new Date();
                                                 String file_path = baseDir + "/" + "BLOCKLIST_BACKUP_" + formatter.format(now) + ".csv";
-
                                                 File f = new File(file_path);
-
+                                                //checking if file exits and add index at the end
                                                 if (f.exists()) {
                                                     int i = 0;
                                                     do {
@@ -299,20 +298,17 @@ public class MainActivity extends ListActivity
                                                         f = new File(file_path);
                                                     } while (f.exists());
                                                 }
-
-                                                FileOutputStream fos = new FileOutputStream(f);
-
-                                                String lines = "";
-
+                                                CSVWriter writer = new CSVWriter(new FileWriter(f));
+                                                String[] lines=new String[block_list.size()];
+                                                int i=0;
                                                 for (BlockMessage item : block_list) {
-                                                    lines += item.getNumber() + ",";
+                                                        lines[i]=item.getNumber();
+                                                    i++;
                                                 }
+                                                writer.writeNext(lines);
+                                                writer.close();
 
-                                                lines = lines.substring(0, lines.length() - 1);
-
-                                                fos.write(lines.getBytes());
-
-                                                Toast.makeText(getApplicationContext(), "CSV file exported to path " + file_path, Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(getApplication(), "CSV file exported to "+file_path, Toast.LENGTH_LONG).show();
                                             } catch (Exception e) {
                                                 Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
                                             }
@@ -581,35 +577,20 @@ public class MainActivity extends ListActivity
 
                 //csv filetype method and case
                 case ".csv": {
-                    try {
-                        FileInputStream fileInputStream = new FileInputStream(f);
-                        BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
-                        StringBuffer stringBuffer = new StringBuffer();
-                        while (bufferedInputStream.available() != 0) {
-                            char c = (char) bufferedInputStream.read();
-                            stringBuffer.append(c);
-                        }
-                        List<String> csv_list;
-                        csv_list = Arrays.asList(stringBuffer.toString().split(","));
-
+                    try{
+                        CSVReader reader = new CSVReader(new FileReader(file));
                         Calendar c = Calendar.getInstance();
                         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
                         String added_date = df.format(c.getTime());
-
                         dataSource.open();
-
-                        for (String item :
-                                csv_list) {
-                            String address = item;
+                        String[] rawAddress = reader.readNext();
+                        for(int i=0;rawAddress.length>i;i++){
+                            String address = rawAddress[i];
                             String name = "unknown No.";
                             dataSource.addToBlockList(address, name, added_date);
                         }
-
-                        String lines = "";
-                        for (String item :
-                                csv_list) {
-                            lines += item + " , ";
-                        }
+                        reader.close();
+                        dataSource.close();
                         Toast.makeText(getApplicationContext(), "Blocklist imported from file: "+fileName, Toast.LENGTH_LONG).show();
                     } catch (Exception e) {
                         Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
@@ -641,7 +622,7 @@ public class MainActivity extends ListActivity
                             for (Object object : _list) {
                                 Element _node = (Element) object;
                                 lines += (_node.getText());
-                                xml_list.add(_node.getText().trim());
+                                xml_list.add(_node.getText());
                             }
 
                             Calendar c = Calendar.getInstance();

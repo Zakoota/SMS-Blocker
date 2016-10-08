@@ -19,4 +19,9 @@ android {
 
 dependencies {
     compile 'org.jdom:jdom2:2.0.6'
+    compile 'com.opencsv:opencsv:3.8'
 }
+configurations {
+    all*.exclude group: 'commons-logging'
+}
+
