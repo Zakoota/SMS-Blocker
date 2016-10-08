@@ -199,6 +199,22 @@ public class MainActivity extends ListActivity
                                 String input = et_series_1.getText().toString().trim();
                                 String input_2 = et_series_2.getText().toString().trim();
 
+
+                                //loop for input1 head
+                                int outerI;
+                                int innerJ;
+                                for(outerI=0;outerI<input.length();outerI++){
+                                    for(innerJ=49;innerJ<=57;innerJ++){
+                                        if(input.charAt(outerI)==innerJ){
+                                            break;
+                                        }
+                                    }
+                                    if(input.charAt(outerI)==innerJ){
+                                        break;
+                                    }
+                                }
+                                String inputHead = input.substring(0,outerI);
+
                                 long start = Long.parseLong(input);
                                 long end = Long.parseLong(input_2);
 
@@ -207,7 +223,7 @@ public class MainActivity extends ListActivity
                                 String added_date = df.format(c.getTime());
 
                                 for (long i = start; i <= end; i++) {
-                                    String address = i + "";
+                                    String address = inputHead + i + "";
                                     String name = "unknown No.";
 
                                     dataSource.addToBlockList(address, name, added_date);
@@ -466,52 +482,6 @@ public class MainActivity extends ListActivity
         setListAdapter ( adapter );
     }
 
-    private void checkForOldMessages(){
-        int total = 0;
-        for (Message msg : messages_list)
-        {
-            try
-            {
-                Calendar today_cal = Calendar.getInstance ();
-                Calendar retain_cal = Calendar.getInstance ();
-
-                retain_cal.setTimeInMillis ( Long.parseLong ( msg.getRetainDate () ) );
-
-                if (( today_cal.after ( retain_cal ) ) && ( !today_cal.equals ( retain_cal ) )){
-                    total++;
-                    dataSource.open ();
-                    dataSource.MoveMessageToInbox ( msg );
-                }
-
-            }catch (Exception e)
-            {
-                Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
-            }
-        }
-        if (total > 0)
-        {
-            Toast.makeText ( getApplicationContext (), total + " messages delete from app", Toast.LENGTH_LONG ).show ();
-        }
-    }
-
-    private void checkFirstTime(){
-        SharedPreferences.Editor editor;
-            if(settings.getInt("retain_days", -1)< 0) {
-                try {
-                    editor = settings.edit();
-                    editor.putInt("retain_days", 30);
-                    editor.commit();
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this)
-                                    .setTitle("Set to default!")
-                                    .setMessage("Expiry date for blocked messages is set to default 30 days.\nChange it to desired amount from Settings tab")
-                                    .setPositiveButton("OK",null);
-                    alertDialogBuilder.show();
-                } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
-                }
-            }
-    }
-
     protected void onActivityResult (int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK){
             super.onActivityResult(requestCode, resultCode, data);
@@ -669,5 +639,52 @@ public class MainActivity extends ListActivity
             Toast.makeText(getApplicationContext(), "ERROR: File not selected", Toast.LENGTH_LONG).show();
         }
     }//onActivity intent end
+
+// custom methods
+    private void checkForOldMessages(){
+        int total = 0;
+        for (Message msg : messages_list)
+        {
+            try
+            {
+                Calendar today_cal = Calendar.getInstance ();
+                Calendar retain_cal = Calendar.getInstance ();
+
+                retain_cal.setTimeInMillis ( Long.parseLong ( msg.getRetainDate () ) );
+
+                if (( today_cal.after ( retain_cal ) ) && ( !today_cal.equals ( retain_cal ) )){
+                    total++;
+                    dataSource.open ();
+                    dataSource.MoveMessageToInbox ( msg );
+                }
+
+            }catch (Exception e)
+            {
+                Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
+            }
+        }
+        if (total > 0)
+        {
+            Toast.makeText ( getApplicationContext (), total + " messages delete from app", Toast.LENGTH_LONG ).show ();
+        }
+    }
+
+    private void checkFirstTime(){
+        SharedPreferences.Editor editor;
+        if(settings.getInt("retain_days", -1)< 0) {
+            try {
+                editor = settings.edit();
+                editor.putInt("retain_days", 30);
+                editor.commit();
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this)
+                        .setTitle("Set to default!")
+                        .setMessage("Expiry date for blocked messages is set to default 30 days.\nChange it to desired amount from Settings tab")
+                        .setPositiveButton("OK",null);
+                alertDialogBuilder.show();
+            } catch (Exception e) {
+                Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 
 }//Class MainActivity end
