@@ -375,7 +375,11 @@ public class MainActivity extends ListActivity
                     inputDialog.show();
                     break;
                 }else {
-                    Toast.makeText(getApplicationContext(),"Error: cannot export empty Block list",Toast.LENGTH_LONG).show();
+                    AlertDialog.Builder emptyExportAlert = new AlertDialog.Builder(this)
+                            .setTitle("Error!")
+                            .setMessage("Cannot export empty block list.")
+                            .setPositiveButton("OK",null);
+                    emptyExportAlert.show();
                 }
             }
 
