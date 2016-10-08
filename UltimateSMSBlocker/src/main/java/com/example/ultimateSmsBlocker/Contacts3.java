@@ -50,6 +50,12 @@ public class Contacts3 extends Activity {
 
                 name = retrieveContactName ();
                 address = retrieveContactNumber ();
+                if (address.contains ( "+" ))
+                {
+                    address = address.substring ( 1 );
+                }
+                address = address.replaceAll("\\s+","");
+                address = address.replaceAll("-","");
 
                 Calendar c = Calendar.getInstance ();
                 SimpleDateFormat df = new SimpleDateFormat ( "dd-MMM-yyyy" );

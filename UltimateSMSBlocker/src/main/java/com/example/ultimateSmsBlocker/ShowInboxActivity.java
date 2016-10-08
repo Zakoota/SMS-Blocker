@@ -127,6 +127,8 @@ public class ShowInboxActivity extends ListActivity
                     {
                         address = address.substring ( 1 );
                     }
+                    address = address.replaceAll("\\s+","");
+                    address = address.replaceAll("-","");
 
                     Calendar c = Calendar.getInstance ();
                     SimpleDateFormat df = new SimpleDateFormat ( "dd-MMM-yyyy" );
