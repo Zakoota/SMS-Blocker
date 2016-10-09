@@ -91,7 +91,7 @@ public class ShowInboxActivity extends ListActivity
     public boolean onOptionsItemSelected (MenuItem item)
     {
 
-        if (item.getItemId () == R.id.delete)
+        if (item.getItemId () == R.id.btn_del)
         {
 
             listView = getListView ();
