@@ -43,4 +43,6 @@
    <string name="errorMessage">You must enter a contact name</string>
    <string name="button_cancel">Cancel</string>
    <string name="button_delete">Delete</string>
+    <string name="tgl_on">YES</string>
+    <string name="tgl_off">NO</string>
 </resources>

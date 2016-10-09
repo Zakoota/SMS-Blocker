@@ -9,6 +9,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 /**
  * Created by Raza on 7/4/2016.
@@ -16,7 +17,8 @@ import android.widget.Toast;
 public class Settings extends Activity
 {
 
-    CheckBox cb;
+    ToggleButton tgl2;
+    ToggleButton tgl;
     Button btn;
     EditText et;
     SharedPreferences settings;
@@ -31,20 +33,36 @@ public class Settings extends Activity
         settings = getApplicationContext ().getSharedPreferences ( "settings",
                 this.MODE_PRIVATE );
 
-        Boolean temp_check = settings.getBoolean ( "delete_unknown", false );
+        Boolean toggle2 = settings.getBoolean ( "delete_unknown", false );
+        Boolean toggle = settings.getBoolean("notify_toggle", true);
 
         editor = settings.edit ();
 
-        cb = (CheckBox) findViewById ( R.id.cb );
-
-        cb.setChecked ( temp_check );
-
-        cb.setOnCheckedChangeListener ( new CompoundButton.OnCheckedChangeListener ()
+        tgl = (ToggleButton) findViewById(R.id.btn_tgl);
+        tgl.setChecked(toggle);
+        tgl.setOnCheckedChangeListener ( new CompoundButton.OnCheckedChangeListener ()
         {
             @Override
             public void onCheckedChanged (CompoundButton buttonView, boolean isChecked)
             {
-                Boolean v = cb.isChecked ();
+                Boolean v = tgl.isChecked ();
+
+                editor.putBoolean ( "notify_toggle", v );
+                editor.commit ();
+            }
+        } );
+
+
+        tgl2 = (ToggleButton) findViewById ( R.id.btn_tgl2 );
+
+        tgl2.setChecked ( toggle2 );
+
+        tgl2.setOnCheckedChangeListener ( new CompoundButton.OnCheckedChangeListener ()
+        {
+            @Override
+            public void onCheckedChanged (CompoundButton buttonView, boolean isChecked)
+            {
+                Boolean v = tgl2.isChecked ();
 
                 editor.putBoolean ( "delete_unknown", v );
                 editor.commit ();
@@ -53,7 +71,6 @@ public class Settings extends Activity
 
 
         et = (EditText) findViewById ( R.id.et_days );
-
         btn = (Button) findViewById ( R.id.btn_save );
 
         btn.setOnClickListener ( new View.OnClickListener ()
@@ -108,6 +125,6 @@ public class Settings extends Activity
                 this.MODE_PRIVATE );
 
         Boolean temp_check = settings.getBoolean ( "delete_unknown", false );
-        cb.setChecked ( temp_check );
+        tgl2.setChecked ( temp_check );
     }
 }

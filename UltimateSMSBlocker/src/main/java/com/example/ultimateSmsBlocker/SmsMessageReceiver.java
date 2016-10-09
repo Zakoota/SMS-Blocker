@@ -41,6 +41,7 @@ public class SmsMessageReceiver extends BroadcastReceiver
     private static final String TAG = "SmsMessageReceiver";
     boolean isMatch;
     Boolean block_unknown;
+    Boolean notify_toggle;
     SharedPreferences settings;
 
 
@@ -51,6 +52,7 @@ public class SmsMessageReceiver extends BroadcastReceiver
                 context.MODE_PRIVATE );
 
         block_unknown = settings.getBoolean ( "delete_unknown", false );
+        notify_toggle = settings.getBoolean("notify_toggle", true);
         isMatch = false;
 
         Bundle extras = intent.getExtras ();
@@ -126,10 +128,12 @@ public class SmsMessageReceiver extends BroadcastReceiver
                 {
                     abortBroadcast();
 
-                    if(isContact){
-                        Toast.makeText(context, "Message blocked from " + fromDisplayName, Toast.LENGTH_SHORT).show();
-                    }else {
-                        Toast.makeText(context, "Message Blocked from " + fromAddress, Toast.LENGTH_SHORT).show();
+                    if(notify_toggle) {
+                        if (isContact) {
+                            Toast.makeText(context, "Message blocked from " + fromDisplayName, Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(context, "Message Blocked from " + fromAddress, Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     try
