@@ -46,21 +46,25 @@ public class Data
     }
 
     public Message create (Message message) {
-        ContentValues values = new ContentValues ();
-        values.put ( MessagesDbHelper.COLUMN_ADDRESS, message.getAddress () );
-        values.put ( MessagesDbHelper.COLUMN_BODY, message.getBody () );
-        values.put ( MessagesDbHelper.COLUMN_RECEIVE_DATE, message.getReceiveDate () );
-        values.put ( MessagesDbHelper.COLUMN_RETAIN_DATE, message.getRetainDate () );
+        try {
+            ContentValues values = new ContentValues();
+            values.put(MessagesDbHelper.COLUMN_ADDRESS, message.getAddress());
+            values.put(MessagesDbHelper.COLUMN_BODY, message.getBody());
+            values.put(MessagesDbHelper.COLUMN_RECEIVE_DATE, message.getReceiveDate());
+            values.put(MessagesDbHelper.COLUMN_RETAIN_DATE, message.getRetainDate());
+            int insertid = (int) db.insert(MessagesDbHelper.TABLE_MESSAGES, null, values);
 
-        long insertid = db.insert ( MessagesDbHelper.TABLE_MESSAGES, null, values );
+            values.put(MessagesDbHelper.COLUMN_ID, insertid);
 
-        values.put ( MessagesDbHelper.COLUMN_ID, insertid );
+            message.setId(insertid);
 
-        message.setId ( insertid );
+        }catch (Exception e){
+            Log.d(LOGTAG, "asdads");
+        }
         return message;
     }
 
-    public boolean MoveMessageToInbox (Message msg) {
+    public boolean deleteBlocked (Message msg) {
         boolean response = false;
         try {
             String where = MessagesDbHelper.COLUMN_ID + "=" + msg.getId ();
@@ -85,7 +89,7 @@ public class Data
         if (cursor.getCount () > 0) {
             while (cursor.moveToNext ()) {
                 Message message = new Message ();
-                message.setId ( cursor.getLong ( cursor.getColumnIndex ( MessagesDbHelper.COLUMN_ID ) ) );
+                message.setId ( cursor.getInt ( cursor.getColumnIndex ( MessagesDbHelper.COLUMN_ID ) ) );
                 message.setAddress ( cursor.getString ( cursor.getColumnIndex ( MessagesDbHelper.COLUMN_ADDRESS ) ) );
                 message.setBody ( cursor.getString ( cursor.getColumnIndex ( MessagesDbHelper.COLUMN_BODY ) ) );
 

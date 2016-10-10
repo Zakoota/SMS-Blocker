@@ -38,7 +38,7 @@ public class BlockMessagesList extends ListActivity
         {
             dataSource = new Data ( getApplicationContext () );
             messages_list = dataSource.findAll ();
-            adapter = new ArrayAdapter<Message> ( getApplicationContext (), R.layout.tv, messages_list );
+            adapter = new MessageListAdapter ( getApplicationContext (), R.layout.messagelist, messages_list );
             setListAdapter ( adapter );
         } catch (Exception e)
         {
@@ -74,7 +74,7 @@ public class BlockMessagesList extends ListActivity
                 getContentResolver ().insert ( Uri.parse ( "content://sms/inbox" ), values );
 
                 dataSource.open ();
-                dataSource.MoveMessageToInbox ( messages_list.get ( position ) );
+                dataSource.deleteBlocked ( messages_list.get ( position ) );
                 refresh ();
 
             }
@@ -96,7 +96,7 @@ public class BlockMessagesList extends ListActivity
     private void refresh ()
     {
         messages_list = dataSource.findAll ();
-        adapter = new ArrayAdapter<Message> ( getApplicationContext (), R.layout.tv, messages_list );
+        adapter = new MessageListAdapter ( getApplicationContext (), R.layout.messagelist, messages_list );
         setListAdapter ( adapter );
     }
 

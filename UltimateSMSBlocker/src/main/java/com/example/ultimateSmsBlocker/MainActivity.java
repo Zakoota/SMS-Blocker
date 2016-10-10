@@ -93,7 +93,7 @@ public class MainActivity extends ListActivity
         // series layout
         dataSource.open ();
         list = dataSource.getBlockList ();
-        adapter = new ArrayAdapter<BlockMessage> ( getApplicationContext (), R.layout.tv, list );
+        adapter = new BlockListAdapter ( getApplicationContext (), R.layout.blocklist, list );
         setListAdapter ( adapter );
 
     }
@@ -403,7 +403,7 @@ public class MainActivity extends ListActivity
             case R.id.sort_by_date:{
                 Collections.sort ( list, BlockMessage.dateComparator );
 
-                adapter = new ArrayAdapter<BlockMessage> ( getApplicationContext (), R.layout.tv, list );
+                adapter = new BlockListAdapter ( getApplicationContext (), R.layout.blocklist, list );
                 setListAdapter ( adapter );
                 break;
             }
@@ -413,7 +413,7 @@ public class MainActivity extends ListActivity
                 refresh ();
                 Collections.sort ( list, BlockMessage.NameComparator );
 
-                adapter = new ArrayAdapter<BlockMessage> ( getApplicationContext (), R.layout.tv, list );
+                adapter = new BlockListAdapter ( getApplicationContext (), R.layout.blocklist, list );
                 setListAdapter ( adapter );
                 break;
             }
@@ -423,7 +423,7 @@ public class MainActivity extends ListActivity
                 refresh ();
 
                 Collections.sort ( list, BlockMessage.NumberComparator );
-                adapter = new ArrayAdapter<BlockMessage> ( getApplicationContext (), R.layout.tv, list );
+                adapter = new BlockListAdapter ( getApplicationContext (), R.layout.blocklist, list );
                 setListAdapter ( adapter );
                 break;
             }
@@ -478,7 +478,7 @@ public class MainActivity extends ListActivity
     {
         dataSource.open ();
         list = dataSource.getBlockList ();
-        adapter = new ArrayAdapter<BlockMessage> ( getApplicationContext (), R.layout.tv, list );
+        adapter = new BlockListAdapter ( getApplicationContext (), R.layout.blocklist, list );
         setListAdapter ( adapter );
     }
 
@@ -655,7 +655,7 @@ public class MainActivity extends ListActivity
                 if (( today_cal.after ( retain_cal ) ) && ( !today_cal.equals ( retain_cal ) )){
                     total++;
                     dataSource.open ();
-                    dataSource.MoveMessageToInbox ( msg );
+                    dataSource.deleteBlocked ( msg );
                 }
 
             }catch (Exception e)

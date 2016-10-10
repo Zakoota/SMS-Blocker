@@ -5,7 +5,7 @@ package com.example.ultimateSmsBlocker;
  */
 public class Message {
 
-    long id;
+    int id;
     private String address;
     private String body;
     private String receiveDate;
@@ -14,7 +14,7 @@ public class Message {
     public Message () {
     }
 
-    public Message (String address, String body, String receiveDate, String retainDate, long id) {
+    public Message (String address, String body, String receiveDate, String retainDate, int id) {
         this.address = address;
         this.body = body;
         this.receiveDate = receiveDate;
@@ -58,7 +58,7 @@ public class Message {
         return id;
     }
 
-    public void setId (long id) {
+    public void setId (int id) {
         this.id = id;
     }
 
@@ -66,8 +66,8 @@ public class Message {
     public String toString () {
 
         return "\nAddress : " + address
-                + "\nBody : " + body
-                + "\nreceive date : " + Utils.dateFromLong ( Long.parseLong ( receiveDate ) )
-                + "\nretain date : " + Utils.dateFromLong ( Long.parseLong ( retainDate ) );
+                + "\nReceived : " + Utils.dateFromLong ( Long.parseLong ( receiveDate ) )
+                + "\nExpires : " + Utils.dateFromLong ( Long.parseLong ( retainDate ) )
+                + "\nBody : " + body;
     }
 }
