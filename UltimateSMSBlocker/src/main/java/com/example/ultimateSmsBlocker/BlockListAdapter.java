@@ -36,20 +36,15 @@ public class BlockListAdapter extends ArrayAdapter<BlockMessage> {
         BlockMessage p = getItem(position);
 
         if (p != null) {
-            TextView tt1 = (TextView) v.findViewById(R.id.tv_name);
-            TextView tt2 = (TextView) v.findViewById(R.id.tv_number);
-            TextView tt3 = (TextView) v.findViewById(R.id.tv_date);
+            TextView tt1 = (TextView) v.findViewById(R.id.tv_number);
+            TextView tt2 = (TextView) v.findViewById(R.id.tv_name);
 
             if (tt1 != null) {
-                tt1.setText(p.getName());
+                tt1.setText(p.getNumber());
             }
 
             if (tt2 != null) {
-                tt2.setText(p.getNumber());
-            }
-
-            if (tt3 != null) {
-                tt3.setText(p.getDate());
+                tt2.setText(p.getName());
             }
         }
 

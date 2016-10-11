@@ -8,15 +8,10 @@
         android:textColor="@android:color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_name"/>
-    <TextView
-        android:textSize="18sp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/tv_number"/>
     <TextView
         android:textSize="18sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_date"/>
+        android:id="@+id/tv_name"/>
 </LinearLayout>
