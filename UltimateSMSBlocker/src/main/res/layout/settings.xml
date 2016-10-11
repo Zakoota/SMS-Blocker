@@ -37,34 +37,71 @@
                 android:textOn="@string/tgl_on" />
         </TableRow>
     </TableLayout>
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="*">
+        <TableRow>
+            <TextView
+                style="@style/tvField"
+                android:layout_height="wrap_content"
+                android:text="Auto Delete after: "
+                android:id="@+id/textView2"
+                android:paddingBottom="0dp"
+                android:paddingTop="12dp"
+                android:paddingLeft="12dp"/>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:maxLines="1"
+                android:paddingBottom="0dp"
+                android:paddingTop="12dp"
+                android:paddingLeft="12dp"
+                android:textSize="20sp"
+                android:textColor="@android:color/white"
+                android:id="@+id/tv_days" />
 
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Set"
+                android:id="@+id/btn_set" />
+        </TableRow>
+    </TableLayout>
     <TextView
         style="@style/tvField"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="15sp"
-        android:layout_marginBottom="15sp"
-        android:gravity="center"
-        android:text="Set days for Auto Delete blocked \nMessages"
-        android:id="@+id/textView2"
-        android:textSize="16sp"/>
-
-
-    <EditText
-        android:layout_width="137dp"
+        android:text="Block Scenario"
+        android:paddingLeft="110dp"
+        android:layout_marginBottom="10dp"/>
+    <RadioGroup
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="numberSigned"
-        android:ems="10"
-        android:id="@+id/et_days"
-        android:layout_gravity="center" />
-
-    <Button
-        android:layout_marginTop="50sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Set Days"
-
-        android:id="@+id/btn_save"
-        android:layout_gravity="center_horizontal"/>
+        android:id="@+id/rg1">
+        <RadioButton
+            style="@style/tvField"
+            android:layout_height="wrap_content"
+            android:text="Block the Blocklist"
+            android:id="@+id/btn_rad1"/>
+        <RadioButton
+            style="@style/tvField"
+            android:layout_height="wrap_content"
+            android:text="Block All Incoming Messages"
+            android:id="@+id/btn_rad2"/>
+        <RadioButton
+            style="@style/tvField"
+            android:layout_height="wrap_content"
+            android:text="Block None"
+            android:id="@+id/btn_rad3"/>
+        <RadioButton
+            style="@style/tvField"
+            android:layout_height="wrap_content"
+            android:text="Only Allow Contacts"
+            android:id="@+id/btn_rad4"/>
+        <RadioButton
+            style="@style/tvField"
+            android:layout_height="wrap_content"
+            android:text="Block the Blocklist"
+            android:id="@+id/btn_rad5"/>
+    </RadioGroup>
 </LinearLayout>
