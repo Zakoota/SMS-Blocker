@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -17,13 +16,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import static com.example.ultimateSmsBlocker.R.id.btn_rb1;
+import static com.example.ultimateSmsBlocker.R.id.btn_rb2;
+import static com.example.ultimateSmsBlocker.R.id.btn_rb3;
+import static com.example.ultimateSmsBlocker.R.id.btn_rb4;
+import static com.example.ultimateSmsBlocker.R.id.btn_rb5;
+
 /**
  * Created by Raza on 7/4/2016.
  */
 public class Settings extends Activity
 {
 
-    private ToggleButton tgl2;
     private ToggleButton tgl;
     private Button btn;
     private TextView ev;
@@ -63,23 +67,6 @@ public class Settings extends Activity
         } );
 
         /*
-         * Unknown toggle button
-         */
-        Boolean toggle2 = settings.getBoolean ( "delete_unknown", false );
-        tgl2 = (ToggleButton) findViewById ( R.id.btn_tgl2 );
-        tgl2.setChecked ( toggle2 );
-        tgl2.setOnCheckedChangeListener ( new CompoundButton.OnCheckedChangeListener ()
-        {
-            @Override
-            public void onCheckedChanged (CompoundButton buttonView, boolean isChecked)
-            {
-                Boolean v = tgl2.isChecked ();
-                editor.putBoolean ( "delete_unknown", v );
-                editor.commit ();
-            }
-        } );
-
-        /*
          * TextView for displaying retain_days
          */
         ev = (TextView) findViewById(R.id.tv_days);
@@ -88,15 +75,20 @@ public class Settings extends Activity
         /*
          * RadioGroup code
          */
-
         rg1 = (RadioGroup) findViewById(R.id.rg1);
-        int rg_toggle = settings.getInt("radio_toggle", 1);
-        
+        rgSetter(settings.getInt("rb_set", 1));
+        rg1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                                           @Override
+                                           public void onCheckedChanged(RadioGroup group, int checkedId) {
+                                               rgSetter(rgGetter());
+                                           }
+                                       });
+
 
         /*
          * Button for displaying dialog and change retain_days
          */
-        btn = (Button) findViewById ( R.id.btn_set );
+        btn = (Button) findViewById(R.id.btn_set);
         btn.setOnClickListener ( new View.OnClickListener ()
         {
             @Override
@@ -143,10 +135,6 @@ public class Settings extends Activity
                 inputDialog.show();
             }
         } );
-        /*
-         * Toggle group check and setting shared preference
-         */
-
     }
 
     @Override
@@ -157,6 +145,82 @@ public class Settings extends Activity
                 this.MODE_PRIVATE );
         ev.setText(String.valueOf(settings.getInt("retain_days",0))+" days");
         tgl.setChecked( settings.getBoolean("notify_toggle", false));
-        tgl2.setChecked ( settings.getBoolean ( "delete_unknown", false ) );
+        rgSetter(settings.getInt("rb_set", 1));
+    }
+
+    /*
+     * Radio Group ID getter in simple int
+     */
+    private int rgGetter(){
+        int rbChecked = rg1.getCheckedRadioButtonId();
+        int btn=0;
+        switch (rbChecked){
+            case btn_rb1:{
+                btn = 1;
+                break;
+            }
+            case btn_rb2:{
+                btn = 2;
+                break;
+            }
+            case btn_rb3:{
+                btn = 3;
+                break;
+            }
+            case btn_rb4:{
+                btn = 4;
+                break;
+            }
+            case btn_rb5:{
+                btn = 5;
+                break;
+            }
+        }
+        return btn;
+    }
+
+    /*
+     * RadioGroup setter in Simple int
+     */
+    private boolean rgSetter(int i){
+        editor = settings.edit();
+        boolean isSet = false;
+        switch (i){
+            case 1:{
+                rg1.check(btn_rb1);
+                editor.putInt("rb_set", 1);
+                isSet = true;
+                break;
+            }
+            case 2:{
+                rg1.check(btn_rb2);
+                editor.putInt("rb_set", 2);
+                isSet = true;
+                break;
+            }
+            case 3:{
+                rg1.check(btn_rb3);
+                editor.putInt("rb_set", 3);
+                isSet = true;
+                break;
+            }
+            case 4:{
+                rg1.check(btn_rb4);
+                editor.putInt("rb_set", 4);
+                isSet = true;
+                break;
+            }
+            case 5:{
+                rg1.check(btn_rb5);
+                editor.putInt("rb_set", 5);
+                isSet = true;
+                break;
+            }default:{
+                isSet = false;
+                break;
+            }
+        }
+        editor.commit();
+        return isSet;
     }
 }

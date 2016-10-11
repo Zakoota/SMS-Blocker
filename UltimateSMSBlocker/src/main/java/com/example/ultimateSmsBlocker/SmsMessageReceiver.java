@@ -39,150 +39,165 @@ public class SmsMessageReceiver extends BroadcastReceiver
 {
 
     private static final String TAG = "SmsMessageReceiver";
-    boolean isMatch;
-    Boolean block_unknown;
     Boolean notify_toggle;
     SharedPreferences settings;
+    int rg_code;
 
 
     @Override
-    public void onReceive (final Context context, Intent intent)
-    {
-        settings = context.getSharedPreferences ( "settings",
-                context.MODE_PRIVATE );
+    public void onReceive (final Context context, Intent intent) {
+        settings = context.getSharedPreferences("settings",
+                context.MODE_PRIVATE);
+        rg_code = settings.getInt("rb_set", 1);
 
-        block_unknown = settings.getBoolean ( "delete_unknown", false );
-        notify_toggle = settings.getBoolean("notify_toggle", true);
-        isMatch = false;
-
-        Bundle extras = intent.getExtras ();
-        if (extras == null)
-        {
+        //case 5 block none
+        if (rg_code == 5) {
             return;
-        }
-
-        Object[] pdus = (Object[]) extras.get ( "pdus" );
-
-        for (int i = 0; i < pdus.length; i++)
-        {
-            SmsMessage message = SmsMessage.createFromPdu ( (byte[]) pdus[ i ] );
-            String fromAddress = message.getOriginatingAddress ();
-            String fromDisplayName = "";
-
-            Uri uri;
-            String[] projection;
-
-            uri = Uri.withAppendedPath (
-                    ContactsContract.PhoneLookup.CONTENT_FILTER_URI,
-                    Uri.encode ( fromAddress ) );
-
-            projection = new String[]{ ContactsContract.PhoneLookup.DISPLAY_NAME };
-
-            // Query the filter URI
-            Cursor cursor = context.getContentResolver ().query ( uri, projection, null, null, null );
-            if (cursor != null)
-            {
-                if (cursor.moveToFirst ())
-                {
-                    fromDisplayName = cursor.getString ( 0 );
-                }
-
-                cursor.close ();
+        }else{
+            notify_toggle = settings.getBoolean("notify_toggle", true);
+            Bundle extras = intent.getExtras();
+            if (extras == null) {
+                return;
             }
 
-            try
-            {
+            Object[] pdus = (Object[]) extras.get("pdus");
 
-                List<BlockMessage> block_list;
+            for (int i = 0; i < pdus.length; i++) {
+                SmsMessage message = SmsMessage.createFromPdu((byte[]) pdus[i]);
+                String fromAddress = message.getOriginatingAddress();
+                String fromDisplayName = "";
 
-                Data dataSource = new Data ( context );
+                Uri uri;
+                String[] projection;
 
-                dataSource.open ();
+                uri = Uri.withAppendedPath(
+                        ContactsContract.PhoneLookup.CONTENT_FILTER_URI,
+                        Uri.encode(fromAddress));
 
-                block_list = dataSource.getBlockList ();
+                projection = new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME};
 
-                List<String> list = new ArrayList<> ();
+                // Query the filter URI
+                Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null);
+                if (cursor != null) {
+                    if (cursor.moveToFirst()) {
+                        fromDisplayName = cursor.getString(0);
+                    }
 
-                for (BlockMessage item :
-                        block_list)
-                {
-                    list.add ( item.getNumber () );
-                }
-                if (fromAddress.startsWith ( "+" ))
-                {
-                    fromAddress = fromAddress.substring ( 1 );
-                }
-
-                Boolean isContact = false;
-
-
-                if (fromDisplayName.length()>0)
-                {
-                    isContact = true;
+                    cursor.close();
                 }
 
-                // checking from contacts
-                // if condition checks if it is Blocklist or (block if it is not contact and block unknown is checked)
+                try {
 
-                if (( list.contains ( fromAddress ) ) || (block_unknown && !isContact ))
-                {
-                    abortBroadcast();
+                    List<BlockMessage> block_list;
 
-                    if(notify_toggle) {
-                        if (isContact) {
-                            Toast.makeText(context, "Message blocked from " + fromDisplayName, Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(context, "Message Blocked from " + fromAddress, Toast.LENGTH_SHORT).show();
+                    Data dataSource = new Data(context);
+
+                    dataSource.open();
+
+                    block_list = dataSource.getBlockList();
+
+                    List<String> list = new ArrayList<>();
+
+                    for (BlockMessage item :
+                            block_list) {
+                        list.add(item.getNumber());
+                    }
+                    if (fromAddress.startsWith("+")) {
+                        fromAddress = fromAddress.substring(1);
+                    }
+                    Boolean isContact = false;
+                    if (fromDisplayName.length() > 0) {
+                        isContact = true;
+                    }
+                    switch(rg_code){
+                        //Case 1 block the blocklist
+                        case 1:{
+                            if (list.contains(fromAddress)){
+                                abortBroadcast();
+                                if (notify_toggle) {
+                                    if (isContact) {
+                                        Toast.makeText(context, "Message blocked from " + fromDisplayName, Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(context, "Message Blocked from " + fromAddress, Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            }else{
+                                return;
+                            }
+                            break;
+                        }
+                        //case 2 block all incoming messages
+                        case 2:{
+                            abortBroadcast();
+                            if (notify_toggle) {
+                                if (isContact) {
+                                    Toast.makeText(context, "Message blocked from " + fromDisplayName, Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(context, "Message Blocked from " + fromAddress, Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            break;
+                        }
+                        //case 3 only allow contacts
+                        case 3:{
+                            if (!isContact){
+                                abortBroadcast();
+                                if (notify_toggle) {
+                                        Toast.makeText(context, "Message Blocked from " + fromAddress, Toast.LENGTH_SHORT).show();
+                                }
+                            }else{
+                                return;
+                            }
+                            break;
+                        }
+                        //case 4 block if it is not in blocklist
+                        case 4:{
+                            if(!list.contains(fromAddress)){
+                                abortBroadcast();
+                                if (notify_toggle) {
+                                    if (isContact) {
+                                        Toast.makeText(context, "Message blocked from " + fromDisplayName, Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(context, "Message Blocked from " + fromAddress, Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            }else{
+                                return;
+                            }
+                            break;
                         }
                     }
 
-                    try
-                    {
-                        int days = settings.getInt ( "retain_days", 0 );
+                    /*
+                     * Save blocked message to database
+                     */
+                    try {
+                        int days = settings.getInt("retain_days", 0);
 
-                        if (days < 0)
-                        {
-                            days = 1;
-                        }else if (days > 1000)
-                        {
-                            days = 1000;
-                        }
+                        DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(context);
+                        String s = dateFormat.format((message.getTimestampMillis()));
+                        Date d = new Date(s);
 
-                        DateFormat dateFormat = android.text.format.DateFormat.getDateFormat ( context );
-//                                    String s = dateFormat.format ( ( 1466596894376L ) );
-                        String s = dateFormat.format ( ( message.getTimestampMillis () ) );
+                        Calendar c = Calendar.getInstance();
+                        c.setTime(d);
+                        c.add(Calendar.DATE, days);
 
-                        Date d = new Date ( s );
+                        String input_date = c.getTimeInMillis() + "";
 
-                        Calendar c = Calendar.getInstance ();
-                        c.setTime ( d );
-                        c.add ( Calendar.DATE, days );
+                        dataSource.open();
 
-                        String input_date = c.getTimeInMillis () + "";
+                        Message _message = new Message(fromAddress, message.getMessageBody(), (message.getTimestampMillis() + ""), input_date, 0);
 
-                        dataSource.open ();
-
-                        Message _message = new Message ( fromAddress, message.getMessageBody (), ( message.getTimestampMillis () + "" ), input_date, 0 );
-
-                        dataSource.create ( _message );
-                    } catch (Exception e)
-                    {
-                        Toast.makeText ( context, e.toString (), Toast.LENGTH_LONG ).show ();
+                        dataSource.create(_message);
+                    } catch (Exception e) {
+                        Toast.makeText(context, e.toString(), Toast.LENGTH_LONG).show();
                     }
-
+                    Log.i(TAG, "size of global passed size = " + block_list.size());
+                } catch (Exception e){
+                    Log.i(TAG, "size of blocked list error" + e.toString());
                 }
-
-                AlertDialog.Builder builder = new AlertDialog.Builder ( context ).setTitle ( fromDisplayName );
-                builder.show();
-                Log.i ( TAG, "size of global passed size = " + block_list.size () );
-
-
-            } catch (Exception e)
-            {
-
-                Log.i ( TAG, "size of blocked list error" + e.toString () );
+                break;
             }
-            break;
         }
     }
 }

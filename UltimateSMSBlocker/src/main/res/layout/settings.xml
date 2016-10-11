@@ -7,101 +7,99 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:stretchColumns="*">
+        android:stretchColumns="2">
         <TableRow android:layout_margin="0dp">
-
             <TextView
                 style="@style/tvField"
                 android:text="Notifications:"
                 android:paddingBottom="0dp"
                 android:paddingTop="12dp"
-                android:paddingLeft="12dp"/>
-
+                android:paddingLeft="12dp"
+                android:singleLine="true" />
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
             <ToggleButton
                 android:layout_height="wrap_content"
                 android:id="@+id/btn_tgl"
-                android:layout_width="match_parent" />
-        </TableRow>
-        <TableRow>
-            <TextView
-                style="@style/tvField"
-                android:text="Block Unknown Numbers:"
-                android:paddingBottom="0dp"
-                android:paddingTop="12dp"
-                android:paddingLeft="12dp" />
-            <ToggleButton
-                android:layout_height="wrap_content"
-                android:id="@+id/btn_tgl2"
                 android:layout_width="match_parent"
-                android:textOff="@string/tgl_off"
-                android:textOn="@string/tgl_on" />
+                android:hapticFeedbackEnabled="true" />
         </TableRow>
-    </TableLayout>
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:stretchColumns="*">
         <TableRow>
             <TextView
                 style="@style/tvField"
                 android:layout_height="wrap_content"
-                android:text="Auto Delete after: "
+                android:text="Auto Delete after "
                 android:id="@+id/textView2"
                 android:paddingBottom="0dp"
                 android:paddingTop="12dp"
-                android:paddingLeft="12dp"/>
+                android:paddingLeft="12dp"
+                android:singleLine="true" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:maxLines="1"
                 android:paddingBottom="0dp"
                 android:paddingTop="12dp"
-                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
                 android:textSize="20sp"
                 android:textColor="@android:color/white"
-                android:id="@+id/tv_days" />
-
+                android:id="@+id/tv_days"
+                android:textStyle="normal|italic" />
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Set"
-                android:id="@+id/btn_set" />
+                android:id="@+id/btn_set"
+                android:hapticFeedbackEnabled="false" />
         </TableRow>
     </TableLayout>
     <TextView
         style="@style/tvField"
         android:layout_height="wrap_content"
         android:text="Block Scenario"
+        android:layout_marginTop="12dp"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        android:singleLine="true"
+        android:background="#663333"
         android:paddingLeft="110dp"
-        android:layout_marginBottom="10dp"/>
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp" />
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/rg1">
+        android:id="@+id/rg1"
+        android:hapticFeedbackEnabled="true">
         <RadioButton
             style="@style/tvField"
             android:layout_height="wrap_content"
-            android:text="Block the Blocklist"
-            android:id="@+id/btn_rad1"/>
+            android:text="Block The Blocklist"
+            android:id="@+id/btn_rb1"
+            android:hapticFeedbackEnabled="true" />
         <RadioButton
             style="@style/tvField"
             android:layout_height="wrap_content"
             android:text="Block All Incoming Messages"
-            android:id="@+id/btn_rad2"/>
+            android:id="@+id/btn_rb2"
+            android:hapticFeedbackEnabled="true" />
+        <RadioButton
+            style="@style/tvField"
+            android:layout_height="wrap_content"
+            android:text="Block Unknown"
+            android:id="@+id/btn_rb3"
+            android:hapticFeedbackEnabled="true" />
+        <RadioButton
+            style="@style/tvField"
+            android:layout_height="wrap_content"
+            android:text="Only Allow Blocklist"
+            android:id="@+id/btn_rb4"
+            android:hapticFeedbackEnabled="true" />
         <RadioButton
             style="@style/tvField"
             android:layout_height="wrap_content"
             android:text="Block None"
-            android:id="@+id/btn_rad3"/>
-        <RadioButton
-            style="@style/tvField"
-            android:layout_height="wrap_content"
-            android:text="Only Allow Contacts"
-            android:id="@+id/btn_rad4"/>
-        <RadioButton
-            style="@style/tvField"
-            android:layout_height="wrap_content"
-            android:text="Block the Blocklist"
-            android:id="@+id/btn_rad5"/>
+            android:id="@+id/btn_rb5"
+            android:hapticFeedbackEnabled="true" />
     </RadioGroup>
 </LinearLayout>
