@@ -293,8 +293,8 @@ public class MainActivity extends ListActivity
 
             //case for menu sort by date
             case R.id.sort_by_date:{
+                refresh();
                 Collections.sort ( list, BlockMessage.dateComparator );
-
                 adapter = new BlockListAdapter ( getApplicationContext (), R.layout.blocklist, list );
                 setListAdapter ( adapter );
                 break;
@@ -304,7 +304,6 @@ public class MainActivity extends ListActivity
             case R.id.sort_by_name:{
                 refresh ();
                 Collections.sort ( list, BlockMessage.NameComparator );
-
                 adapter = new BlockListAdapter ( getApplicationContext (), R.layout.blocklist, list );
                 setListAdapter ( adapter );
                 break;
@@ -313,7 +312,6 @@ public class MainActivity extends ListActivity
             //case for menu sort by number
             case R.id.sort_by_number:{
                 refresh ();
-
                 Collections.sort ( list, BlockMessage.NumberComparator );
                 adapter = new BlockListAdapter ( getApplicationContext (), R.layout.blocklist, list );
                 setListAdapter ( adapter );
@@ -379,18 +377,11 @@ public class MainActivity extends ListActivity
             super.onActivityResult(requestCode, resultCode, data);
             Uri uri = data.getData();
             String selected = uri.getPath();
-
             String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath();
-
             String fileName = selected.substring((selected.lastIndexOf("/") + 1));
-
             String file = baseDir + "/" + fileName;
-
-            File f = new File(file);
-
             String file_type = "";
             String fileExt = fileName.substring((fileName.lastIndexOf(".") + 1));
-
             //switch statement for assigning file extension to fileType var
             switch (fileExt) {
                 case "txt": {
@@ -405,125 +396,8 @@ public class MainActivity extends ListActivity
                     file_type = ".xml";
                     break;
                 }
-            } //switch end
-
-            //switch statement for methods of retrieving different file types
-            switch (file_type) {
-                //txt filetype case and method
-                case ".txt": {
-                    try {
-                        FileInputStream fileInputStream = new FileInputStream(f);
-                        BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
-
-                        StringBuffer stringBuffer = new StringBuffer();
-
-                        while (bufferedInputStream.available() != 0) {
-                            char c = (char) bufferedInputStream.read();
-                            stringBuffer.append(c);
-                        }
-                        List<String> list_txt;
-                        list_txt = Arrays.asList(stringBuffer.toString().split("\n"));
-
-                        Calendar c = Calendar.getInstance();
-                        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-                        String added_date = df.format(c.getTime());
-
-                        dataSource.open();
-
-                        for (String item :
-                                list_txt) {
-                            String address = item;
-                            String name = "unknown No.";
-                            dataSource.addToBlockList(address, name, added_date);
-                        }
-                        Toast.makeText(getApplicationContext(), "Blocklist imported from file: "+fileName, Toast.LENGTH_LONG).show();
-                    } catch (Exception e) {
-                        Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
-                        break;
-                    }
-                    break;
-                }//txt case end
-
-                //csv filetype method and case
-                case ".csv": {
-                    try{
-                        CSVReader reader = new CSVReader(new FileReader(file));
-                        Calendar c = Calendar.getInstance();
-                        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-                        String added_date = df.format(c.getTime());
-                        dataSource.open();
-                        String[] rawAddress = reader.readNext();
-                        for(int i=0;rawAddress.length>i;i++){
-                            String address = rawAddress[i];
-                            String name = "unknown No.";
-                            dataSource.addToBlockList(address, name, added_date);
-                        }
-                        reader.close();
-                        dataSource.close();
-                        Toast.makeText(getApplicationContext(), "Blocklist imported from file: "+fileName, Toast.LENGTH_LONG).show();
-                    } catch (Exception e) {
-                        Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
-                        break;
-                    }
-                    break;
-                }//csv case end
-
-                //xml filetype method and case
-                case ".xml": {
-                    SAXBuilder builder = new SAXBuilder();
-                    File xmlFile = new File(file);
-
-                    try {
-                        Document document = (Document) builder.build(xmlFile);
-                        Element rootNode = document.getRootElement();
-                        List list = rootNode.getChildren("BlockList");
-
-                        String lines = "";
-
-                        for (int i = 0; i < list.size(); i++) {
-
-                            Element node = (Element) list.get(i);
-
-                            List _list = node.getChildren("Number");
-
-                            List<String> xml_list = new ArrayList<String>();
-
-                            for (Object object : _list) {
-                                Element _node = (Element) object;
-                                lines += (_node.getText());
-                                xml_list.add(_node.getText());
-                            }
-
-                            Calendar c = Calendar.getInstance();
-                            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-                            String added_date = df.format(c.getTime());
-
-                            dataSource.open();
-
-                            for (String item :
-                                    xml_list) {
-                                String address = item;
-                                String name = "unknown No.";
-                                dataSource.addToBlockList(address, name, added_date);
-                            }
-
-                            Toast.makeText(getApplicationContext(), "Blocklist imported from file: "+fileName, Toast.LENGTH_LONG).show();
-                        }
-                    } catch (IOException io) {
-                        Toast.makeText(getApplicationContext(), io.toString(), Toast.LENGTH_LONG).show();
-                        break;
-                    } catch (JDOMException jdomex) {
-                        Toast.makeText(getApplicationContext(), jdomex.toString(), Toast.LENGTH_LONG).show();
-                        break;
-                    }
-                    break;
-                }//xml case end
-
-                default:{
-                    Toast.makeText(getApplicationContext(), "ERROR: Invalid File selected",Toast.LENGTH_LONG).show();
-                    break;
-                }
-            }//switch end
+            }
+            fileReader(file_type, file, fileName);
         }else if(resultCode == RESULT_CANCELED) {
             //nothing
         }else{
@@ -667,6 +541,125 @@ public class MainActivity extends ListActivity
                 } catch (Exception e) {
                     Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
                 }
+                break;
+            }
+        }
+    }
+    private void fileReader(String file_type, String file, String fileName){
+        switch (file_type) {
+            //txt filetype case and method
+            case ".txt": {
+                try {
+                    File f = new File(file);
+                    FileInputStream fileInputStream = new FileInputStream(f);
+                    BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
+
+                    StringBuffer stringBuffer = new StringBuffer();
+
+                    while (bufferedInputStream.available() != 0) {
+                        char c = (char) bufferedInputStream.read();
+                        stringBuffer.append(c);
+                    }
+                    List<String> list_txt;
+                    list_txt = Arrays.asList(stringBuffer.toString().split("\n"));
+
+                    Calendar c = Calendar.getInstance();
+                    SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+                    String added_date = df.format(c.getTime());
+
+                    dataSource.open();
+
+                    for (String item :
+                            list_txt) {
+                        String address = item;
+                        String name = "unknown No.";
+                        dataSource.addToBlockList(address, name, added_date);
+                    }
+                    Toast.makeText(getApplicationContext(), "Blocklist imported from file: "+fileName, Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+                    break;
+                }
+                break;
+            }//txt case end
+
+            //csv filetype method and case
+            case ".csv": {
+                try{
+                    CSVReader reader = new CSVReader(new FileReader(file));
+                    Calendar c = Calendar.getInstance();
+                    SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+                    String added_date = df.format(c.getTime());
+                    dataSource.open();
+                    String[] rawAddress = reader.readNext();
+                    for(int i=0;rawAddress.length>i;i++){
+                        String address = rawAddress[i];
+                        String name = "unknown No.";
+                        dataSource.addToBlockList(address, name, added_date);
+                    }
+                    reader.close();
+                    dataSource.close();
+                    Toast.makeText(getApplicationContext(), "Blocklist imported from file: "+fileName, Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+                    break;
+                }
+                break;
+            }//csv case end
+
+            //xml filetype method and case
+            case ".xml": {
+                SAXBuilder builder = new SAXBuilder();
+                File xmlFile = new File(file);
+
+                try {
+                    Document document = (Document) builder.build(xmlFile);
+                    Element rootNode = document.getRootElement();
+                    List list = rootNode.getChildren("BlockList");
+
+                    String lines = "";
+
+                    for (int i = 0; i < list.size(); i++) {
+
+                        Element node = (Element) list.get(i);
+
+                        List _list = node.getChildren("Number");
+
+                        List<String> xml_list = new ArrayList<String>();
+
+                        for (Object object : _list) {
+                            Element _node = (Element) object;
+                            lines += (_node.getText());
+                            xml_list.add(_node.getText());
+                        }
+
+                        Calendar c = Calendar.getInstance();
+                        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+                        String added_date = df.format(c.getTime());
+
+                        dataSource.open();
+
+                        for (String item :
+                                xml_list) {
+                            String address = item;
+                            String name = "unknown No.";
+                            dataSource.addToBlockList(address, name, added_date);
+                        }
+
+                        Toast.makeText(getApplicationContext(), "Blocklist imported from file: "+fileName, Toast.LENGTH_LONG).show();
+                    }
+                } catch (IOException io) {
+                    Toast.makeText(getApplicationContext(), io.toString(), Toast.LENGTH_LONG).show();
+                    break;
+                } catch (JDOMException jdomex) {
+                    Toast.makeText(getApplicationContext(), jdomex.toString(), Toast.LENGTH_LONG).show();
+                    break;
+                }
+                break;
+            }//xml case end
+
+            default:{
+                Toast.makeText(getApplicationContext(), "ERROR: Invalid File selected",Toast.LENGTH_LONG).show();
                 break;
             }
         }
