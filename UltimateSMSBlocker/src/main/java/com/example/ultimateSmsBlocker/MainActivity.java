@@ -69,7 +69,6 @@ public class MainActivity extends ListActivity
         super.onRestart ();
         dataSource.open ();
         list = dataSource.getBlockList ();
-
         listView = getListView ();
         refresh ();
     }
@@ -291,7 +290,9 @@ public class MainActivity extends ListActivity
                 }
             }
 
-            //case for menu sort by date
+            /**
+             * case for menu item sort by date
+             */
             case R.id.sort_by_date:{
                 refresh();
                 Collections.sort ( list, BlockMessage.dateComparator );
@@ -300,7 +301,9 @@ public class MainActivity extends ListActivity
                 break;
             }
 
-            //case for menu sort by name
+            /**
+             * case for menu item sort by name
+             */
             case R.id.sort_by_name:{
                 refresh ();
                 Collections.sort ( list, BlockMessage.NameComparator );
@@ -309,7 +312,9 @@ public class MainActivity extends ListActivity
                 break;
             }
 
-            //case for menu sort by number
+            /**
+             * case for menu item sort by number
+             */
             case R.id.sort_by_number:{
                 refresh ();
                 Collections.sort ( list, BlockMessage.NumberComparator );
@@ -322,6 +327,9 @@ public class MainActivity extends ListActivity
         return super.onOptionsItemSelected ( item ); // call super's method
     } // end method onOptionsItemSelected
 
+    /**
+     * Block list item click method
+     */
     @Override
     protected void onListItemClick (ListView l, View v, int position, long id)
     {
@@ -372,6 +380,9 @@ public class MainActivity extends ListActivity
         setListAdapter ( adapter );
     }
 
+    /**
+     * import intent returns file path and rest happens here
+     */
     protected void onActivityResult (int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK){
             super.onActivityResult(requestCode, resultCode, data);
@@ -405,7 +416,13 @@ public class MainActivity extends ListActivity
         }
     }//onActivity intent end
 
-// custom methods
+/**
+* Custom methods
+*/
+
+    /**
+     * checking for old messages and delete them
+     */
     private void checkForOldMessages(){
         int total = 0;
         for (Message msg : messages_list)
@@ -434,6 +451,9 @@ public class MainActivity extends ListActivity
         }
     }
 
+    /**
+     * check if retain_days are not set and set them to default
+     */
     private void checkFirstTime(){
         SharedPreferences.Editor editor;
         if(settings.getInt("retain_days", -1)< 0) {
@@ -451,6 +471,10 @@ public class MainActivity extends ListActivity
             }
         }
     }
+
+    /**
+     * Filepath manipulator that appends number to file name if one already exists
+     */
     private String getFilePath(String ext){
         String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd");
@@ -469,6 +493,11 @@ public class MainActivity extends ListActivity
         }
         return file_path;
     }
+
+    /**
+     * file exporter methods, takes menu id(1-3) and writes file
+     * @param which
+     */
     private void fileWriter(int which){
         List<BlockMessage> block_list = dataSource.getBlockList();
         switch (which) {
@@ -545,6 +574,10 @@ public class MainActivity extends ListActivity
             }
         }
     }
+
+    /**
+     * file importer method that takes file extension, file path, and file name then imports it to blocklist
+     */
     private void fileReader(String file_type, String file, String fileName){
         switch (file_type) {
             //txt filetype case and method

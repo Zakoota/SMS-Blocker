@@ -47,17 +47,19 @@ public class SmsMessageReceiver extends BroadcastReceiver
 
     @Override
     public void onReceive (final Context context, Intent intent) {
-        settings = context.getSharedPreferences("settings",
-                context.MODE_PRIVATE);
+        settings = context.getSharedPreferences("settings",context.MODE_PRIVATE);
         rg_code = settings.getInt("rb_set", 1);
 
-        //case 4 block none
+        /**
+         * case 4: block none
+         */
         if (rg_code == 4) {
             return;
         }else{
             notify_toggle = settings.getBoolean("notify_toggle", true);
             block_unknown = settings.getBoolean("block_unknown", false);
             Bundle extras = intent.getExtras();
+            //ends if empty message
             if (extras == null) {
                 return;
             }
@@ -112,10 +114,13 @@ public class SmsMessageReceiver extends BroadcastReceiver
                         isContact = true;
                     }
                     switch(rg_code){
-                        //Case 1 block the blocklist
+                        /**
+                         * Case 1: Block the Blocklist
+                         */
                         case 1:{
                             if (list.contains(fromAddress) || (block_unknown && !isContact)){
                                 abortBroadcast();
+
                                 if (notify_toggle) {
                                     if (isContact) {
                                         Toast.makeText(context, "Message blocked from " + fromDisplayName, Toast.LENGTH_SHORT).show();
@@ -128,7 +133,10 @@ public class SmsMessageReceiver extends BroadcastReceiver
                             }
                             break;
                         }//case 1 end
-                        //case 2 block if it is not in blocklist
+
+                        /**
+                         * Case 2: Block if it is not in the Blocklist
+                         */
                         case 2:{
                             if(!list.contains(fromAddress)){
                                 abortBroadcast();
@@ -144,7 +152,10 @@ public class SmsMessageReceiver extends BroadcastReceiver
                             }
                             break;
                         }//case 2 end
-                        //case 2 block all incoming messages
+
+                        /**
+                         * Case 3:Block all incoming messages
+                         */
                         case 3:{
                             abortBroadcast();
                             if (notify_toggle) {
@@ -158,8 +169,8 @@ public class SmsMessageReceiver extends BroadcastReceiver
                         }//case 3 end
                     }//switch end
 
-                    /*
-                     * Save blocked message to database
+                    /**
+                     * save blocked messages to message table
                      */
                     try {
                         int days = settings.getInt("retain_days", 0);

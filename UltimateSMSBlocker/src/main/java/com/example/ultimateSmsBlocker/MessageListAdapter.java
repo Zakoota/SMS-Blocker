@@ -14,9 +14,6 @@ import java.util.List;
  */
 
 public class MessageListAdapter extends ArrayAdapter<Message> {
-    public MessageListAdapter(Context context, int textViewResourceId) {
-        super(context, textViewResourceId);
-    }
 
     public MessageListAdapter(Context context, int resource, List<Message> items) {
         super(context, resource, items);

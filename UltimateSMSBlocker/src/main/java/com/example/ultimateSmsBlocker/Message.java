@@ -61,13 +61,4 @@ public class Message {
     public void setId (int id) {
         this.id = id;
     }
-
-    @Override
-    public String toString () {
-
-        return "\nAddress : " + address
-                + "\nReceived : " + Utils.dateFromLong ( Long.parseLong ( receiveDate ) )
-                + "\nExpires : " + Utils.dateFromLong ( Long.parseLong ( retainDate ) )
-                + "\nBody : " + body;
-    }
 }

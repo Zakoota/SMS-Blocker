@@ -41,14 +41,16 @@ public class Settings extends Activity
     protected void onCreate (Bundle savedInstanceState)
     {
         super.onCreate ( savedInstanceState );
-        setContentView ( R.layout.settings );
 
-        settings = getApplicationContext ().getSharedPreferences ( "settings",
-                this.MODE_PRIVATE );
+        /**
+         * display setting layout
+         */
+        setContentView ( R.layout.settings );
+        settings = getApplicationContext ().getSharedPreferences ( "settings", this.MODE_PRIVATE );
         editor = settings.edit ();
 
-        /*
-         * Notification toggle button
+        /**
+         * Notification toggle button initialize and change listener
          */
         Boolean toggle = settings.getBoolean("notify_toggle", true);
         tgl = (ToggleButton) findViewById(R.id.btn_tgl);
@@ -69,8 +71,9 @@ public class Settings extends Activity
             }
         } );
 
-        /*
-         * Block unknown toggle
+
+        /**
+         * Block unknown toggle initialize and change listener
          */
         Boolean toggle2 = settings.getBoolean("block_unknown", false);
         Boolean tgl2_state = settings.getBoolean("tgl2_state",true);
@@ -88,14 +91,15 @@ public class Settings extends Activity
                 }
             } );
 
-        /*
+
+        /**
          * TextView for displaying retain_days
          */
         ev = (TextView) findViewById(R.id.tv_days);
         ev.setText(String.valueOf(settings.getInt("retain_days",0)));
 
-        /*
-         * RadioGroup code
+        /**
+         * Radio group initialize and change listener
          */
         rg1 = (RadioGroup) findViewById(R.id.rg1);
         rgSetter(settings.getInt("rb_set", 1));
@@ -117,8 +121,8 @@ public class Settings extends Activity
                                        });
 
 
-        /*
-         * Button for displaying dialog and change retain_days
+        /**
+         * set button listener and retain_days setter
          */
         btn = (Button) findViewById(R.id.btn_set);
         btn.setOnClickListener ( new View.OnClickListener ()
@@ -181,8 +185,8 @@ public class Settings extends Activity
         rgSetter(settings.getInt("rb_set", 1));
     }
 
-    /*
-     * Radio Group ID getter in simple int
+    /**
+     * Radio group id getter that returns in simple int (1-4)
      */
     private int rgGetter(){
         int rbChecked = rg1.getCheckedRadioButtonId();
@@ -208,8 +212,8 @@ public class Settings extends Activity
         return btn;
     }
 
-    /*
-     * RadioGroup setter in Simple int
+    /**
+     * Radio Group button setter that takes simple int (1-4) and returns true if set
      */
     private boolean rgSetter(int i){
         editor = settings.edit();

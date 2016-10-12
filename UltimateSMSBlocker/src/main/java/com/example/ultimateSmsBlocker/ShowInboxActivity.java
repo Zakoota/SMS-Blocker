@@ -37,39 +37,24 @@ public class ShowInboxActivity extends ListActivity
     protected void onCreate (Bundle savedInstanceState)
     {
         super.onCreate ( savedInstanceState );
-
         ctv = (CheckedTextView) findViewById ( R.id.checked_tv );
-
         list = new ArrayList<String> ();
-
         smsList = new ArrayList<SMSData> ();
-
-        adapter = new ArrayAdapter<String> ( getApplicationContext (), R.layout.checked_tv
-                , list );
+        adapter = new ArrayAdapter<String> ( getApplicationContext (), R.layout.checked_tv, list );
         setListAdapter ( adapter );
 
-
+        /**
+         * runs background task to add number to blocklist from inbox
+         */
         task = new MyTask ();
         task.execute ( "s" );
-
         listView = getListView ();
-
         listView.setChoiceMode ( ListView.CHOICE_MODE_MULTIPLE );
-
     }
 
-    boolean tryParseLong (String value)
-    {
-        try
-        {
-            Long.parseLong ( value );
-            return true;
-        } catch (Exception e)
-        {
-            return false;
-        }
-    }
-
+    /**
+     * make it quit successfully on back key pressed
+     */
     @Override
     public void onBackPressed ()
     {
@@ -78,6 +63,9 @@ public class ShowInboxActivity extends ListActivity
         finish ();
     }
 
+    /**
+     * inflate a menu containing button on action bar
+     */
     @Override
     public boolean onCreateOptionsMenu (Menu menu)
     {
@@ -87,6 +75,9 @@ public class ShowInboxActivity extends ListActivity
         return true;
     }
 
+    /**
+     * block selected messages on pressing block button on action bar
+     */
     @Override
     public boolean onOptionsItemSelected (MenuItem item)
     {
@@ -169,6 +160,21 @@ public class ShowInboxActivity extends ListActivity
         listView.clearChoices ();
     }
 
+    /**
+     * checks if valid date
+     */
+    boolean tryParseLong (String value)
+    {
+        try
+        {
+            Long.parseLong ( value );
+            return true;
+        } catch (Exception e)
+        {
+            return false;
+        }
+    }
+
     class MyTask extends android.os.AsyncTask<String, String, String>
     {
 
@@ -201,98 +207,58 @@ public class ShowInboxActivity extends ListActivity
             adapter.notifyDataSetChanged ();
         }
 
+
+        /**
+         * add number to block list in background
+         */
         @Override
-        protected String doInBackground (String... params)
-        {
-
-
-            try
-            {
-
-
+        protected String doInBackground (String... params){
+            try{
                 tmp = new ArrayList<String> ();
 
                 Uri uri = Uri.parse ( "content://sms/inbox" );
                 Cursor c = getContentResolver ().query ( uri, null, null, null, null );
                 startManagingCursor ( c );
 
-                // Read the sms data and store it in the list
-                if (c.moveToNext ())
-                {
-
-                    for (int i = 0; i < c.getCount (); i++)
-                    {
+                // Read the sms data and stores number in blocklist
+                if (c.moveToNext ()){
+                    for (int i = 0; i < c.getCount (); i++){
                         SMSData sms = new SMSData ();
                         sms.setBody ( c.getString ( c.getColumnIndexOrThrow ( "body" ) ).toString () );
 
                         String num = ( c.getString ( c.getColumnIndexOrThrow ( "address" ) ).toString () );
                         String date = null;
                         int date_index;
-                        try
-                        {
-
+                        try{
                             date_index = ( c.getColumnIndexOrThrow ( "date" ) );
-
                             date = c.getString ( date_index );
-                        } catch (Exception e)
-                        {
-//                    Toast.makeText ( ShowInboxActivity.this, e.toString (), Toast.LENGTH_LONG ).show ();
-                        }
+                        }catch(Exception e){}
                         sms.setNumber ( num );
-                        try
-                        {
-                            if (tryParseLong ( date ))
-                            {
+                        try{
+                            if (tryParseLong ( date )){
                                 sms.setDate ( Long.parseLong ( date ) );
                             }
 
                             Uri lookupUri = Uri.withAppendedPath ( ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode ( num ) );
                             Cursor cc = getContentResolver ().query ( lookupUri, new String[]{ ContactsContract.Data.DISPLAY_NAME }, null, null, null );
-                            try
-                            {
+                            try{
                                 cc.moveToFirst ();
                                 String displayName = cc.getString ( 0 );
                                 sms.setName ( displayName );
+                            }catch (Exception e){}
+                        }catch (Exception e){}
 
-                            } catch (Exception e)
-                            {
-//                    Toast.makeText ( ShowInboxActivity.this, e.toString (), Toast.LENGTH_LONG ).show ();
-//                    break;
-                            }
-
-
-                        } catch (Exception e)
-                        {
-                            //Toast.makeText ( getApplicationContext (), "falied to parse", Toast.LENGTH_LONG ).show ();
-                        }
-
-//
-
-                        if (!( tmp.contains ( num ) ))
-                        {
+                        if (!( tmp.contains ( num ) )){
                             smsList.add ( sms );
                             publishProgress ( sms.toString () );
-                        } else
-                        {
-
                         }
-
                         tmp.add ( num );
-
                         c.moveToNext ();
-
-
                     }
                 }
-//                c.close ();
-
-
-            } catch (Exception e)
-            {
+            }catch(Exception e){
                 Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
             }
-
-
             return ( "" );
         }
 

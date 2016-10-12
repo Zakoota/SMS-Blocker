@@ -21,6 +21,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TabHost;
 
+/**
+ * creates 3 tabs i.e. Blocklist, Blocked Messages, Settings
+ */
 public class Tabs extends TabActivity
 {
 
