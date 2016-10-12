@@ -1,7 +1,6 @@
 package com.example.ultimateSmsBlocker;
 
 import android.os.Build;
-
 import java.util.Date;
 
 public class Utils {

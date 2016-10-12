@@ -29,7 +29,6 @@ public class Settings extends Activity
 
     private ToggleButton tgl;
     private ToggleButton tgl2;
-    private Button btn;
     private TextView ev;
     private SharedPreferences settings;
     private SharedPreferences.Editor editor;
@@ -124,6 +123,8 @@ public class Settings extends Activity
         /**
          * set button listener and retain_days setter
          */
+
+        Button btn;
         btn = (Button) findViewById(R.id.btn_set);
         btn.setOnClickListener ( new View.OnClickListener ()
         {

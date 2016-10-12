@@ -132,11 +132,6 @@ public class Data
 
     /**
      * add a number to blocklist table
-     *
-     * @param address
-     * @param name
-     * @param added_date
-     * @return
      */
     public boolean addToBlockList (String address, String name, String added_date) {
         ContentValues values = new ContentValues ();
@@ -189,6 +184,10 @@ public class Data
         }
         return list;
     }
+
+    /**
+     * checks if blocklist table is empty
+     */
     public boolean isBlockListEmpty(){
         List<BlockMessage> msgs = this.getBlockList();
         if (msgs.isEmpty()){
