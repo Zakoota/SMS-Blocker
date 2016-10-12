@@ -26,19 +26,20 @@ public class AddUnknown extends Activity {
         super.onCreate ( savedInstanceState );
 
         dataSource = new Data ( getApplicationContext () );
-
         dataSource.open ();
 
-        // inflate slideshow_name_edittext.xml to create an EditText
+        /*
+         *  inflate add_unknown.xml to create EditText
+         */
         et_view = getLayoutInflater ().inflate ( R.layout.add_unknown, null );
-        et =
-                (EditText) et_view.findViewById ( R.id.et_unknown );
+        et = (EditText) et_view.findViewById ( R.id.et_unknown );
 
+        /*
+         * Build alert dialog to get number from user
+         */
         AlertDialog.Builder builder_1 = new AlertDialog.Builder ( AddUnknown.this )
                 .setView ( et_view )
                 .setTitle ( "Add Unknow Number : " );
-
-
         builder_1.setPositiveButton ( "Set", new DialogInterface.OnClickListener () {
             @Override
             public void onClick (DialogInterface dialog, int which) {

@@ -40,6 +40,7 @@ public class SmsMessageReceiver extends BroadcastReceiver
 
     private static final String TAG = "SmsMessageReceiver";
     Boolean notify_toggle;
+    Boolean block_unknown;
     SharedPreferences settings;
     int rg_code;
 
@@ -50,11 +51,12 @@ public class SmsMessageReceiver extends BroadcastReceiver
                 context.MODE_PRIVATE);
         rg_code = settings.getInt("rb_set", 1);
 
-        //case 5 block none
-        if (rg_code == 5) {
+        //case 4 block none
+        if (rg_code == 4) {
             return;
         }else{
             notify_toggle = settings.getBoolean("notify_toggle", true);
+            block_unknown = settings.getBoolean("block_unknown", false);
             Bundle extras = intent.getExtras();
             if (extras == null) {
                 return;
@@ -112,7 +114,7 @@ public class SmsMessageReceiver extends BroadcastReceiver
                     switch(rg_code){
                         //Case 1 block the blocklist
                         case 1:{
-                            if (list.contains(fromAddress)){
+                            if (list.contains(fromAddress) || (block_unknown && !isContact)){
                                 abortBroadcast();
                                 if (notify_toggle) {
                                     if (isContact) {
@@ -125,33 +127,9 @@ public class SmsMessageReceiver extends BroadcastReceiver
                                 return;
                             }
                             break;
-                        }
-                        //case 2 block all incoming messages
+                        }//case 1 end
+                        //case 2 block if it is not in blocklist
                         case 2:{
-                            abortBroadcast();
-                            if (notify_toggle) {
-                                if (isContact) {
-                                    Toast.makeText(context, "Message blocked from " + fromDisplayName, Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(context, "Message Blocked from " + fromAddress, Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                            break;
-                        }
-                        //case 3 only allow contacts
-                        case 3:{
-                            if (!isContact){
-                                abortBroadcast();
-                                if (notify_toggle) {
-                                        Toast.makeText(context, "Message Blocked from " + fromAddress, Toast.LENGTH_SHORT).show();
-                                }
-                            }else{
-                                return;
-                            }
-                            break;
-                        }
-                        //case 4 block if it is not in blocklist
-                        case 4:{
                             if(!list.contains(fromAddress)){
                                 abortBroadcast();
                                 if (notify_toggle) {
@@ -165,8 +143,20 @@ public class SmsMessageReceiver extends BroadcastReceiver
                                 return;
                             }
                             break;
-                        }
-                    }
+                        }//case 2 end
+                        //case 2 block all incoming messages
+                        case 3:{
+                            abortBroadcast();
+                            if (notify_toggle) {
+                                if (isContact) {
+                                    Toast.makeText(context, "Message blocked from " + fromDisplayName, Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(context, "Message Blocked from " + fromAddress, Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            break;
+                        }//case 3 end
+                    }//switch end
 
                     /*
                      * Save blocked message to database

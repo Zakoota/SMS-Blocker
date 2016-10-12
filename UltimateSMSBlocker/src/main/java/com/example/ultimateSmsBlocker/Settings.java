@@ -20,7 +20,6 @@ import static com.example.ultimateSmsBlocker.R.id.btn_rb1;
 import static com.example.ultimateSmsBlocker.R.id.btn_rb2;
 import static com.example.ultimateSmsBlocker.R.id.btn_rb3;
 import static com.example.ultimateSmsBlocker.R.id.btn_rb4;
-import static com.example.ultimateSmsBlocker.R.id.btn_rb5;
 
 /**
  * Created by Raza on 7/4/2016.
@@ -29,6 +28,7 @@ public class Settings extends Activity
 {
 
     private ToggleButton tgl;
+    private ToggleButton tgl2;
     private Button btn;
     private TextView ev;
     private SharedPreferences settings;
@@ -45,14 +45,12 @@ public class Settings extends Activity
 
         settings = getApplicationContext ().getSharedPreferences ( "settings",
                 this.MODE_PRIVATE );
-
         editor = settings.edit ();
-
-                Boolean toggle = settings.getBoolean("notify_toggle", true);
 
         /*
          * Notification toggle button
          */
+        Boolean toggle = settings.getBoolean("notify_toggle", true);
         tgl = (ToggleButton) findViewById(R.id.btn_tgl);
         tgl.setChecked(toggle);
         tgl.setOnCheckedChangeListener ( new CompoundButton.OnCheckedChangeListener ()
@@ -63,8 +61,32 @@ public class Settings extends Activity
                 Boolean v = tgl.isChecked ();
                 editor.putBoolean ( "notify_toggle", v );
                 editor.commit ();
+                if(v){
+                    Toast.makeText(getApplicationContext(), "Notifications are now on", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(), "Notifications are now off", Toast.LENGTH_SHORT).show();
+                }
             }
         } );
+
+        /*
+         * Block unknown toggle
+         */
+        Boolean toggle2 = settings.getBoolean("block_unknown", false);
+        Boolean tgl2_state = settings.getBoolean("tgl2_state",true);
+        tgl2 = (ToggleButton) findViewById(R.id.btn_tgl2);
+            tgl2.setChecked(toggle2);
+            tgl2.setEnabled(tgl2_state);
+            tgl2.setOnCheckedChangeListener ( new CompoundButton.OnCheckedChangeListener ()
+            {
+                @Override
+                public void onCheckedChanged (CompoundButton buttonView, boolean isChecked)
+                {
+                    Boolean v = tgl2.isChecked ();
+                    editor.putBoolean ( "block_unknown", v );
+                    editor.commit ();
+                }
+            } );
 
         /*
          * TextView for displaying retain_days
@@ -81,6 +103,16 @@ public class Settings extends Activity
                                            @Override
                                            public void onCheckedChanged(RadioGroup group, int checkedId) {
                                                rgSetter(rgGetter());
+
+                                               //Disable unable block_unknown button depending on radio button
+                                               if(rgGetter()!=1){
+                                                   tgl2.setEnabled(false);
+                                                   editor.putBoolean("tgl2_state",false);
+                                               }else{
+                                                   tgl2.setEnabled(true);
+                                                   editor.putBoolean("tgl2_state",true);
+                                               }
+                                               editor.commit();
                                            }
                                        });
 
@@ -144,7 +176,8 @@ public class Settings extends Activity
         settings = getApplicationContext ().getSharedPreferences ( "settings",
                 this.MODE_PRIVATE );
         ev.setText(String.valueOf(settings.getInt("retain_days",0))+" days");
-        tgl.setChecked( settings.getBoolean("notify_toggle", false));
+        tgl.setChecked( settings.getBoolean("notify_toggle", true));
+        tgl2.setChecked(settings.getBoolean("block_unknown",false));
         rgSetter(settings.getInt("rb_set", 1));
     }
 
@@ -169,10 +202,6 @@ public class Settings extends Activity
             }
             case btn_rb4:{
                 btn = 4;
-                break;
-            }
-            case btn_rb5:{
-                btn = 5;
                 break;
             }
         }
@@ -207,12 +236,6 @@ public class Settings extends Activity
             case 4:{
                 rg1.check(btn_rb4);
                 editor.putInt("rb_set", 4);
-                isSet = true;
-                break;
-            }
-            case 5:{
-                rg1.check(btn_rb5);
-                editor.putInt("rb_set", 5);
                 isSet = true;
                 break;
             }default:{
