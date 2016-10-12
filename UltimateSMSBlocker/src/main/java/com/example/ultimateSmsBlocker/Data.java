@@ -3,6 +3,7 @@ package com.example.ultimateSmsBlocker;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -18,8 +19,8 @@ public class Data
 
     private static final String LOGTAG = "message";
 
-    SQLiteOpenHelper dbHelper;
-    SQLiteDatabase db;
+    private SQLiteOpenHelper dbHelper;
+    private SQLiteDatabase db;
 
     private String[] allColumns = {
             MessagesDbHelper.COLUMN_ID,
@@ -29,22 +30,38 @@ public class Data
             MessagesDbHelper.COLUMN_RETAIN_DATE,
     };
 
+    /**
+     * get connection to database
+     *
+     * @param context
+     */
     public Data (Context context) {
         dbHelper = new MessagesDbHelper ( context );
         db = dbHelper.getWritableDatabase ();
     }
 
+    /**
+     * get connection to database
+     */
     public void open () {
         db = dbHelper.getWritableDatabase ();
         Log.i ( LOGTAG, "db opened" );
 
     }
 
+    /**
+     * close database connection
+     */
     public void close () {
         dbHelper.close ();
         Log.i ( LOGTAG, "db closed" );
     }
 
+    /**
+     * create new message and insert into table messages
+     * @param message
+     * @return
+     */
     public Message create (Message message) {
         try {
             ContentValues values = new ContentValues();
@@ -64,6 +81,12 @@ public class Data
         return message;
     }
 
+    /**
+     * delete a blocked message from messages table
+     *
+     * @param msg
+     * @return
+     */
     public boolean deleteBlocked (Message msg) {
         boolean response = false;
         try {
@@ -77,6 +100,10 @@ public class Data
         return response;
     }
 
+    /**
+     * get all blocked messages from messages table and return as message list
+     * @return
+     */
     public List<Message> findAll () {
 
 
@@ -103,6 +130,14 @@ public class Data
         return messages;
     }
 
+    /**
+     * add a number to blocklist table
+     *
+     * @param address
+     * @param name
+     * @param added_date
+     * @return
+     */
     public boolean addToBlockList (String address, String name, String added_date) {
         ContentValues values = new ContentValues ();
         values.put ( MessagesDbHelper.COLUMN_ADDRESS, address );
@@ -114,6 +149,11 @@ public class Data
         return ( result != -1 );
     }
 
+    /**
+     * ger a number and delete it from table of blocklist
+     * @param _address
+     * @return
+     */
     public boolean removeFromBlockList (String _address) {
 
         String where = MessagesDbHelper.COLUMN_ADDRESS + "='" + _address + "'";
@@ -122,6 +162,10 @@ public class Data
 
     }
 
+    /**
+     * get all blocklist from Table blocklist and return it as list
+     * @return
+     */
     public List<BlockMessage> getBlockList () {
 
         List<BlockMessage> list = new ArrayList<BlockMessage> ();
@@ -145,5 +189,11 @@ public class Data
         }
         return list;
     }
-
+    public boolean isBlockListEmpty(){
+        List<BlockMessage> msgs = this.getBlockList();
+        if (msgs.isEmpty()){
+            return true;
+        }
+        return false;
+    }
 }

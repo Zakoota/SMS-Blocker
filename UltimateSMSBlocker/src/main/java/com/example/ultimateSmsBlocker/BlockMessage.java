@@ -93,7 +93,6 @@ public class BlockMessage implements Comparable<BlockMessage>
     {
         this.name = "";
         this.date = "";
-
         this.id = 0;
 
     }

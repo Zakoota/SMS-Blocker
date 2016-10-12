@@ -15,6 +15,10 @@ import java.util.List;
 
 import static android.content.ContentValues.TAG;
 
+/**
+ * Class for creating blocklist and populating it
+ */
+
 public class BlockMessagesList extends ListActivity
 {
 

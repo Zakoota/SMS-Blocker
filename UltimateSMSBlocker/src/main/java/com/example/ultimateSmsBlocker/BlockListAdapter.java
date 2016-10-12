@@ -14,14 +14,13 @@ import java.util.List;
  */
 public class BlockListAdapter extends ArrayAdapter<BlockMessage> {
 
-    public BlockListAdapter(Context context, int textViewResourceId) {
-        super(context, textViewResourceId);
-    }
-
     public BlockListAdapter(Context context, int resource, List<BlockMessage> items) {
         super(context, resource, items);
     }
 
+    /**
+     * Overriding getView to customize blocklist
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 

@@ -28,13 +28,13 @@ public class AddUnknown extends Activity {
         dataSource = new Data ( getApplicationContext () );
         dataSource.open ();
 
-        /*
+        /**
          *  inflate add_unknown.xml to create EditText
          */
         et_view = getLayoutInflater ().inflate ( R.layout.add_unknown, null );
         et = (EditText) et_view.findViewById ( R.id.et_unknown );
 
-        /*
+        /**
          * Build alert dialog to get number from user
          */
         AlertDialog.Builder builder_1 = new AlertDialog.Builder ( AddUnknown.this )
@@ -43,8 +43,6 @@ public class AddUnknown extends Activity {
         builder_1.setPositiveButton ( "Set", new DialogInterface.OnClickListener () {
             @Override
             public void onClick (DialogInterface dialog, int which) {
-
-
                 try {
                     String _input;
                     _input = et.getText ().toString ().trim ();
@@ -79,13 +77,14 @@ public class AddUnknown extends Activity {
             }
         } );
 
-        //Close activity addUnknown on dialog dismiss
+        /**
+         * Close activity add_Unknown.xml on dialog dismiss
+         */
         builder_1.setOnDismissListener(new DialogInterface.OnDismissListener(){
             @Override
             public void onDismiss(DialogInterface dialog){
                 finish();
             }});
-        builder_1.setCancelable ( true );
         builder_1.setCancelable ( true );
         builder_1.show ();
     }

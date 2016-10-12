@@ -60,7 +60,9 @@ public class MainActivity extends ListActivity
     ListView listView;
 
 
-
+    /**
+     * on restart get blocklist and populate it
+     */
     @Override
     protected void onRestart ()
     {
@@ -84,13 +86,19 @@ public class MainActivity extends ListActivity
         messages_list = dataSource.findAll ();
         settings = getApplicationContext ().getSharedPreferences ( "settings",this.MODE_PRIVATE );
 
-        //check and set default retain_days if not found
+        /**
+         * check and setDefault retain_days if not found
+         */
         checkFirstTime();
 
-        //check for expiring messages in database
+        /**
+         * check for expiring messages in table and delete them
+         */
         checkForOldMessages();
 
-        // series layout
+        /**
+         * get blocklist table and populate it using custom adapter
+         */
         dataSource.open ();
         list = dataSource.getBlockList ();
         adapter = new BlockListAdapter ( getApplicationContext (), R.layout.blocklist, list );
@@ -101,10 +109,9 @@ public class MainActivity extends ListActivity
     @Override
     protected void onResume ()
     {
+        super.onResume();
         dataSource.open ();
         list = dataSource.getBlockList ();
-//        adapter = new ArrayAdapter<BlockMessage> ( getApplicationContext (), R.layout.tv, list );
-        super.onResume ();
         refresh ();
     }
 
@@ -135,20 +142,23 @@ public class MainActivity extends ListActivity
     @Override
     public boolean onOptionsItemSelected (MenuItem item)
     {
-        // create a new Intent to launch the AddEditContact Activity
         switch(item.getItemId()) {
-
-            //case for menu add
+            /**
+             * case for add menu item
+             */
             case R.id.add:{
                 Intent intent = new Intent ( getApplicationContext (), ShowInboxActivity.class );
                 startActivity ( intent );
                 break;
             }
-
-            //case for menu add number
+            /**
+             * case for menu item add number
+             */
             case R.id.add_number:{
-                final AlertDialog.Builder builder = new AlertDialog.Builder ( this )
-                        .setTitle ( "Choose Option to Add Number" );
+                /**
+                 * show a dialog with two buttons Contact and Unknown, and call an intent accordingly
+                 */
+                final AlertDialog.Builder builder = new AlertDialog.Builder ( this ).setTitle ( "Choose Option to Add Number" );
                 builder.setNegativeButton ( "Contact", new DialogInterface.OnClickListener ()
                 {
                     @Override
@@ -168,81 +178,87 @@ public class MainActivity extends ListActivity
                     }
 
                 } );
-
-
                 builder.show ();
                 break;
             }
-
-            //case for series menu
+            /**
+             * case for item menu series
+             */
             case R.id.series:{
-                // create an input dialog to get slideshow name from user
-                // series layout
-                // get a reference to the LayoutInflater service
+                /**
+                 * inflate and get reference to both editTexts
+                 */
                 LayoutInflater inflater = (LayoutInflater) getSystemService (Context.LAYOUT_INFLATER_SERVICE );
-                // inflate slideshow_name_edittext.xml to create an EditText
                 view = inflater.inflate ( R.layout.series, null );
                 et_series_1 = (EditText) view.findViewById ( R.id.et_series_1 );
                 et_series_2 = (EditText) view.findViewById ( R.id.et_series_2 );
 
-
+                /**
+                 * show dialog
+                 */
                 AlertDialog.Builder inputDialog = new AlertDialog.Builder ( this );
                 inputDialog.setView ( view ); // set the dialog's custom View
                 inputDialog.setTitle ( "Enter series range" );
-
-                try {
-                    inputDialog.setPositiveButton("Add Series", new DialogInterface.OnClickListener() {
+                inputDialog.setPositiveButton("Add Series", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            try {
-
+                            try{
                                 String input = et_series_1.getText().toString().trim();
                                 String input_2 = et_series_2.getText().toString().trim();
+                                String inputHead = new String();
 
-
-                                //loop for input1 head
-                                int outerI;
-                                int innerJ;
-                                for(outerI=0;outerI<input.length();outerI++){
-                                    for(innerJ=49;innerJ<=57;innerJ++){
-                                        if(input.charAt(outerI)==innerJ){
+                                /**
+                                 * get header from input and plug it to series
+                                 */
+                                try {
+                                    int outerI;
+                                    int innerJ;
+                                    for (outerI = 0; outerI < input.length(); outerI++) {
+                                        for (innerJ = 49; innerJ <= 57; innerJ++) {
+                                            if (input.charAt(outerI) == innerJ) {
+                                                break;
+                                            }
+                                        }
+                                        if (input.charAt(outerI) == innerJ) {
                                             break;
                                         }
                                     }
-                                    if(input.charAt(outerI)==innerJ){
-                                        break;
+                                    inputHead = input.substring(0, outerI);
+                                    }catch(Exception e){
+                                        Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
                                     }
-                                }
-                                String inputHead = input.substring(0,outerI);
+                                /**
+                                 * try block for loop that makes series from provided start and end number
+                                 */
+                                try{
+                                    long start = Long.parseLong(input);
+                                    long end = Long.parseLong(input_2);
+                                    Calendar c = Calendar.getInstance();
+                                    SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+                                    String added_date = df.format(c.getTime());
 
-                                long start = Long.parseLong(input);
-                                long end = Long.parseLong(input_2);
+                                    for (long i = start; i <= end; i++) {
+                                        String address = inputHead + i + "";
+                                        String name = "unknown No.";
 
-                                Calendar c = Calendar.getInstance();
-                                SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-                                String added_date = df.format(c.getTime());
-
-                                for (long i = start; i <= end; i++) {
-                                    String address = inputHead + i + "";
-                                    String name = "unknown No.";
-
-                                    dataSource.addToBlockList(address, name, added_date);
+                                        dataSource.addToBlockList(address, name, added_date);
+                                    }
+                                }catch (Exception e){
+                                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
                                 }
                                 refresh();
-                            } catch (Exception e) {
+                            }catch (Exception e) {
                                 Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
                             }
                         }
-
                     });
                     inputDialog.show();
-                }catch (Exception e){
-                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
-                }
                 break;
-            }
+            }//end of series case
 
-            //case for menu import
+            /**
+             * case for menu item import
+             */
             case R.id._import:{
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("*/*");
@@ -252,11 +268,12 @@ public class MainActivity extends ListActivity
             }
 
 
-            //case for menu export
+            /**
+             * case for menu item export
+             */
             case R.id.export: {
-                final List<BlockMessage> block_list = dataSource.getBlockList();
-
-                if (block_list.size() > 0) {
+                if (!dataSource.isBlockListEmpty()) {
+                    final List<BlockMessage> block_list = dataSource.getBlockList();
                     final String list[] = {"Text file", "CSV file", "XML file"};
                     AlertDialog.Builder inputDialog = new AlertDialog.Builder(MainActivity.this);
                     inputDialog.setTitle("Choose Type of File for Export")
