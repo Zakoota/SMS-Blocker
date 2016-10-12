@@ -190,9 +190,6 @@ public class Data
      */
     public boolean isBlockListEmpty(){
         List<BlockMessage> msgs = this.getBlockList();
-        if (msgs.isEmpty()){
-            return true;
-        }
-        return false;
+        return msgs.isEmpty();
     }
 }

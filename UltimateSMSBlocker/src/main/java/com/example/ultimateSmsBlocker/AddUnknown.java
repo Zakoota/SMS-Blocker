@@ -69,10 +69,7 @@ public class AddUnknown extends Activity {
                         Toast.makeText ( getApplicationContext (), "Invalid Number", Toast.LENGTH_LONG ).show ();
 
                     }
-                } catch (Exception e) {
-                    Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
-
-                }
+                } catch (Exception e) { }
 
             }
         } );

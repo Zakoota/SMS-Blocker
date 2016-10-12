@@ -45,7 +45,7 @@ public class Settings extends Activity
          * display setting layout
          */
         setContentView ( R.layout.settings );
-        settings = getApplicationContext ().getSharedPreferences ( "settings", this.MODE_PRIVATE );
+        settings = getApplicationContext ().getSharedPreferences ( "settings", MODE_PRIVATE );
         editor = settings.edit ();
 
         /**
@@ -145,9 +145,7 @@ public class Settings extends Activity
                             if (et.getText ().length () > 0){
                                 try{
                                     days = Integer.parseInt ( et.getText ().toString () );
-                                }catch(Exception e){
-                                    Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
-                                }
+                                }catch(Exception e){ }
                             }
                             if (days > 1000)
                             {
@@ -164,9 +162,7 @@ public class Settings extends Activity
                                 editor.commit ();
                                 ev.setText(String.valueOf(settings.getInt("retain_days",0))+" days");
                             }
-                        }catch (Exception e){
-                            Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
-                        }
+                        }catch (Exception e){ }
                     }
                 });
                 inputDialog.show();
@@ -179,7 +175,7 @@ public class Settings extends Activity
     {
         super.onResume ();
         settings = getApplicationContext ().getSharedPreferences ( "settings",
-                this.MODE_PRIVATE );
+                MODE_PRIVATE );
         ev.setText(String.valueOf(settings.getInt("retain_days",0))+" days");
         tgl.setChecked( settings.getBoolean("notify_toggle", true));
         tgl2.setChecked(settings.getBoolean("block_unknown",false));

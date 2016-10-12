@@ -47,7 +47,7 @@ public class SmsMessageReceiver extends BroadcastReceiver
 
     @Override
     public void onReceive (final Context context, Intent intent) {
-        settings = context.getSharedPreferences("settings",context.MODE_PRIVATE);
+        settings = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
         rg_code = settings.getInt("rb_set", 1);
 
         /**
@@ -190,9 +190,7 @@ public class SmsMessageReceiver extends BroadcastReceiver
                         Message _message = new Message(fromAddress, message.getMessageBody(), (message.getTimestampMillis() + ""), input_date, 0);
 
                         dataSource.create(_message);
-                    } catch (Exception e) {
-                        Toast.makeText(context, e.toString(), Toast.LENGTH_LONG).show();
-                    }
+                    } catch (Exception e) { }
                     Log.i(TAG, "size of global passed size = " + block_list.size());
                 } catch (Exception e){
                     Log.i(TAG, "size of blocked list error" + e.toString());

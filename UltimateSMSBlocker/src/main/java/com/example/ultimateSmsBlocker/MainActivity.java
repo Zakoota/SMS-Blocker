@@ -83,7 +83,7 @@ public class MainActivity extends ListActivity
         dataSource = new Data ( getApplicationContext () );
         dataSource.open ();
         messages_list = dataSource.findAll ();
-        settings = getApplicationContext ().getSharedPreferences ( "settings",this.MODE_PRIVATE );
+        settings = getApplicationContext ().getSharedPreferences ( "settings", MODE_PRIVATE );
 
         /**
          * check and setDefault retain_days if not found
@@ -223,9 +223,7 @@ public class MainActivity extends ListActivity
                                         }
                                     }
                                     inputHead = input.substring(0, outerI);
-                                    }catch(Exception e){
-                                        Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
-                                    }
+                                    }catch(Exception e){ }
                                 /**
                                  * try block for loop that makes series from provided start and end number
                                  */
@@ -242,13 +240,9 @@ public class MainActivity extends ListActivity
 
                                         dataSource.addToBlockList(address, name, added_date);
                                     }
-                                }catch (Exception e){
-                                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
-                                }
+                                }catch (Exception e){ }
                                 refresh();
-                            }catch (Exception e) {
-                                Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
-                            }
+                            }catch (Exception e) { }
                         }
                     });
                     inputDialog.show();
@@ -366,10 +360,7 @@ public class MainActivity extends ListActivity
             inputDialog.setCancelable ( true );
             inputDialog.show ();
             refresh ();
-        } catch (Exception e)
-        {
-            Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
-        }
+        } catch (Exception e){ }
     }
 
     private void refresh ()
@@ -440,10 +431,7 @@ public class MainActivity extends ListActivity
                     dataSource.deleteBlocked ( msg );
                 }
 
-            }catch (Exception e)
-            {
-                Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
-            }
+            }catch (Exception e){ }
         }
         if (total > 0)
         {
@@ -466,9 +454,7 @@ public class MainActivity extends ListActivity
                         .setMessage("Expiry date for blocked messages is set to default 30 days.\nChange it to desired amount from Settings tab")
                         .setPositiveButton("OK",null);
                 alertDialogBuilder.show();
-            } catch (Exception e) {
-                Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
-            }
+            } catch (Exception e) { }
         }
     }
 
@@ -513,9 +499,7 @@ public class MainActivity extends ListActivity
                     }
                     fos.write(lines.getBytes());
                     Toast.makeText(getApplicationContext(), "Text file exported to path " + file_path, Toast.LENGTH_SHORT).show();
-                } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
-                }
+                } catch (Exception e) { }
                 break;
             }
             case 1: {
@@ -533,9 +517,7 @@ public class MainActivity extends ListActivity
                     writer.close();
 
                     Toast.makeText(getApplication(), "CSV file exported to "+file_path, Toast.LENGTH_LONG).show();
-                } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
-                }
+                } catch (Exception e) { }
                 break;
             }
             case 2: {
@@ -567,9 +549,7 @@ public class MainActivity extends ListActivity
                     xmlOutput.output(doc, fos);
 
                     Toast.makeText(getApplicationContext(), "XML file exported to path " + file_path, Toast.LENGTH_SHORT).show();
-                } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
-                }
+                } catch (Exception e) { }
                 break;
             }
         }
@@ -610,7 +590,6 @@ public class MainActivity extends ListActivity
                     }
                     Toast.makeText(getApplicationContext(), "Blocklist imported from file: "+fileName, Toast.LENGTH_LONG).show();
                 } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
                     break;
                 }
                 break;
@@ -634,7 +613,6 @@ public class MainActivity extends ListActivity
                     dataSource.close();
                     Toast.makeText(getApplicationContext(), "Blocklist imported from file: "+fileName, Toast.LENGTH_LONG).show();
                 } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
                     break;
                 }
                 break;
@@ -646,7 +624,7 @@ public class MainActivity extends ListActivity
                 File xmlFile = new File(file);
 
                 try {
-                    Document document = (Document) builder.build(xmlFile);
+                    Document document = builder.build(xmlFile);
                     Element rootNode = document.getRootElement();
                     List list = rootNode.getChildren("BlockList");
 

@@ -81,7 +81,6 @@ public class Contacts3 extends Activity {
                 finish();
             }
         } catch (Exception e) {
-            Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
             finish ();
         }
     }

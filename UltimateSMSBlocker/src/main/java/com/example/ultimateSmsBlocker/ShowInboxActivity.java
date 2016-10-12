@@ -107,7 +107,7 @@ public class ShowInboxActivity extends ListActivity
             for (Integer i :
                     checkedItems)
             {
-                SMSData sms = (SMSData) smsList.get ( i );
+                SMSData sms = smsList.get ( i );
 
                 try
                 {
@@ -137,17 +137,14 @@ public class ShowInboxActivity extends ListActivity
                     boolean isAdded = dataSource.addToBlockList ( address, name, added_date );
                     if (isAdded)
                     {
-                        Toast.makeText ( getApplicationContext (), "Blocked", Toast.LENGTH_LONG ).show ();
+                        Toast.makeText ( getApplicationContext (), "Added to blocklist", Toast.LENGTH_LONG ).show ();
                     } else
                     {
-                        Toast.makeText ( getApplicationContext (), "Already blocked", Toast.LENGTH_LONG ).show ();
+                        Toast.makeText ( getApplicationContext (), "Already in blocklist", Toast.LENGTH_LONG ).show ();
                     }
                     dataSource.close ();
 
-                } catch (Exception e)
-                {
-                    Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
-                }
+                } catch (Exception e){ }
             }
         }
         return super.onOptionsItemSelected ( item );
@@ -256,9 +253,7 @@ public class ShowInboxActivity extends ListActivity
                         c.moveToNext ();
                     }
                 }
-            }catch(Exception e){
-                Toast.makeText ( getApplicationContext (), e.toString (), Toast.LENGTH_LONG ).show ();
-            }
+            }catch(Exception e){ }
             return ( "" );
         }
 
