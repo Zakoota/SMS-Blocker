@@ -39,7 +39,7 @@ public class AddUnknown extends Activity {
          */
         AlertDialog.Builder builder_1 = new AlertDialog.Builder ( AddUnknown.this )
                 .setView ( et_view )
-                .setTitle ( "Add Unknow Number : " );
+                .setTitle ( "Add Unknown Number : " );
         builder_1.setPositiveButton ( "Set", new DialogInterface.OnClickListener () {
             @Override
             public void onClick (DialogInterface dialog, int which) {

@@ -9,7 +9,7 @@
         style="@style/tvField"
         android:paddingBottom="15sp"
         android:paddingTop="15sp"
-        android:text="Enter Start and End Limit" />
+        android:text="@string/enter_limit"/>
     <TableLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -19,7 +19,7 @@
                 style="@style/tvField"
                 android:paddingBottom="15sp"
                 android:paddingTop="8sp"
-                android:text="From:" />
+                android:text="@string/from" />
 
             <EditText
                 style="@style/etField"
@@ -32,7 +32,7 @@
                 style="@style/tvField"
                 android:paddingBottom="15sp"
                 android:paddingTop="8sp"
-                android:text="To:" />
+                android:text="@string/to" />
             <EditText
                 style="@style/etField"
                 android:id="@+id/et_series_2">

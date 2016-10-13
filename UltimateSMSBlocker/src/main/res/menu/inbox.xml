@@ -3,6 +3,6 @@
     <item
         android:id="@+id/btn_block"
         android:showAsAction="always"
-        android:title="Block">
+        android:title="@string/block">
     </item>
 </menu>

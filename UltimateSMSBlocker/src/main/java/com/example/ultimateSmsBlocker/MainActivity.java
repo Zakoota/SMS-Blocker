@@ -204,7 +204,7 @@ public class MainActivity extends ListActivity
                             try{
                                 String input = et_series_1.getText().toString().trim();
                                 String input_2 = et_series_2.getText().toString().trim();
-                                String inputHead = new String();
+                                String inputHead = "";
 
                                 /**
                                  * get header from input and plug it to series
@@ -223,7 +223,7 @@ public class MainActivity extends ListActivity
                                         }
                                     }
                                     inputHead = input.substring(0, outerI);
-                                    }catch(Exception e){ }
+                                    }catch(Exception e){}//empty
                                 /**
                                  * try block for loop that makes series from provided start and end number
                                  */

@@ -9,7 +9,7 @@
             android:textColor="@android:color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="From:"/>
+            android:text="@string/from"/>
         <TextView
         android:textSize="20sp"
         android:textColor="@android:color/white"
@@ -22,7 +22,7 @@
             android:textSize="16sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Received:"
+            android:text="@string/received"
             android:paddingRight="10dp" />
         <TextView
             android:textSize="16sp"
@@ -35,7 +35,7 @@
             android:textSize="16sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Expires:"/>
+            android:text="@string/expires"/>
         <TextView
             android:textSize="16sp"
             android:layout_width="match_parent"
@@ -47,7 +47,7 @@
             android:textSize="14sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Message:"/>
+            android:text="@string/message"/>
         <TextView
             android:textSize="14sp"
             android:layout_width="match_parent"

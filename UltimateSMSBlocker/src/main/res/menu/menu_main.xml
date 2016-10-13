@@ -3,51 +3,33 @@
       tools:context="com.test.user.friendslist.MainActivity">
     <item
         android:id="@+id/add"
-        android:title="Add"
-        android:showAsAction="never"
-        />
-
+        android:title="@string/add"
+        android:showAsAction="never"/>
     <item
         android:id="@+id/add_number"
-        android:title="Add Number"
-        android:showAsAction="never"
-        />
-
-
-
+        android:title="@string/add_number"
+        android:showAsAction="never"/>
     <item
         android:id="@+id/sort_by_date"
-
-
-        android:title="Sort by Date"/>
+        android:title="@string/sort_date"/>
 
     <item
         android:id="@+id/sort_by_name"
-
-
-        android:title="Sort by Name"/>
+        android:title="@string/sort_name"/>
 
     <item
         android:id="@+id/sort_by_number"
-
-
-        android:title="Sort by Number"/>
+        android:title="@string/sort_num"/>
 
     <item
         android:id="@+id/export"
-
-
-        android:title="Export"/>
+        android:title="@string/export"/>
     <item
         android:id="@+id/_import"
-
-
-        android:title="Import"/>
+        android:title="@string/_import"/>
 
     <item
         android:id="@+id/series"
         android:showAsAction="never"
-
-        android:title="Add Series"/>
-
+        android:title="@string/add_series"/>
 </menu>

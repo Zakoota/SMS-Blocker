@@ -46,7 +46,6 @@ public class BlockListAdapter extends ArrayAdapter<BlockMessage> {
                 tt2.setText(p.getName());
             }
         }
-
         return v;
     }
 
