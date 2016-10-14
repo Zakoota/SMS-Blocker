@@ -24,16 +24,21 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
+import android.provider.*;
+import android.provider.Settings;
 import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
+
+import static android.content.ContentValues.TAG;
 
 public class SmsMessageReceiver extends BroadcastReceiver
 {
@@ -174,20 +179,30 @@ public class SmsMessageReceiver extends BroadcastReceiver
                      */
                     try {
                         int days = settings.getInt("retain_days", 0);
-
-                        DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(context);
-                        String s = dateFormat.format((message.getTimestampMillis()));
-                        Date d = new Date(s);
-
                         Calendar c = Calendar.getInstance();
-                        c.setTime(d);
+                        c.setTimeInMillis(message.getTimestampMillis());
+
+/**
+* Cyanogenmod SMS Emulator zeroing
+*/
+                        c.add(Calendar.HOUR, 19);
+                        c.add(Calendar.MINUTE, 30);
+                        String rec_date = c.getTimeInMillis()+"";
+/**
+* Zeroing end //remove later
+*/
+
                         c.add(Calendar.DATE, days);
 
-                        String input_date = c.getTimeInMillis() + "";
+                        String expiry_date = c.getTimeInMillis() + "";
 
                         dataSource.open();
 
-                        Message _message = new Message(fromAddress, message.getMessageBody(), (message.getTimestampMillis() + ""), input_date, 0);
+                        if(isContact){
+                            fromAddress = fromDisplayName + " ("+fromAddress+")";
+                        }
+
+                        Message _message = new Message(fromAddress, message.getMessageBody(), rec_date, expiry_date, 0);
 
                         dataSource.create(_message);
                     } catch (Exception e) { }

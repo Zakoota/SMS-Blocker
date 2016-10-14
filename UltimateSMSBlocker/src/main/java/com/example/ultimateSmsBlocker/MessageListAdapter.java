@@ -43,11 +43,11 @@ public class MessageListAdapter extends ArrayAdapter<Message> {
             }
 
             if (tt2 != null) {
-                tt2.setText(Utils.dateFromLong(Long.parseLong(p.getReceiveDate())));
+                tt2.setText(Utils.dateFromString(p.getReceiveDate()));
             }
 
             if (tt3 != null) {
-                tt3.setText(Utils.dateFromLong(Long.parseLong(p.getRetainDate())));
+                tt3.setText(Utils.dateFromString(p.getRetainDate()));
             }
             if (tt4 != null) {
                 tt4.setText(p.getBody());
