@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -28,13 +29,13 @@ public class Settings extends Activity
 {
 
     private ToggleButton tgl;
-    private ToggleButton tgl2;
     private TextView ev;
     private SharedPreferences settings;
     private SharedPreferences.Editor editor;
     private View view;
     private EditText et;
     private RadioGroup rg1;
+    private CheckBox cb_block;
 
     @Override
     protected void onCreate (Bundle savedInstanceState)
@@ -75,16 +76,16 @@ public class Settings extends Activity
          * Block unknown toggle initialize and change listener
          */
         Boolean toggle2 = settings.getBoolean("block_unknown", false);
-        Boolean tgl2_state = settings.getBoolean("tgl2_state",true);
-        tgl2 = (ToggleButton) findViewById(R.id.btn_tgl2);
-            tgl2.setChecked(toggle2);
-            tgl2.setEnabled(tgl2_state);
-            tgl2.setOnCheckedChangeListener ( new CompoundButton.OnCheckedChangeListener ()
+        Boolean cb_state = settings.getBoolean("cb_state",true);
+        cb_block = (CheckBox) findViewById(R.id.cb_block);
+        cb_block.setChecked(toggle2);
+        cbVisibility(cb_state);
+        cb_block.setOnCheckedChangeListener ( new CompoundButton.OnCheckedChangeListener ()
             {
                 @Override
                 public void onCheckedChanged (CompoundButton buttonView, boolean isChecked)
                 {
-                    Boolean v = tgl2.isChecked ();
+                    Boolean v = cb_block.isChecked ();
                     editor.putBoolean ( "block_unknown", v );
                     editor.commit ();
                 }
@@ -108,12 +109,12 @@ public class Settings extends Activity
                                                rgSetter(rgGetter());
 
                                                //Disable unable block_unknown button depending on radio button
-                                               if(rgGetter()!=1){
-                                                   tgl2.setEnabled(false);
-                                                   editor.putBoolean("tgl2_state",false);
+                                               if(rgGetter()==1){
+                                                   cbVisibility(true);
+                                                   editor.putBoolean("cb_state",true);
                                                }else{
-                                                   tgl2.setEnabled(true);
-                                                   editor.putBoolean("tgl2_state",true);
+                                                   cbVisibility(false);
+                                                   editor.putBoolean("cb_state",false);
                                                }
                                                editor.commit();
                                            }
@@ -178,7 +179,8 @@ public class Settings extends Activity
                 MODE_PRIVATE );
         ev.setText(String.valueOf(settings.getInt("retain_days",0))+" days");
         tgl.setChecked( settings.getBoolean("notify_toggle", true));
-        tgl2.setChecked(settings.getBoolean("block_unknown",false));
+        cb_block.setChecked(settings.getBoolean("block_unknown",false));
+        cbVisibility(settings.getBoolean("cb_state",true));
         rgSetter(settings.getInt("rb_set", 1));
     }
 
@@ -246,5 +248,12 @@ public class Settings extends Activity
         }
         editor.commit();
         return isSet;
+    }
+    private void cbVisibility(boolean a){
+        if(a){
+            cb_block.setVisibility(View.VISIBLE);
+        }else{
+            cb_block.setVisibility(View.GONE);
+        }
     }
 }

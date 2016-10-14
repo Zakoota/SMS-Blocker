@@ -12,8 +12,8 @@
     <string name="enter_limit">Enter Start and End Limit</string>
     <string name="to">To:</string>
     <string name="notifications">Notifications:</string>
-    <string name="block_unknown">Block Unknown no.</string>
-    <string name="autodel_after">Auto-delete after </string>
+    <string name="block_unknown">Block Unknown Numbers</string>
+    <string name="autodel_after">Auto-delete after</string>
     <string name="set">Set</string>
     <string name="block_scen">Block Scenario</string>
     <string name="rb_1">Block The Blocklist</string>

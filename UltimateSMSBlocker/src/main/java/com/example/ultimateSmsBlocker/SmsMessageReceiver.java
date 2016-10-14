@@ -115,7 +115,7 @@ public class SmsMessageReceiver extends BroadcastReceiver
                     }
                     switch(rg_code){
                         /**
-                         * Case 1: Block the Blocklist
+                         * Case 1: Block the Blocklist or block unknown
                          */
                         case 1:{
                             if (list.contains(fromAddress) || (block_unknown && !isContact)){
