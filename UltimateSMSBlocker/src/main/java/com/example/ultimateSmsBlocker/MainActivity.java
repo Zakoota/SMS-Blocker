@@ -225,7 +225,8 @@ public class MainActivity extends ListActivity
                                     inputHead = input.substring(0, outerI);
                                     }catch(Exception e){}//empty
                                 /**
-                                 * try block for loop that makes series from provided start and end number
+                                 * try block for loop that makes series from provided start and end number and
+                                 * add it to blocklist
                                  */
                                 try{
                                     long start = Long.parseLong(input);
@@ -240,6 +241,7 @@ public class MainActivity extends ListActivity
 
                                         dataSource.addToBlockList(address, name, added_date);
                                     }
+                                    Toast.makeText(MainActivity.this, "Series from:"+input+" to:"+input_2+"\nadded to blocklist", Toast.LENGTH_LONG).show();
                                 }catch (Exception e){ }
                                 refresh();
                             }catch (Exception e) { }
@@ -338,7 +340,8 @@ public class MainActivity extends ListActivity
             final String _selected = temp[ 1 ].trim ();
 
             final AlertDialog.Builder inputDialog = new AlertDialog.Builder ( this )
-                    .setTitle ( "Remove from block list " );
+                    .setTitle ( "Remove from block list" )
+                    .setMessage("Do you want to remove "+_selected+" from block list?");
             inputDialog.setNegativeButton ( "Yes", new DialogInterface.OnClickListener ()
             {
                 @Override
@@ -346,6 +349,7 @@ public class MainActivity extends ListActivity
                 {
                     dataSource.open ();
                     dataSource.removeFromBlockList ( _selected );
+                    Toast.makeText(MainActivity.this,_selected+"\nremoved from blocklist", Toast.LENGTH_SHORT).show();
                     refresh ();
                 }
             } );

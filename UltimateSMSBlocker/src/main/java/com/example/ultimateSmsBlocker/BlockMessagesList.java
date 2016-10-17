@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -79,6 +80,7 @@ public class BlockMessagesList extends ListActivity
 
                 dataSource.open ();
                 dataSource.deleteBlocked ( messages_list.get ( position ) );
+                Toast.makeText(BlockMessagesList.this, "Message moved to inbox", Toast.LENGTH_SHORT).show();
                 refresh ();
 
             }
