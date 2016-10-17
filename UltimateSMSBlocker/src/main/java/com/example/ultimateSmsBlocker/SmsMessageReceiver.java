@@ -182,16 +182,6 @@ public class SmsMessageReceiver extends BroadcastReceiver
                         Calendar c = Calendar.getInstance();
                         c.setTimeInMillis(message.getTimestampMillis());
 
-/**
-* Cyanogenmod SMS Emulator zeroing
-*/
-                        c.add(Calendar.HOUR, 19);
-                        c.add(Calendar.MINUTE, 30);
-                        String rec_date = c.getTimeInMillis()+"";
-/**
-* Zeroing end //remove later
-*/
-
                         c.add(Calendar.DATE, days);
 
                         String expiry_date = c.getTimeInMillis() + "";
