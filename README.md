@@ -1,4 +1,3 @@
-Final Project
+My Final Project
 
-
-uploading it to Gitlab, you never know when laptop or harddrive gives up
+requires android API 18 or below.
